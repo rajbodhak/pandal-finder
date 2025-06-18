@@ -1,8 +1,9 @@
-import { databases, Query } from "./appwrite";
+import { databases, Query, storage } from "./appwrite";
 import { Pandal, FilterOptions, PandalWithDistance } from "./types";
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_PANDALS_COLLECTION_ID!;
+const BUCKET_ID = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!;
 
 export class DatabaseService {
 
@@ -41,7 +42,7 @@ export class DatabaseService {
                 {
                     ...pandal,
                     special_features: JSON.stringify(pandal.special_features || []),
-                    assessibility_features: JSON.stringify(pandal.accessibility_features || []),
+                    accessibility_features: JSON.stringify(pandal.accessibility_features || []), // FIXED: was assessibility_features
                     created_at: now,
                     updated_at: now
                 }
@@ -148,45 +149,9 @@ export class DatabaseService {
         }
     }
 
-    // Filter pandals
-    async filterPandals(filters: FilterOptions): Promise<Pandal[]> {
-        try {
-            const queries = [];
-
-            if (filters.category) {
-                queries.push(Query.equal('category', filters.category));
-            }
-
-            if (filters.minRating) {
-                queries.push(Query.greaterThanEqual('rating', filters.minRating));
-            }
-
-            if (filters.crowdLevel && filters.crowdLevel.length > 0) {
-                queries.push(Query.equal('crowd_level', filters.crowdLevel));
-            }
-
-            // Add sorting
-            switch (filters.sortBy) {
-                case 'rating':
-                    queries.push(Query.orderDesc('rating'));
-                    break;
-                case 'name':
-                    queries.push(Query.orderAsc('name'));
-                    break;
-                default:
-                    queries.push(Query.orderDesc('created_at'));
-            }
-
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                queries
-            );
-            return response.documents.map(doc => this.formatPandal(doc));
-        } catch (error) {
-            console.error('Error filtering pandals:', error);
-            throw error;
-        }
+    // Get image URL
+    getImageUrl(imageId: string) {
+        return storage.getFileView(BUCKET_ID, imageId);
     }
 }
 
