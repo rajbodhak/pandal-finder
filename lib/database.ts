@@ -23,13 +23,14 @@ export class DatabaseService {
             established_year: doc.established_year,
             organizer: doc.organizer,
             visiting_hours: doc.visiting_hours,
-            special_features: doc.special_features ? JSON.parse(doc.special_features) : [],
+            special_features: doc.special_features || [],
             crowd_level: doc.crowd_level,
-            accessibility_features: doc.accessibility_features ? JSON.parse(doc.accessibility_features) : [],
+            accessibility_features: doc.accessibility_features || [],
             created_at: doc.created_at,
             updated_at: doc.updated_at
         };
-    };
+    }
+
 
     //creating pandal
     async createPandal(pandal: Omit<Pandal, '$id' | 'created_at' | 'updated_at'>) {
@@ -41,8 +42,8 @@ export class DatabaseService {
                 'unique()',
                 {
                     ...pandal,
-                    special_features: JSON.stringify(pandal.special_features || []),
-                    accessibility_features: JSON.stringify(pandal.accessibility_features || []), // FIXED: was assessibility_features
+                    special_features: pandal.special_features || [],
+                    accessibility_features: pandal.accessibility_features || [],
                     created_at: now,
                     updated_at: now
                 }
