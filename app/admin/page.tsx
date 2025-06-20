@@ -8,6 +8,28 @@ import { Pandal } from '@/lib/types';
 import { ID, storage } from '@/lib/appwrite';
 import { useRouter } from 'next/navigation';
 
+// Area detection utility
+const detectArea = (address: string): Pandal['area'] => {
+    const lowerAddress = address.toLowerCase();
+
+    const areaKeywords = {
+        north_kolkata: ['shyambazar', 'kumartuli', 'shobhabazar', 'bagbazar', 'north kolkata', 'hatibagan', 'chitpur', 'jorasanko', 'beadon street'],
+        south_kolkata: ['ballygunge', 'gariahat', 'jadavpur', 'tollygunge', 'south kolkata', 'kalighat', 'alipore', 'bhowanipore', 'rashbehari'],
+        central_kolkata: ['park street', 'college street', 'bow barracks', 'central kolkata', 'esplanade', 'dalhousie', 'dharmatala', 'chowringhee'],
+        salt_lake: ['salt lake', 'bidhannagar', 'sector', 'city centre', 'salt lake city'],
+        new_town: ['new town', 'action area', 'eco park', 'rajarhat', 'newtown'],
+        howrah: ['howrah', 'shibpur', 'santragachi', 'liluah', 'belur']
+    };
+
+    for (const [area, keywords] of Object.entries(areaKeywords)) {
+        if (keywords.some(keyword => lowerAddress.includes(keyword))) {
+            return area as Pandal['area'];
+        }
+    }
+
+    return 'other';
+};
+
 const defaultPandal: Partial<Pandal> = {
     name: '',
     description: '',
@@ -15,14 +37,23 @@ const defaultPandal: Partial<Pandal> = {
     latitude: 0,
     longitude: 0,
     rating: 0,
+    area: 'other',
     category: 'traditional',
     crowd_level: 'medium',
     special_features: [],
-    accessibility_features: [],
     visiting_hours: '',
-    organizer: '',
     established_year: new Date().getFullYear(),
 };
+
+const AREA_OPTIONS = [
+    { value: 'north_kolkata', label: 'North Kolkata', icon: '🏛️' },
+    { value: 'south_kolkata', label: 'South Kolkata', icon: '🌆' },
+    { value: 'central_kolkata', label: 'Central Kolkata', icon: '🏢' },
+    { value: 'salt_lake', label: 'Salt Lake', icon: '🏙️' },
+    { value: 'new_town', label: 'New Town', icon: '🌃' },
+    { value: 'howrah', label: 'Howrah', icon: '🌉' },
+    { value: 'other', label: 'Other', icon: '📍' }
+];
 
 const CATEGORY_OPTIONS = [
     { value: 'traditional', label: 'Traditional' },
@@ -31,21 +62,15 @@ const CATEGORY_OPTIONS = [
 ];
 
 const CROWD_LEVEL_OPTIONS = [
-    { value: 'low', label: 'Low' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'high', label: 'High' }
+    { value: 'low', label: 'Less Crowded', icon: '😌' },
+    { value: 'medium', label: 'Moderate Crowd', icon: '👥' },
+    { value: 'high', label: 'Very Popular', icon: '🎉' }
 ];
 
 const SPECIAL_FEATURES_OPTIONS = [
-    'Light Show', 'Cultural Programs', 'Food Stalls', 'Parking Available',
-    'Wheelchair Accessible', 'Photography Allowed', 'Live Music',
-    'Traditional Dance', 'Art Exhibition', 'Puppet Show'
-];
-
-const ACCESSIBILITY_FEATURES_OPTIONS = [
-    'Wheelchair Access', 'Ramp Available', 'Audio Guide',
-    'Braille Signage', 'Sign Language Interpreter',
-    'Accessible Restrooms', 'Priority Queue'
+    'Grand Lighting', 'Cultural Programs', 'Food Court', 'Live Music',
+    'Traditional Dance', 'Art Exhibition', 'Photography Spot', 'Theme Decoration',
+    'Award Winning', 'Celebrity Visits', 'Historical Significance', 'Eco Friendly'
 ];
 
 export default function AdminPage() {
@@ -56,16 +81,25 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [autoDetectArea, setAutoDetectArea] = useState(true);
     const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setForm(prev => ({
-            ...prev,
+
+        const updatedForm = {
+            ...form,
             [name]: ['latitude', 'longitude', 'rating', 'established_year'].includes(name)
                 ? Number(value)
                 : value,
-        }));
+        };
+
+        // Auto-detect area when address changes
+        if (name === 'address' && autoDetectArea && value) {
+            updatedForm.area = detectArea(value);
+        }
+
+        setForm(updatedForm);
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -237,7 +271,7 @@ export default function AdminPage() {
                                         name="description"
                                         value={form.description}
                                         onChange={handleChange}
-                                        placeholder="Describe the pandal..."
+                                        placeholder="Describe the pandal, its theme, special features..."
                                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors resize-none"
                                         rows={4}
                                         required
@@ -252,10 +286,13 @@ export default function AdminPage() {
                                         name="address"
                                         value={form.address}
                                         onChange={handleChange}
-                                        placeholder="Full address"
+                                        placeholder="Full address with area name"
                                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
                                         required
                                     />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Include area names like "Ballygunge", "Salt Lake", "New Town" for better area detection
+                                    </p>
                                 </div>
 
                                 <div>
@@ -290,6 +327,41 @@ export default function AdminPage() {
                                     />
                                 </div>
 
+                                {/* Area Selection with Auto-detect */}
+                                <div className="md:col-span-2">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <label className="block text-sm font-medium text-gray-300">
+                                            Area
+                                        </label>
+                                        <label className="flex items-center space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                checked={autoDetectArea}
+                                                onChange={(e) => setAutoDetectArea(e.target.checked)}
+                                                className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                                            />
+                                            <span className="text-xs text-gray-400">Auto-detect from address</span>
+                                        </label>
+                                    </div>
+                                    <select
+                                        name="area"
+                                        value={form.area}
+                                        onChange={handleChange}
+                                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white transition-colors"
+                                    >
+                                        {AREA_OPTIONS.map(option => (
+                                            <option key={option.value} value={option.value} className="bg-gray-700">
+                                                {option.icon} {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {autoDetectArea && form.address && (
+                                        <p className="text-xs text-green-400 mt-1">
+                                            Auto-detected: {AREA_OPTIONS.find(opt => opt.value === form.area)?.label}
+                                        </p>
+                                    )}
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-2">
                                         Category
@@ -320,7 +392,7 @@ export default function AdminPage() {
                                     >
                                         {CROWD_LEVEL_OPTIONS.map(option => (
                                             <option key={option.value} value={option.value} className="bg-gray-700">
-                                                {option.label}
+                                                {option.icon} {option.label}
                                             </option>
                                         ))}
                                     </select>
@@ -357,20 +429,7 @@ export default function AdminPage() {
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                                        Organizer
-                                    </label>
-                                    <input
-                                        name="organizer"
-                                        value={form.organizer}
-                                        onChange={handleChange}
-                                        placeholder="Organization name"
-                                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
-                                    />
-                                </div>
-
-                                <div>
+                                <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-300 mb-2">
                                         Visiting Hours
                                     </label>
@@ -396,26 +455,6 @@ export default function AdminPage() {
                                                 type="checkbox"
                                                 checked={(form.special_features || []).includes(feature)}
                                                 onChange={e => handleMultiSelect('special_features', feature, e.target.checked)}
-                                                className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
-                                            />
-                                            <span className="text-sm text-gray-300">{feature}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Accessibility Features */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-3">
-                                    Accessibility Features
-                                </label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {ACCESSIBILITY_FEATURES_OPTIONS.map(feature => (
-                                        <label key={feature} className="flex items-center space-x-2 cursor-pointer p-2 rounded-md hover:bg-gray-700 transition-colors">
-                                            <input
-                                                type="checkbox"
-                                                checked={(form.accessibility_features || []).includes(feature)}
-                                                onChange={e => handleMultiSelect('accessibility_features', feature, e.target.checked)}
                                                 className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
                                             />
                                             <span className="text-sm text-gray-300">{feature}</span>
