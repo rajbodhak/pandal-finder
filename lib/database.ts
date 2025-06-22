@@ -13,6 +13,7 @@ export class DatabaseService {
             $id: doc.$id,
             name: doc.name,
             description: doc.description,
+            area: doc.area,
             address: doc.address,
             latitude: doc.latitude,
             longitude: doc.longitude,
@@ -20,12 +21,8 @@ export class DatabaseService {
             imageUrl: doc.imageUrl,
             imageId: doc.imageId,
             category: doc.category,
-            established_year: doc.established_year,
-            organizer: doc.organizer,
-            visiting_hours: doc.visiting_hours,
             special_features: doc.special_features || [],
             crowd_level: doc.crowd_level,
-            accessibility_features: doc.accessibility_features || [],
             created_at: doc.created_at,
             updated_at: doc.updated_at
         };
@@ -43,7 +40,6 @@ export class DatabaseService {
                 {
                     ...pandal,
                     special_features: pandal.special_features || [],
-                    accessibility_features: pandal.accessibility_features || [],
                     created_at: now,
                     updated_at: now
                 }
@@ -95,10 +91,6 @@ export class DatabaseService {
 
             if (updates.special_features) {
                 updateData.special_features = JSON.stringify(updates.special_features);
-            }
-
-            if (updates.accessibility_features) {
-                updateData.accessibility_features = JSON.stringify(updates.accessibility_features);
             }
 
             const response = await databases.updateDocument(

@@ -8,13 +8,10 @@ export interface Pandal {
     rating?: number;
     imageUrl?: string;
     imageId?: string;
+    area: 'north_kolkata' | 'south_kolkata' | 'central_kolkata' | 'salt_lake' | 'new_town' | 'howrah' | 'other';
     category?: 'traditional' | 'modern' | 'theme-based';
-    established_year?: number;
-    organizer?: string;
-    visiting_hours?: string;
     special_features?: string[];
     crowd_level?: 'low' | 'medium' | 'high';
-    accessibility_features?: string[];
     created_at: string;
     updated_at: string;
 }
@@ -31,6 +28,7 @@ export interface PandalWithDistance extends Pandal {
 
 export interface FilterOptions {
     sortBy: 'distance' | 'rating' | 'popular' | 'name';
+    area?: string[];        // North/South Kolkata etc.
     category?: string;
     maxDistance?: number; // in km
     minRating?: number;
