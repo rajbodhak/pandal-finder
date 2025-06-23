@@ -16,6 +16,7 @@ interface MapComponentProps {
     pandals: PandalWithDistance[];
     userLocation: UserLocation | null;
     onPandalClick: (pandal: PandalWithDistance) => void;
+    onViewDetails: (pandal: PandalWithDistance) => void;
     selectedPandal?: PandalWithDistance | null;
 }
 
@@ -23,20 +24,24 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     pandals,
     userLocation,
     onPandalClick,
+    onViewDetails,
     selectedPandal
 }) => {
     const mapRef = useRef<L.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const markersRef = useRef<L.LayerGroup>(new L.LayerGroup());
+    const previousSelectedPandalRef = useRef<PandalWithDistance | null>(null);
 
     // Initialize map
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
 
-        const map = L.map(mapContainerRef.current).setView([22.5726, 88.3639], 11); // Kolkata center
+        const map = L.map(mapContainerRef.current, {
+            attributionControl: false
+        }).setView([22.5726, 88.3639], 11); // Kolkata center
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            // attribution: '© OpenStreetMap contributors'
+            attribution: ''  // Remove attribution
         }).addTo(map);
 
         markersRef.current.addTo(map);
@@ -49,6 +54,20 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             }
         };
     }, []);
+
+    // Handle zoom when selectedPandal changes
+    useEffect(() => {
+        if (!mapRef.current || !selectedPandal) return;
+
+        // Only zoom if this is a new selection (not just a re-render)
+        if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
+            mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
+                animate: true,
+                duration: 0.5
+            });
+            previousSelectedPandalRef.current = selectedPandal;
+        }
+    }, [selectedPandal]);
 
     // Update markers when pandals change
     useEffect(() => {
@@ -106,7 +125,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
           <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">${pandal.description}</p>
           <div style="display: flex; align-items: center; margin-bottom: 4px;">
             <span style="color: #f59e0b;">⭐</span>
-            <span style="margin-left: 4px; font-weight: 500;">${(pandal.rating ?? 0).toFixed(1)}}</span>
+            <span style="margin-left: 4px; font-weight: 500;">${(pandal.rating ?? 0).toFixed(1)}</span>
             ${pandal.distance ? `<span style="margin-left: 12px; color: #6b7280;">📍 ${pandal.distance.toFixed(1)}km</span>` : ''}
           </div>
           <div style="margin-top: 12px;">
@@ -147,19 +166,22 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             markersRef.current.addLayer(marker);
         });
 
-        // Fit map to show all markers
-        if (markersRef.current.getLayers().length > 0) {
+        // Only fit bounds on initial load or when pandals change (not when selection changes)
+        // This prevents the zoom reset when clicking markers
+        if (markersRef.current.getLayers().length > 0 && !selectedPandal) {
             const group = L.featureGroup(markersRef.current.getLayers());
             mapRef.current.fitBounds(group.getBounds().pad(0.1));
         }
-    }, [pandals, userLocation, selectedPandal, onPandalClick]);
+    }, [pandals, userLocation]);
 
     // Setup global map actions for popup buttons
     useEffect(() => {
         (window as any).pandalMapActions = {
             viewDetails: (pandalId: string) => {
                 const pandal = pandals.find(p => p.$id === pandalId);
-                if (pandal) onPandalClick(pandal);
+                if (pandal) {
+                    onViewDetails(pandal); // Use the dedicated callback
+                }
             },
             getDirections: (pandalId: string) => {
                 const pandal = pandals.find(p => p.$id === pandalId);
@@ -173,7 +195,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         return () => {
             delete (window as any).pandalMapActions;
         };
-    }, [pandals, userLocation, onPandalClick]);
+    }, [pandals, userLocation, onPandalClick, onViewDetails])
 
     return (
         <div
