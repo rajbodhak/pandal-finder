@@ -142,6 +142,84 @@ export class DatabaseService {
         }
     }
 
+    // Get pandals by area for roadmap
+    async getPandalsByArea(area: string) {
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Query.equal('area', area),
+                    Query.orderDesc('rating'), // Get highest rated first for better routes
+                    Query.limit(25) // Reasonable limit for route optimization
+                ]
+            );
+            return response.documents.map(doc => this.formatPandal(doc));
+        } catch (error) {
+            console.log("Error fetching pandals by area:", error);
+            throw error;
+        }
+    }
+
+    // Get pandals by multiple areas (if user wants to explore multiple areas)
+    async getPandalsByAreas(areas: string[]) {
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Query.equal('area', areas),
+                    Query.orderDesc('rating'),
+                    Query.limit(50)
+                ]
+            );
+            return response.documents.map(doc => this.formatPandal(doc));
+        } catch (error) {
+            console.log("Error fetching pandals by areas:", error);
+            throw error;
+        }
+    }
+
+    // Get top-rated pandals by area (for priority routes)
+    async getTopPandalsByArea(area: string, limit: number = 10) {
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Query.equal('area', area),
+                    Query.greaterThan('rating', 4.0), // Only high-rated pandals
+                    Query.orderDesc('rating'),
+                    Query.limit(limit)
+                ]
+            );
+            return response.documents.map(doc => this.formatPandal(doc));
+        } catch (error) {
+            console.log("Error fetching top pandals:", error);
+            throw error;
+        }
+    }
+
+    // Get pandals by crowd level (for less crowded routes)
+    async getPandalsByAreaAndCrowdLevel(area: string, crowdLevels: string[] = ['low', 'medium']) {
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Query.equal('area', area),
+                    Query.equal('crowd_level', crowdLevels),
+                    Query.orderDesc('rating'),
+                    Query.limit(20)
+                ]
+            );
+            return response.documents.map(doc => this.formatPandal(doc));
+        } catch (error) {
+            console.log("Error fetching pandals by crowd level:", error);
+            throw error;
+        }
+    }
+
     // Get image URL
     getImageUrl(imageId: string) {
         return storage.getFileView(BUCKET_ID, imageId);
