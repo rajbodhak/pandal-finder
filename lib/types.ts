@@ -12,8 +12,8 @@ export interface Pandal {
     category?: 'traditional' | 'modern' | 'theme-based';
     special_features?: string[];
     crowd_level?: 'low' | 'medium' | 'high';
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface UserLocation {
@@ -90,4 +90,67 @@ export interface RoadmapFilters {
     maxWalkingTime?: number;
     difficulty?: 'easy' | 'moderate' | 'challenging';
     priorityLevel?: 'must_visit' | 'recommended' | 'all';
+}
+
+// --------------------------------------------------------------------------------------------------
+
+export interface RouteSegment {
+    fromPandalId: string;
+    toPandalId: string;
+    distance: number; // in meters
+    estimatedTime: number; // in minutes
+    transportMode: 'walk' | 'bus' | 'metro' | 'auto' | 'taxi' | 'ferry';
+    transportDetails?: {
+        busNumber?: string; // "45, 46A"
+        metroLine?: string; // "Blue Line"
+        busStops?: string[]; // ["Shyambazar", "Bagbazar"]
+        ferryRoute?: string; // "Howrah to Babu Ghat"
+        walkingRoute?: string; // "Via Park Street"
+    };
+    cost?: number; // in rupees
+    notes?: string; // "Crowded during evening"
+    alternativeRoutes?: RouteSegment[]; // backup options
+}
+
+export interface ManualRoute {
+    id: string;
+    name: string; // "North Kolkata from Howrah Station"
+    description: string;
+    areaId: string;
+    startingPoint: StartingPoint;
+    difficulty: 'easy' | 'moderate' | 'challenging';
+    estimatedTotalTime: string; // "4-5 hours"
+    bestTimeToStart: string; // "9:00 AM"
+
+    // Sequential pandal order
+    pandalSequence: string[]; // Array of pandal IDs in order
+
+    // Route segments between pandals
+    routeSegments: RouteSegment[];
+
+    // Additional metadata
+    totalWalkingDistance: number;
+    totalCost: number;
+    tips: string[];
+    warnings?: string[]; // "Avoid during rush hour"
+
+    startingConnection?: StartingPointConnection;
+
+    created_at: string;
+    updated_at: string;
+}
+
+export interface StartingPointConnection {
+    startingPointId: string;
+    firstPandalId: string;
+    connection: RouteSegment;
+}
+
+// For displaying in UI
+export interface RouteStepDisplay {
+    type: 'starting_point' | 'pandal' | 'transport';
+    pandal?: Pandal;
+    startingPoint?: StartingPoint;
+    transportSegment?: RouteSegment;
+    sequence?: number;
 }
