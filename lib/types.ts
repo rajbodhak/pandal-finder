@@ -66,31 +66,22 @@ export interface StartingPoint {
 }
 
 // Route structure
-export interface PandalRoute {
-    id: string;
-    areaId: string;
-    startingPointId: string;
-    name: string; // "North Kolkata from Girish Park"
-    description: string;
-    totalDistance: number; // in km
-    totalWalkingTime: number; // in minutes
-    estimatedDuration: string; // "4-5 hours including visits"
-    difficulty: 'easy' | 'moderate' | 'challenging';
-    bestTimeToStart: string; // "Morning (9 AM)"
-    pandals: RoadmapPandal[];
-    tips: string[];
-    created_at: string;
-    updated_at: string;
-}
-
-// Filter options for roadmap
-export interface RoadmapFilters {
-    area: string;
-    startingPoint: string;
-    maxWalkingTime?: number;
-    difficulty?: 'easy' | 'moderate' | 'challenging';
-    priorityLevel?: 'must_visit' | 'recommended' | 'all';
-}
+// export interface PandalRoute {
+//     id: string;
+//     areaId: string;
+//     startingPointId: string;
+//     name: string; // "North Kolkata from Girish Park"
+//     description: string;
+//     totalDistance: number; // in km
+//     totalWalkingTime: number; // in minutes
+//     estimatedDuration: string; // "4-5 hours including visits"
+//     difficulty: 'easy' | 'moderate' | 'challenging';
+//     bestTimeToStart: string; // "Morning (9 AM)"
+//     pandals: RoadmapPandal[];
+//     tips: string[];
+//     created_at: string;
+//     updated_at: string;
+// }
 
 // --------------------------------------------------------------------------------------------------
 
@@ -147,10 +138,10 @@ export interface StartingPointConnection {
 }
 
 // For displaying in UI
-export interface RouteStepDisplay {
-    type: 'starting_point' | 'pandal' | 'transport';
-    pandal?: Pandal;
-    startingPoint?: StartingPoint;
-    transportSegment?: RouteSegment;
-    sequence?: number;
-}
+// export interface RouteStepDisplay {
+//     type: 'starting_point' | 'pandal' | 'transport';
+//     pandal?: Pandal;
+//     startingPoint?: StartingPoint;
+//     transportSegment?: RouteSegment;
+//     sequence?: number;
+// }
