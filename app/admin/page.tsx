@@ -41,8 +41,6 @@ const defaultPandal: Partial<Pandal> = {
     category: 'traditional',
     crowd_level: 'medium',
     special_features: [],
-    visiting_hours: '',
-    established_year: new Date().getFullYear(),
 };
 
 const AREA_OPTIONS = [
@@ -62,16 +60,19 @@ const CATEGORY_OPTIONS = [
 ];
 
 const CROWD_LEVEL_OPTIONS = [
-    { value: 'low', label: 'Less Crowded', icon: '😌' },
-    { value: 'medium', label: 'Moderate Crowd', icon: '👥' },
-    { value: 'high', label: 'Very Popular', icon: '🎉' }
+    { value: 'low', label: 'Less Crowded', icon: '🟠' },
+    { value: 'medium', label: 'Moderate Crowd', icon: '🔵' },
+    { value: 'medium-high', label: 'Popular & Crowded', icon: '🟡' },
+    { value: 'high', label: 'Very Popular', icon: '🟢' }
 ];
 
 const SPECIAL_FEATURES_OPTIONS = [
     'Grand Lighting', 'Cultural Programs', 'Food Court', 'Live Music',
     'Traditional Dance', 'Art Exhibition', 'Photography Spot', 'Theme Decoration',
-    'Award Winning', 'Celebrity Visits', 'Historical Significance', 'Eco Friendly'
+    'Award Winning', 'Celebrity Visits', 'Historical Significance', 'Eco Friendly',
+    'Social Awareness Theme', 'Community Service', 'Heritage Architecture'
 ];
+
 
 export default function AdminPage() {
     const { user, logout } = useAuth();
@@ -89,7 +90,7 @@ export default function AdminPage() {
 
         const updatedForm = {
             ...form,
-            [name]: ['latitude', 'longitude', 'rating', 'established_year'].includes(name)
+            [name]: ['latitude', 'longitude', 'rating'].includes(name)
                 ? Number(value)
                 : value,
         };
@@ -411,33 +412,6 @@ export default function AdminPage() {
                                         value={form.rating}
                                         onChange={handleChange}
                                         placeholder="4.5"
-                                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                                        Established Year
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="established_year"
-                                        value={form.established_year}
-                                        onChange={handleChange}
-                                        placeholder="2024"
-                                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                                        Visiting Hours
-                                    </label>
-                                    <input
-                                        name="visiting_hours"
-                                        value={form.visiting_hours}
-                                        onChange={handleChange}
-                                        placeholder="6:00 AM - 10:00 PM"
                                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
                                     />
                                 </div>
