@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev-https": "next dev --turbopack --experimental-https",
+    "dev-network": "next dev --turbopack --experimental-https --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "appwrite": "^18.1.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.517.0",
