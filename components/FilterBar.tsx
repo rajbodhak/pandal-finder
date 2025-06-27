@@ -1,5 +1,7 @@
+'use client';
 import React, { useState } from 'react';
-import { Search, Filter, X, SlidersHorizontal } from 'lucide-react';
+import { Search, X, SlidersHorizontal, Check, ChevronDown } from 'lucide-react';
+import { Listbox } from '@headlessui/react';
 import { FilterOptions } from '@/lib/types';
 
 interface FilterBarProps {
@@ -13,7 +15,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     filters,
     onFiltersChange,
     onSearch,
-    searchQuery
+    searchQuery,
 }) => {
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
@@ -21,14 +23,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         { value: 'distance', label: 'Nearest First' },
         { value: 'rating', label: 'Highest Rated' },
         { value: 'popular', label: 'Most Popular' },
-        { value: 'name', label: 'Alphabetical' }
+        { value: 'name', label: 'Alphabetical' },
     ];
 
     const categoryOptions = [
         { value: '', label: 'All Categories' },
         { value: 'traditional', label: 'Traditional' },
         { value: 'modern', label: 'Modern' },
-        { value: 'theme-based', label: 'Theme Based' }
+        { value: 'theme-based', label: 'Theme Based' },
     ];
 
     const areaOptions = [
@@ -38,13 +40,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         { value: 'salt_lake', label: 'Salt Lake' },
         { value: 'new_town', label: 'New Town' },
         { value: 'howrah', label: 'Howrah' },
-        { value: 'other', label: 'Other Areas' }
+        { value: 'other', label: 'Other Areas' },
     ];
 
     const crowdLevelOptions = [
         { value: 'low', label: 'Low Crowd' },
         { value: 'medium', label: 'Medium Crowd' },
-        { value: 'high', label: 'High Crowd' }
+        { value: 'high', label: 'High Crowd' },
     ];
 
     const clearFilters = () => {
@@ -54,7 +56,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             category: '',
             maxDistance: undefined,
             minRating: undefined,
-            crowdLevel: []
+            crowdLevel: [],
         });
         onSearch('');
     };
@@ -83,25 +85,56 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     />
                 </div>
 
-                {/* Sort Dropdown */}
-                <select
-                    value={filters.sortBy}
-                    onChange={(e) => onFiltersChange({ ...filters, sortBy: e.target.value as FilterOptions['sortBy'] })}
-                    className="px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                >
-                    {sortOptions.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
+                {/* Sort Dropdown (Headless UI) */}
+                <div className="w-full sm:w-auto">
+                    <Listbox
+                        value={filters.sortBy}
+                        onChange={(value) => onFiltersChange({ ...filters, sortBy: value })}
+                    >
+                        <div className="relative">
+                            <Listbox.Button className="relative w-full sm:min-w-[180px] cursor-pointer rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-left text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                {
+                                    sortOptions.find((o) => o.value === filters.sortBy)?.label || 'Sort by'
+                                }
+                                <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                                </span>
+                            </Listbox.Button>
+                            <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/10 focus:outline-none">
+                                {sortOptions.map((option) => (
+                                    <Listbox.Option
+                                        key={option.value}
+                                        value={option.value}
+                                        className={({ active }) =>
+                                            `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-100 text-blue-800' : 'text-gray-900'
+                                            }`
+                                        }
+                                    >
+                                        {({ selected }) => (
+                                            <>
+                                                <span className={`${selected ? 'font-semibold' : 'font-normal'}`}>
+                                                    {option.label}
+                                                </span>
+                                                {selected && (
+                                                    <span className="absolute left-3 inset-y-0 flex items-center text-blue-600">
+                                                        <Check className="w-4 h-4" />
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                    </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
+                        </div>
+                    </Listbox>
+                </div>
 
                 {/* Advanced Filters Toggle */}
                 <button
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${showAdvancedFilters
-                        ? 'bg-blue-50 border-blue-300 text-blue-700'
-                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                            ? 'bg-blue-50 border-blue-300 text-blue-700'
+                            : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                         }`}
                 >
                     <SlidersHorizontal className="w-4 h-4" />
@@ -124,21 +157,21 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             {showAdvancedFilters && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {/* Area Filter */}
+                        {/* Area */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Area</label>
                             <div className="space-y-2 max-h-32 overflow-y-auto">
-                                {areaOptions.map(option => (
+                                {areaOptions.map((option) => (
                                     <label key={option.value} className="flex items-center">
                                         <input
                                             type="checkbox"
                                             checked={filters.area?.includes(option.value) || false}
                                             onChange={(e) => {
-                                                const currentAreas = filters.area || [];
-                                                const newAreas = e.target.checked
-                                                    ? [...currentAreas, option.value]
-                                                    : currentAreas.filter(area => area !== option.value);
-                                                onFiltersChange({ ...filters, area: newAreas });
+                                                const current = filters.area || [];
+                                                const newVal = e.target.checked
+                                                    ? [...current, option.value]
+                                                    : current.filter((a) => a !== option.value);
+                                                onFiltersChange({ ...filters, area: newVal });
                                             }}
                                             className="rounded text-blue-600 focus:ring-blue-500"
                                         />
@@ -148,15 +181,17 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                             </div>
                         </div>
 
-                        {/* Category Filter */}
+                        {/* Category */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                             <select
                                 value={filters.category || ''}
-                                onChange={(e) => onFiltersChange({ ...filters, category: e.target.value || undefined })}
+                                onChange={(e) =>
+                                    onFiltersChange({ ...filters, category: e.target.value || undefined })
+                                }
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                {categoryOptions.map(option => (
+                                {categoryOptions.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>
@@ -175,10 +210,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                 max="50"
                                 step="1"
                                 value={filters.maxDistance || 50}
-                                onChange={(e) => onFiltersChange({
-                                    ...filters,
-                                    maxDistance: e.target.value === '50' ? undefined : Number(e.target.value)
-                                })}
+                                onChange={(e) =>
+                                    onFiltersChange({
+                                        ...filters,
+                                        maxDistance:
+                                            e.target.value === '50' ? undefined : Number(e.target.value),
+                                    })
+                                }
                                 className="w-full accent-blue-600"
                             />
                         </div>
@@ -194,31 +232,34 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                 max="5"
                                 step="0.5"
                                 value={filters.minRating || 0}
-                                onChange={(e) => onFiltersChange({
-                                    ...filters,
-                                    minRating: e.target.value === '0' ? undefined : Number(e.target.value)
-                                })}
+                                onChange={(e) =>
+                                    onFiltersChange({
+                                        ...filters,
+                                        minRating:
+                                            e.target.value === '0' ? undefined : Number(e.target.value),
+                                    })
+                                }
                                 className="w-full accent-blue-600"
                             />
                         </div>
                     </div>
 
-                    {/* Second Row for Crowd Level */}
+                    {/* Crowd Level */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Crowd Level</label>
                             <div className="space-y-2">
-                                {crowdLevelOptions.map(option => (
+                                {crowdLevelOptions.map((option) => (
                                     <label key={option.value} className="flex items-center">
                                         <input
                                             type="checkbox"
                                             checked={filters.crowdLevel?.includes(option.value) || false}
                                             onChange={(e) => {
-                                                const currentLevels = filters.crowdLevel || [];
-                                                const newLevels = e.target.checked
-                                                    ? [...currentLevels, option.value]
-                                                    : currentLevels.filter(level => level !== option.value);
-                                                onFiltersChange({ ...filters, crowdLevel: newLevels });
+                                                const current = filters.crowdLevel || [];
+                                                const newVal = e.target.checked
+                                                    ? [...current, option.value]
+                                                    : current.filter((a) => a !== option.value);
+                                                onFiltersChange({ ...filters, crowdLevel: newVal });
                                             }}
                                             className="rounded text-blue-600 focus:ring-blue-500"
                                         />
