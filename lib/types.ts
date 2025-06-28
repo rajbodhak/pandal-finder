@@ -1,10 +1,10 @@
 export interface Pandal {
     $id: string;
     name: string;
-    description: string;
+    description?: string;
     address: string;
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
     rating?: number;
     imageUrl?: string;
     imageId?: string;
@@ -60,28 +60,8 @@ export interface StartingPoint {
     id: string;
     name: string;
     type: 'metro' | 'railway' | 'bus_stop' | 'landmark';
-    latitude: number;
-    longitude: number;
     description?: string; // "Girish Park Metro Station"
 }
-
-// Route structure
-// export interface PandalRoute {
-//     id: string;
-//     areaId: string;
-//     startingPointId: string;
-//     name: string; // "North Kolkata from Girish Park"
-//     description: string;
-//     totalDistance: number; // in km
-//     totalWalkingTime: number; // in minutes
-//     estimatedDuration: string; // "4-5 hours including visits"
-//     difficulty: 'easy' | 'moderate' | 'challenging';
-//     bestTimeToStart: string; // "Morning (9 AM)"
-//     pandals: RoadmapPandal[];
-//     tips: string[];
-//     created_at: string;
-//     updated_at: string;
-// }
 
 // --------------------------------------------------------------------------------------------------
 
