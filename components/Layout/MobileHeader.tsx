@@ -87,8 +87,6 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                     </h1>
                 </div>
 
-                <ThemeSwitcher />
-
                 <Link
                     href={"/roadmap"}
                     className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg mx-2"
@@ -98,10 +96,12 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
 
                 <button
                     onClick={onToggleSearch}
-                    className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg"
+                    className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg mr-2"
                 >
                     <Search className="w-5 h-5" />
                 </button>
+
+                <ThemeSwitcher />
             </div>
 
             {showSearch && (

@@ -66,9 +66,9 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                 </div>
 
                 {/* Content - Scrollable */}
-                <div className="flex-1 flex flex-col min-h-0">
+                <div className="flex-1 flex flex-col min-h-0 overflow-visible">
                     {/* Filters */}
-                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
+                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm overflow-visible">
                         <FilterBar
                             filters={filters}
                             onFiltersChange={onFiltersChange}

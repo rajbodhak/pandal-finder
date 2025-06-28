@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useMemo, useEffect } from 'react';
-
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { PandalWithDistance } from '@/lib/types';
 // Components
 import { FilterBar } from '@/components/FilterBar';
 import { PandalDetails } from '@/components/PandalDetails';
@@ -26,8 +26,12 @@ import { usePandalSelection } from '@/hooks/usePandalSelection';
 import { useMobileState } from '@/hooks/useMobileState';
 
 export default function PandalFinderPage() {
+  // ALL HOOKS MUST BE AT THE TOP - NEVER CONDITIONALLY CALLED
+
   // View state
   const [viewMode, setViewMode] = useState<'map' | 'grid' | 'list'>('map');
+  const [hasUserDeclinedLocation, setHasUserDeclinedLocation] = useState(false);
+  const [locationPromptDismissed, setLocationPromptDismissed] = useState(false);
 
   // Custom hooks
   const { isMobile } = useResponsive();
@@ -96,7 +100,7 @@ export default function PandalFinderPage() {
     resetDeps: [filters, searchQuery]
   });
 
-  // Get visible pandals for mobile and desktop
+  // Memoized visible pandals with better dependency tracking
   const mobileVisiblePandals = useMemo(() => {
     return filteredPandals.slice(0, mobileVisibleCount);
   }, [filteredPandals, mobileVisibleCount]);
@@ -105,6 +109,38 @@ export default function PandalFinderPage() {
     return filteredPandals.slice(0, desktopVisibleCount);
   }, [filteredPandals, desktopVisibleCount]);
 
+  // ALL CALLBACKS DEFINED HERE - BEFORE ANY CONDITIONAL LOGIC
+
+  // Handle location request with better error handling
+  const handleLocationRequest = useCallback(async () => {
+    try {
+      await requestLocation?.();
+      setHasUserDeclinedLocation(false);
+    } catch (error) {
+      console.error('Location request failed:', error);
+      setHasUserDeclinedLocation(true);
+    }
+  }, [requestLocation]);
+
+  // Handle continuing without location - FIXED: no more infinite reload
+  const handleContinueWithoutLocation = useCallback(() => {
+    setHasUserDeclinedLocation(true);
+    setLocationPromptDismissed(true);
+  }, []);
+
+  // Handle search selection - MOVED TO TOP
+  const handleSearchSelect = useCallback((pandal: PandalWithDistance) => {
+    // Set the selected pandal (this will trigger zoom in MapComponent)
+    handlePandalClick(pandal);
+
+    // Close mobile search if it's open
+    if (isMobile && showMobileSearch) {
+      toggleMobileSearch();
+    }
+  }, [handlePandalClick, isMobile, showMobileSearch, toggleMobileSearch]);
+
+  // ALL EFFECTS DEFINED HERE
+
   // Close sidebar when switching to desktop
   useEffect(() => {
     if (!isMobile) {
@@ -112,41 +148,66 @@ export default function PandalFinderPage() {
     }
   }, [isMobile, closeSidebar]);
 
-  // Request location permission on component mount
+  // IMPROVED: More controlled location request
   useEffect(() => {
-    if (!userLocation && !locationLoading && !locationError) {
+    // Only auto-request if user hasn't explicitly declined and we haven't already prompted
+    if (!userLocation &&
+      !locationLoading &&
+      !locationError &&
+      !hasUserDeclinedLocation &&
+      !locationPromptDismissed) {
       const timer = setTimeout(() => {
-        requestLocation?.();
-      }, 500);
+        handleLocationRequest();
+      }, 1000); // Increased delay for better UX
+
       return () => clearTimeout(timer);
     }
-  }, [userLocation, locationLoading, locationError, requestLocation]);
+  }, [userLocation, locationLoading, locationError, hasUserDeclinedLocation, locationPromptDismissed, handleLocationRequest]);
 
-  // Loading states
-  if (locationLoading || pandalsLoading) {
+  // COMPUTED VALUES (after all hooks)
+
+  //loading state handling
+  const isInitialLoading = (locationLoading && !hasUserDeclinedLocation) ||
+    (pandalsLoading && !allPandals.length);
+
+  // Show location prompt only if needed and not dismissed
+  const shouldShowLocationPrompt = !userLocation &&
+    !locationLoading &&
+    !locationPromptDismissed &&
+    (locationError || hasUserDeclinedLocation);
+
+  // IMPROVED: Better error handling for when we have some data but errors
+  const shouldShowPandalsError = pandalsError && allPandals.length === 0;
+
+  // CONDITIONAL RENDERING (after all hooks are called)
+
+  if (isInitialLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
-          <LoadingSpinner message={
-            locationLoading ? "Getting your location..." : "Finding pandals near you..."
-          } />
+          <LoadingSpinner
+            message={
+              locationLoading
+                ? "Getting your location..."
+                : "Finding pandals near you..."
+            }
+          />
         </div>
       </div>
     );
   }
 
-  // Location Permission Prompt
-  if (!userLocation && !locationLoading && locationError) {
+  if (shouldShowLocationPrompt) {
     return (
       <LocationPermissionPrompt
-        onRequestLocation={requestLocation}
-        onContinueWithoutLocation={() => window.location.reload()}
+        onRequestLocation={handleLocationRequest}
+        onContinueWithoutLocation={handleContinueWithoutLocation}
       />
     );
   }
 
-  // Error states
-  if (pandalsError) {
+  // Error states - only show if we have pandals error and no pandals
+  if (pandalsError && !allPandals.length) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
@@ -166,6 +227,8 @@ export default function PandalFinderPage() {
           showSearch={showMobileSearch}
           searchQuery={searchQuery}
           onSearchChange={updateSearchQuery}
+          filteredPandals={filteredPandals}
+          onSearchSelect={handleSearchSelect}
         />
       ) : (
         <DesktopHeader
@@ -195,15 +258,43 @@ export default function PandalFinderPage() {
         />
       )}
 
-      {/* Location Error Warning */}
-      {locationError && (
+      {/* IMPROVED: Better error messaging */}
+      {locationError && locationPromptDismissed && (
         <div className={`bg-yellow-50 border-l-4 border-yellow-400 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-start">
+              <div className="flex">
+                <div className="ml-3">
+                  <p className="text-sm text-yellow-700">
+                    <strong>Location access limited:</strong> Distance calculations may not be accurate.
+                    <button
+                      onClick={handleLocationRequest}
+                      className="ml-2 underline hover:no-underline"
+                    >
+                      Try again
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pandals loading error (non-blocking) */}
+      {shouldShowPandalsError && (
+        <div className={`bg-red-50 border-l-4 border-red-400 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
           <div className="container mx-auto px-4">
             <div className="flex">
               <div className="ml-3">
-                <p className="text-sm text-yellow-700">
-                  <strong>Location access denied:</strong> {locationError}.
-                  Distance calculation and directions may not work properly.
+                <p className="text-sm text-red-700">
+                  <strong>Unable to load pandals:</strong> {pandalsError}
+                  <button
+                    onClick={refetch}
+                    className="ml-2 underline hover:no-underline"
+                  >
+                    Retry
+                  </button>
                 </p>
               </div>
             </div>
@@ -212,7 +303,7 @@ export default function PandalFinderPage() {
       )}
 
       {/* Main Content */}
-      <main className={`${isMobile ? 'pt-16' : ''} ${locationError && isMobile ? 'pt-32' : ''}`}>
+      <main className={`${isMobile ? 'pt-16' : ''} ${locationError && locationPromptDismissed && isMobile ? 'pt-32' : ''}`}>
         {/* Desktop Filters */}
         {!isMobile && (
           <div className="container mx-auto px-4 py-6 relative z-10">
