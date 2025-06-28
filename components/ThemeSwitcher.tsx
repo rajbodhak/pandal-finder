@@ -13,7 +13,7 @@ export default function ThemeSwitcher() {
 
     if (!mounted) {
         return (
-            <button className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
+            <button className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400">
                 <div className="w-5 h-5" />
             </button>
         )
@@ -24,8 +24,6 @@ export default function ThemeSwitcher() {
         setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
     }
 
-    // Show sun when in dark mode (to switch to light)
-    // Show moon when in light mode (to switch to dark)
     const getIcon = () => {
         return resolvedTheme === 'dark' ?
             <Sun className="w-5 h-5" /> :
@@ -39,7 +37,7 @@ export default function ThemeSwitcher() {
     return (
         <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg"
             title={getTitle()}
         >
             {getIcon()}
