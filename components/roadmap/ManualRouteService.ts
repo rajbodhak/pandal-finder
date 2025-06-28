@@ -1,5 +1,5 @@
 // ManualRouteService.ts
-import { ManualRoute, RouteSegment, StartingPoint, Pandal } from '@/lib/types';
+import { ManualRoute, Pandal } from '@/lib/types';
 
 import northKolkataRoutesData from '@/data/routes/north-kolkata.json'
 
@@ -12,8 +12,7 @@ export class ManualRouteService {
         if (this.isLoaded) return;
 
         try {
-            // For now, using the embedded data
-            // In production, you might want to fetch from API or import from files
+
             this.routes = [
                 ...northKolkataRoutesData.routes as ManualRoute[],
                 // Add other area routes here when you have them
