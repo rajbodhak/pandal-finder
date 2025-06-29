@@ -12,6 +12,7 @@ import { MapPin, Route, AlertCircle, Clock, DollarSign, Users, Star } from 'luci
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
 import RoadmapHeader from './RoadmapHeader';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 // Add other area pandals as needed
 const ALL_LOCAL_PANDALS: Pandal[] = [
@@ -28,11 +29,26 @@ const RoadmapPage: React.FC = () => {
     const [selectedRoute, setSelectedRoute] = useState<ManualRoute | null>(null);
     const [pandals, setPandals] = useState<Pandal[]>([]);
     const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true); // Add this for initial page load
     const [error, setError] = useState<string | null>(null);
 
     // Initialize route service
     React.useEffect(() => {
-        ManualRouteService.loadRoutes().catch(console.error);
+        const initializeApp = async () => {
+            try {
+                setInitialLoading(true);
+                await ManualRouteService.loadRoutes();
+                // Add a small delay to show the loading state
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                setError('Failed to initialize the application. Please refresh the page.');
+            } finally {
+                setInitialLoading(false);
+            }
+        };
+
+        initializeApp();
     }, []);
 
     // Get pandals for area - using local data first, fallback to database
@@ -141,6 +157,20 @@ const RoadmapPage: React.FC = () => {
         }
     };
 
+    // Show initial loading spinner
+    if (initialLoading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-3 sm:px-4 py-4 ">
+                <div className="max-w-6xl mx-auto">
+                    <RoadmapHeader />
+                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 mt-20">
+                        <LoadingSpinner message="Initializing your roadmap experience..." />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-3 sm:px-4 py-4">
             <div className="max-w-6xl mx-auto">
@@ -157,13 +187,10 @@ const RoadmapPage: React.FC = () => {
                     </div>
                 )}
 
-                {/* Loading State */}
+                {/* Loading State for pandals */}
                 {loading && (
-                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-6 sm:p-12">
-                        <div className="flex flex-col items-center justify-center">
-                            <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-orange-500 mb-3"></div>
-                            <span className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">Loading pandals...</span>
-                        </div>
+                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20">
+                        <LoadingSpinner message="Loading pandals..." />
                     </div>
                 )}
 
