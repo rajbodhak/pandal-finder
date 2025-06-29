@@ -147,7 +147,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                 )}
 
                 {/* Route Steps */}
-                <div className="space-y-4 sm:space-y-6">
+                <div className="sm:space-y-2">
                     {/* Starting Point */}
                     <div className="relative">
                         <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-3 sm:p-4 transition-all ${completedSteps.has('start') ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50' : 'border-gray-200 dark:border-gray-700'
@@ -371,12 +371,12 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 <div
                                     className="bg-gradient-to-r from-orange-500 to-pink-500 h-2 sm:h-3 rounded-full transition-all duration-300"
                                     style={{
-                                        width: `${(completedSteps.size / (route.pandalSequence.length + 1)) * 100}%`
+                                        width: `${(completedSteps.size / (route.pandalSequence.length + 2)) * 100}%`
                                     }}
                                 ></div>
                             </div>
                             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                                {completedSteps.size} of {route.pandalSequence.length + 1} steps completed
+                                {completedSteps.size} of {route.pandalSequence.length + 2} steps completed
                             </p>
                         </div>
 
