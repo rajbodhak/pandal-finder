@@ -37,10 +37,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         { value: 'north_kolkata', label: 'North Kolkata' },
         { value: 'south_kolkata', label: 'South Kolkata' },
         { value: 'central_kolkata', label: 'Central Kolkata' },
-        { value: 'salt_lake', label: 'Salt Lake' },
-        { value: 'new_town', label: 'New Town' },
-        { value: 'howrah', label: 'Howrah' },
-        { value: 'other', label: 'Other Areas' },
+        // { value: 'salt_lake', label: 'Salt Lake' },
+        // { value: 'new_town', label: 'New Town' },
+        // { value: 'howrah', label: 'Howrah' },
+        // { value: 'other', label: 'Other Areas' },
     ];
 
     const crowdLevelOptions = [
