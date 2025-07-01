@@ -107,7 +107,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             {showSearch && (
                 <div className="px-4 pb-3 border-t border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm transition-all" ref={searchRef}>
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500 dark:text-orange-400 w-4 h-4" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-orange-300/80 w-4 h-4 z-10" />
                         <input
                             type="text"
                             placeholder="Search pandals..."

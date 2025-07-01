@@ -53,7 +53,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
                     <h2 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
                         🎭 Pandals Near You
                     </h2>
@@ -68,7 +68,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                 {/* Content - Scrollable */}
                 <div className="flex-1 flex flex-col min-h-0 overflow-visible">
                     {/* Filters */}
-                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm overflow-visible">
+                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm overflow-visible z-1">
                         <FilterBar
                             filters={filters}
                             onFiltersChange={onFiltersChange}
@@ -78,7 +78,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     </div>
 
                     {/* Stats */}
-                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm">
+                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm z-0">
                         <div className="grid grid-cols-2 gap-3">
                             <div className="bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/70 dark:to-orange-900/70 backdrop-blur-sm rounded-xl p-3 text-center border border-orange-200/50 dark:border-orange-800/50">
                                 <div className="text-lg font-bold text-orange-600 dark:text-orange-400">{filteredPandals.length}</div>
