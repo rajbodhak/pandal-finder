@@ -61,7 +61,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
         // Only zoom if this is a new selection (not just a re-render)
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
-            mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
+            mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
                 duration: 0.5
             });
@@ -93,7 +93,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         pandals.forEach(pandal => {
             const isSelected = selectedPandal?.$id === pandal.$id;
 
-            const marker = L.marker([pandal.latitude, pandal.longitude], {
+            const marker = L.marker([pandal.latitude!, pandal.longitude!], {
                 icon: L.divIcon({
                     className: 'pandal-marker',
                     html: `
@@ -120,47 +120,98 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             });
 
             marker.bindPopup(`
-        <div style="min-width: 200px;">
-          <h3 style="margin: 0 0 8px 0; font-weight: bold;">${pandal.name}</h3>
-          <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">${pandal.description}</p>
-          <div style="display: flex; align-items: center; margin-bottom: 4px;">
-            <span style="color: #f59e0b;">⭐</span>
-            <span style="margin-left: 4px; font-weight: 500;">${(pandal.rating ?? 0).toFixed(1)}</span>
-            ${pandal.distance ? `<span style="margin-left: 12px; color: #6b7280;">📍 ${pandal.distance.toFixed(1)}km</span>` : ''}
-          </div>
-          <div style="margin-top: 12px;">
-            <button 
-              onclick="window.pandalMapActions?.viewDetails('${pandal.$id}')"
-              style="
-                background-color: #3b82f6; 
-                color: white; 
-                border: none; 
-                padding: 6px 12px; 
-                border-radius: 6px; 
-                font-size: 12px;
+        <button 
+            onclick="this.closest('.leaflet-popup').style.display='none'"
+            style="
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: rgba(107, 114, 128, 0.1);
+                border: none;
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
                 cursor: pointer;
-                margin-right: 8px;
-              "
-            >
-              View Details
-            </button>
-            <button 
-              onclick="window.pandalMapActions?.getDirections('${pandal.$id}')"
-              style="
-                background-color: #10b981; 
-                color: white; 
-                border: none; 
-                padding: 6px 12px; 
-                border-radius: 6px; 
-                font-size: 12px;
-                cursor: pointer;
-              "
-            >
-              Directions
-            </button>
-          </div>
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                color: #6b7280;
+                transition: all 0.2s ease;
+            "
+            onmouseover="this.style.background='rgba(107, 114, 128, 0.2)'"
+            onmouseout="this.style.background='rgba(107, 114, 128, 0.1)'"
+        >×</button>
+
+        <h3 style="
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            padding-right: 25px;
+        ">${pandal.name}</h3>
+        
+        <p style="
+            margin: 0 0 8px 0;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.4;
+        ">${pandal.description}</p>
+
+        <div style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        ">
+            <div style="display: flex; align-items: center;">
+                <span style="color: #f59e0b; margin-right: 3px;">⭐</span>
+                <span style="font-size: 13px; font-weight: 500; color: #374151;">${(pandal.rating ?? 0).toFixed(1)}</span>
+            </div>
+            ${pandal.distance ? `
+            <div style="display: flex; align-items: center;">
+                <span style="color: #6b7280; margin-right: 3px; font-size: 12px;">📍</span>
+                <span style="font-size: 12px; color: #6b7280;">${pandal.distance.toFixed(1)}km</span>
+            </div>
+            ` : ''}
         </div>
-      `);
+
+        <div style="display: flex; gap: 6px;">
+            <button 
+                onclick="window.pandalMapActions?.viewDetails('${pandal.$id}')"
+                style="
+                    flex: 1;
+                    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+                    color: white;
+                    border: none;
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                "
+            >Details</button>
+            
+            <button 
+                onclick="window.pandalMapActions?.getDirections('${pandal.$id}')"
+                style="
+                    flex: 1;
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: white;
+                    border: none;
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                "
+            >Directions</button>
+        </div>
+`, {
+                closeButton: false,
+                className: 'custom-popup',
+                minWidth: 200
+            });
 
             marker.on('click', () => onPandalClick(pandal));
             markersRef.current.addLayer(marker);
@@ -205,3 +256,5 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         />
     );
 };
+
+

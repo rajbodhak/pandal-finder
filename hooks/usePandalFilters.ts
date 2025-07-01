@@ -16,7 +16,6 @@ export const usePandalFilters = (
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredPandals = useMemo(() => {
-        console.log('Filtering pandals - Total:', allPandals.length);
 
         let filtered = [...allPandals];
 
@@ -26,7 +25,7 @@ export const usePandalFilters = (
             filtered = filtered.filter(pandal =>
                 pandal.name.toLowerCase().includes(query) ||
                 pandal.address.toLowerCase().includes(query) ||
-                pandal.description.toLowerCase().includes(query) ||
+                pandal.description!.toLowerCase().includes(query) ||
                 pandal.area.toLowerCase().includes(query) ||
                 pandal.special_features?.some(feature =>
                     feature.toLowerCase().includes(query)
@@ -90,7 +89,6 @@ export const usePandalFilters = (
             }
         });
 
-        console.log('Filtered pandals count:', filtered.length);
         return filtered;
     }, [allPandals, searchQuery, filters, userLocation]);
 

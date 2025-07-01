@@ -19,7 +19,7 @@ const RoadmapHeader = () => {
                 {/* Center - Title */}
                 <div className="flex-1 text-center">
                     <h1 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                        🗺️ Roadmap
+                        🗺️ Routemap
                     </h1>
                 </div>
 

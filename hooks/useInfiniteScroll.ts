@@ -16,46 +16,68 @@ export const useInfiniteScroll = ({
     const [visibleCount, setVisibleCount] = useState(initialCount);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
+    // Use functional update to avoid stale closure
     const loadMore = useCallback(() => {
-        const newCount = Math.min(visibleCount + increment, totalItems);
-        setVisibleCount(newCount);
-    }, [visibleCount, increment, totalItems]);
+        setVisibleCount(prevCount => {
+            const newCount = Math.min(prevCount + increment, totalItems);
+            return newCount;
+        });
+    }, [increment, totalItems]);
 
     // Reset count when dependencies change
     useEffect(() => {
         setVisibleCount(initialCount);
     }, [...resetDeps, initialCount]);
 
-    // Intersection observer for infinite scroll
+    // Separate the intersection observer logic and use refs for current values
     useEffect(() => {
+        if (!loadMoreRef.current) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 const entry = entries[0];
-                if (entry.isIntersecting && visibleCount < totalItems) {
-                    loadMore();
+
+                // FIXED: Check hasMore condition here with current state
+                if (entry.isIntersecting) {
+                    setVisibleCount(currentCount => {
+                        if (currentCount < totalItems) {
+                            const newCount = Math.min(currentCount + increment, totalItems);
+                            return newCount;
+                        }
+                        return currentCount;
+                    });
                 }
             },
             {
                 threshold: 0.1,
-                rootMargin: '100px'
+                rootMargin: '50px',
+                root: null
             }
         );
 
-        if (loadMoreRef.current) {
-            observer.observe(loadMoreRef.current);
+        const currentRef = loadMoreRef.current;
+
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (loadMoreRef.current) {
-                observer.unobserve(loadMoreRef.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
-    }, [visibleCount, totalItems, loadMore]);
+    }, [totalItems, increment]);
+
+    const hasMore = visibleCount < totalItems;
+
+    // Debug log for current state
+    useEffect(() => {
+    }, [visibleCount, totalItems, hasMore]);
 
     return {
         visibleCount,
         loadMore,
         loadMoreRef,
-        hasMore: visibleCount < totalItems
+        hasMore
     };
 };

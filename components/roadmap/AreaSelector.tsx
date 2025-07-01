@@ -6,15 +6,15 @@ export const AreaSelector: React.FC<{
     onSelectArea: (area: AreaConfig) => void;
 }> = ({ areas, onSelectArea }) => {
     return (
-        <div className="mt-10 min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-3 sm:px-4 py-4">
+        <div className="mt-12 min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-3 sm:px-4 pt-4">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6 mb-6 sm:mb-8">
                     <div className="text-center">
-                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full mb-3 sm:mb-4">
-                            <Navigation className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                        <div className="inline-flex items-center justify-center w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full mb-3 sm:mb-4">
+                            <Navigation className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
                         </div>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
+                        <h1 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
                             Choose Your Exploration Area
                         </h1>
                         <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">
@@ -80,7 +80,7 @@ export const AreaSelector: React.FC<{
                 </div>
 
                 {/* Footer Info */}
-                <div className="mt-8 sm:mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+                <div className="mt-6 md:mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 md:p-6">
                     <div className="text-center">
                         <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
                             Ready to Start Your Journey? 🎉

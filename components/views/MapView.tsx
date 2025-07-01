@@ -61,7 +61,7 @@ export const MapView: React.FC<MapViewProps> = ({
                             />
                         </div>
                     ) : (
-                        <div className="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
+                        <div className="bg-white/50 dark:bg-gray-700/60 rounded-lg shadow-sm p-6 text-center text-gray-500">
                             <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                             <p>Click on a pandal marker to see details</p>
                         </div>

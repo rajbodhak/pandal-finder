@@ -23,7 +23,7 @@ export interface UserLocation {
 }
 
 export interface PandalWithDistance extends Pandal {
-    distance?: number; // in kilometers
+    distance?: number;
 }
 
 export interface FilterOptions {

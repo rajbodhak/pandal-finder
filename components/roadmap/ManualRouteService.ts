@@ -21,7 +21,6 @@ export class ManualRouteService {
             ];
 
             this.isLoaded = true;
-            console.log(`Loaded ${this.routes.length} routes`);
 
         } catch (error) {
             console.error('Error loading routes:', error);

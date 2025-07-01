@@ -324,7 +324,7 @@ export default function PandalFinderPage() {
         {/* Content based on view mode */}
         {isMobile || viewMode === 'map' ? (
           <div className={`relative ${isMobile ? 'h-full' : ''}`}>
-            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg border border-white/20 dark:border-gray-700/20 overflow-hidden ${isMobile ? 'h-full' : 'md:mx-4 mb-4'
+            <div className={`bg-trasparent overflow-hidden ${isMobile ? 'h-full' : 'md:mx-4 mb-4'
               }`}>
               <MapView
                 filteredPandals={filteredPandals}

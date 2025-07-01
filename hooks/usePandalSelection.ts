@@ -21,6 +21,12 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
             return;
         }
 
+        // Check if pandal has coordinates
+        if (!pandal.latitude || !pandal.longitude) {
+            alert('Location coordinates not available for this pandal');
+            return;
+        }
+
         const url = generateRouteUrl(userLocation, {
             latitude: pandal.latitude,
             longitude: pandal.longitude

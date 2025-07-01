@@ -1,6 +1,5 @@
-// 1. UPDATED usePandals Hook - Fetch all data once, filter on client side
 import { useState, useEffect } from 'react';
-import { Pandal, PandalWithDistance, UserLocation, FilterOptions } from '@/lib/types';
+import { PandalWithDistance, UserLocation } from '@/lib/types';
 import { databaseService } from '@/lib/database';
 import { calculateDistance } from '@/lib/utils';
 
@@ -12,13 +11,11 @@ export const usePandals = (userLocation: UserLocation | null) => {
     const fetchPandals = async () => {
         try {
             setLoading(true);
-            console.log('Fetching all pandals from database...');
             const data = await databaseService.getAllPandals();
-            console.log('Fetched pandals count:', data.length);
 
             const pandalsWithDistance: PandalWithDistance[] = data.map(pandal => ({
                 ...pandal,
-                distance: userLocation
+                distance: userLocation && pandal.latitude !== undefined && pandal.longitude !== undefined
                     ? calculateDistance(userLocation, { latitude: pandal.latitude, longitude: pandal.longitude })
                     : undefined
             }));
@@ -40,10 +37,11 @@ export const usePandals = (userLocation: UserLocation | null) => {
     // Recalculate distances when userLocation changes
     useEffect(() => {
         if (userLocation && allPandals.length > 0) {
-            console.log('Recalculating distances for', allPandals.length, 'pandals');
             const updatedPandals = allPandals.map(pandal => ({
                 ...pandal,
-                distance: calculateDistance(userLocation, { latitude: pandal.latitude, longitude: pandal.longitude })
+                distance: pandal.latitude !== undefined && pandal.longitude !== undefined
+                    ? calculateDistance(userLocation, { latitude: pandal.latitude, longitude: pandal.longitude })
+                    : undefined
             }));
             setAllPandals(updatedPandals);
         }

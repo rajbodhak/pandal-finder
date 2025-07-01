@@ -65,12 +65,11 @@ const RoadmapPage: React.FC = () => {
             );
 
             if (localPandals.length > 0) {
-                console.log(`Found ${localPandals.length} local pandals for area: ${areaId}`);
+
                 return localPandals;
             }
 
             // Fallback to database if no local data
-            console.log(`No local pandals found for ${areaId}, trying database...`);
             const dbPandals = await databaseService.getPandalsByArea(areaId);
             return dbPandals;
 
@@ -91,7 +90,6 @@ const RoadmapPage: React.FC = () => {
         // Fetch pandals for this area
         const areaPandals = await fetchPandalsForArea(area.id);
         setPandals(areaPandals);
-        console.log(`Set ${areaPandals.length} pandals for area ${area.id}:`, areaPandals.map(p => p.$id));
 
         // Get available routes for this area
         const routes = ManualRouteService.getRoutesByArea(area.id);
