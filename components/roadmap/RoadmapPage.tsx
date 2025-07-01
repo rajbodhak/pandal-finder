@@ -8,7 +8,7 @@ import { ManualRouteService } from './ManualRouteService';
 import { KOLKATA_AREAS } from './AreaConfig';
 import { AreaConfig, StartingPoint, Pandal, ManualRoute } from '@/lib/types';
 import { databaseService } from '@/lib/database';
-import { MapPin, Route, AlertCircle, Clock, DollarSign, Users, Star } from 'lucide-react';
+import { MapPin, Route, AlertCircle, Clock, DollarSign } from 'lucide-react';
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
 import RoadmapHeader from './RoadmapHeader';
@@ -29,8 +29,10 @@ const RoadmapPage: React.FC = () => {
     const [selectedRoute, setSelectedRoute] = useState<ManualRoute | null>(null);
     const [pandals, setPandals] = useState<Pandal[]>([]);
     const [loading, setLoading] = useState(false);
-    const [initialLoading, setInitialLoading] = useState(true); // Add this for initial page load
+    const [initialLoading, setInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    // Add this state to track if we came from routes step
+    const [cameFromRoutes, setCameFromRoutes] = useState(false);
 
     // Initialize route service
     React.useEffect(() => {
@@ -106,12 +108,14 @@ const RoadmapPage: React.FC = () => {
         );
 
         if (routesForStartingPoint.length === 1) {
-            // If only one route, select it automatically
+            // If only one route, select it automatically and mark that we didn't come from routes page
             setSelectedRoute(routesForStartingPoint[0]);
+            setCameFromRoutes(false);
             setCurrentStep('route-display');
         } else if (routesForStartingPoint.length > 1) {
             // Multiple routes available, show selection
             setAvailableRoutes(routesForStartingPoint);
+            setCameFromRoutes(true); // Mark that we have a routes step
             setCurrentStep('routes');
         } else {
             // No predefined routes, could generate one or show message
@@ -132,6 +136,7 @@ const RoadmapPage: React.FC = () => {
         setSelectedStartingPoint(null);
         setAvailableRoutes([]);
         setSelectedRoute(null);
+        setCameFromRoutes(false);
         setError(null);
     };
 
@@ -140,12 +145,15 @@ const RoadmapPage: React.FC = () => {
         setSelectedStartingPoint(null);
         setAvailableRoutes([]);
         setSelectedRoute(null);
+        setCameFromRoutes(false);
         setError(null);
     };
 
+    // FIX: Add the missing handleBackToRoutes function
     const handleBackToRoutes = () => {
         setCurrentStep('routes');
         setSelectedRoute(null);
+        // Don't reset other states as we want to stay in the routes selection
     };
 
     const getDifficultyColor = (difficulty: string) => {
@@ -290,7 +298,7 @@ const RoadmapPage: React.FC = () => {
                             <EnhancedRouteDisplay
                                 route={selectedRoute}
                                 pandals={pandals}
-                                onBack={availableRoutes.length > 1 ? handleBackToRoutes : handleBackToStartingPoint}
+                                onBack={cameFromRoutes ? handleBackToRoutes : handleBackToStartingPoint}
                             />
                         )}
                     </>
