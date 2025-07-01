@@ -26,7 +26,6 @@ import { usePandalSelection } from '@/hooks/usePandalSelection';
 import { useMobileState } from '@/hooks/useMobileState';
 
 export default function PandalFinderPage() {
-  // ALL HOOKS MUST BE AT THE TOP - NEVER CONDITIONALLY CALLED
 
   // View state
   const [viewMode, setViewMode] = useState<'map' | 'grid' | 'list'>('map');
@@ -179,19 +178,19 @@ export default function PandalFinderPage() {
   // IMPROVED: Better error handling for when we have some data but errors
   const shouldShowPandalsError = pandalsError && allPandals.length === 0;
 
-  // CONDITIONAL RENDERING (after all hooks are called)
-
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950">
         <div className="container mx-auto px-4 py-8">
-          <LoadingSpinner
-            message={
-              locationLoading
-                ? "Getting your location..."
-                : "Finding pandals near you..."
-            }
-          />
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-8">
+            <LoadingSpinner
+              message={
+                locationLoading
+                  ? "Getting your location..."
+                  : "Finding pandals near you..."
+              }
+            />
+          </div>
         </div>
       </div>
     );
@@ -199,26 +198,30 @@ export default function PandalFinderPage() {
 
   if (shouldShowLocationPrompt) {
     return (
-      <LocationPermissionPrompt
-        onRequestLocation={handleLocationRequest}
-        onContinueWithoutLocation={handleContinueWithoutLocation}
-      />
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950">
+        <LocationPermissionPrompt
+          onRequestLocation={handleLocationRequest}
+          onContinueWithoutLocation={handleContinueWithoutLocation}
+        />
+      </div>
     );
   }
 
   // Error states - only show if we have pandals error and no pandals
   if (pandalsError && !allPandals.length) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950">
         <div className="container mx-auto px-4 py-8">
-          <ErrorMessage message={pandalsError} onRetry={refetch} />
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-8">
+            <ErrorMessage message={pandalsError} onRetry={refetch} />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 relative">
       {/* Headers */}
       {isMobile ? (
         <MobileHeader
@@ -258,18 +261,18 @@ export default function PandalFinderPage() {
         />
       )}
 
-      {/* IMPROVED: Better error messaging */}
+      {/* IMPROVED: Better error messaging with theme */}
       {locationError && locationPromptDismissed && (
-        <div className={`bg-yellow-50 border-l-4 border-yellow-400 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
+        <div className={`bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 border-l-4 border-orange-400 dark:border-orange-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-start">
               <div className="flex">
                 <div className="ml-3">
-                  <p className="text-sm text-yellow-700">
+                  <p className="text-sm text-orange-700 dark:text-orange-300">
                     <strong>Location access limited:</strong> Distance calculations may not be accurate.
                     <button
                       onClick={handleLocationRequest}
-                      className="ml-2 underline hover:no-underline"
+                      className="ml-2 underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
                     >
                       Try again
                     </button>
@@ -283,15 +286,15 @@ export default function PandalFinderPage() {
 
       {/* Pandals loading error (non-blocking) */}
       {shouldShowPandalsError && (
-        <div className={`bg-red-50 border-l-4 border-red-400 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
+        <div className={`bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/50 dark:to-rose-950/50 border-l-4 border-red-400 dark:border-red-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
           <div className="container mx-auto px-4">
             <div className="flex">
               <div className="ml-3">
-                <p className="text-sm text-red-700">
+                <p className="text-sm text-red-700 dark:text-red-300">
                   <strong>Unable to load pandals:</strong> {pandalsError}
                   <button
                     onClick={refetch}
-                    className="ml-2 underline hover:no-underline"
+                    className="ml-2 underline hover:no-underline text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
                   >
                     Retry
                   </button>
@@ -303,48 +306,63 @@ export default function PandalFinderPage() {
       )}
 
       {/* Main Content */}
-      <main className={`${isMobile ? 'pt-16' : ''} ${locationError && locationPromptDismissed && isMobile ? 'pt-32' : ''}`}>
+      <main className={`${isMobile ? 'fixed top-16 bottom-16 left-0 right-0 overflow-hidden' : ''} ${locationError && locationPromptDismissed && isMobile ? 'top-32' : ''}`}>
         {/* Desktop Filters */}
         {!isMobile && (
           <div className="container mx-auto px-4 py-6 relative z-10">
-            <FilterBar
-              filters={filters}
-              onFiltersChange={updateFilters}
-              onSearch={updateSearchQuery}
-              searchQuery={searchQuery}
-            />
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+              <FilterBar
+                filters={filters}
+                onFiltersChange={updateFilters}
+                onSearch={updateSearchQuery}
+                searchQuery={searchQuery}
+              />
+            </div>
           </div>
         )}
 
         {/* Content based on view mode */}
         {isMobile || viewMode === 'map' ? (
-          <MapView
-            filteredPandals={filteredPandals}
-            userLocation={userLocation}
-            selectedPandal={selectedPandal}
-            isMobile={isMobile}
-            onPandalClick={handlePandalClick}
-            onViewDetails={handleViewDetails}
-            onGetDirections={handleGetDirections}
-          />
+          <div className={`relative ${isMobile ? 'h-full' : ''}`}>
+            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg border border-white/20 dark:border-gray-700/20 overflow-hidden ${isMobile ? 'h-full' : 'md:mx-4 mb-4'
+              }`}>
+              <MapView
+                filteredPandals={filteredPandals}
+                userLocation={userLocation}
+                selectedPandal={selectedPandal}
+                isMobile={isMobile}
+                onPandalClick={handlePandalClick}
+                onViewDetails={handleViewDetails}
+                onGetDirections={handleGetDirections}
+              />
+            </div>
+          </div>
         ) : (
-          <GridListView
-            viewMode={viewMode}
-            visiblePandals={desktopVisiblePandals}
-            totalCount={filteredPandals.length}
-            visibleCount={desktopVisibleCount}
-            loadMoreRef={desktopLoadMoreRef}
-            onGetDirections={handleGetDirections}
-            onViewDetails={handleViewDetails}
-          />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+              <GridListView
+                viewMode={viewMode}
+                visiblePandals={desktopVisiblePandals}
+                totalCount={filteredPandals.length}
+                visibleCount={desktopVisibleCount}
+                loadMoreRef={desktopLoadMoreRef}
+                onGetDirections={handleGetDirections}
+                onViewDetails={handleViewDetails}
+              />
+            </div>
+          </div>
         )}
 
         {/* Desktop Stats */}
         {!isMobile && (
-          <StatsSection
-            filteredPandals={filteredPandals}
-            userLocation={userLocation}
-          />
+          <div className="container mx-auto px-4 py-6 relative z-10">
+            <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+              <StatsSection
+                filteredPandals={filteredPandals}
+                userLocation={userLocation}
+              />
+            </div>
+          </div>
         )}
       </main>
 
@@ -359,26 +377,38 @@ export default function PandalFinderPage() {
         </div>
       )}
 
-      {/* Desktop Footer */}
-      {!isMobile && (
-        <footer className="bg-white border-t border-gray-200 mt-12 relative z-10">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center text-gray-600">
+      {/* Footer - Now shows on both mobile and desktop */}
+      <footer className={`bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-white/20 dark:border-gray-700/20 transition-all ${isMobile
+        ? 'fixed bottom-0 left-0 right-0 h-16 flex items-center justify-center px-4 z-20'
+        : 'mt-12 relative z-10'
+        }`}>
+        <div className={`${isMobile ? 'text-center' : 'container mx-auto px-4 py-8'}`}>
+          {isMobile ? (
+            <div className="text-center">
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-1">
+                © 2024 Durga Puja Pandal Finder
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Made with ❤️ for the community by <span className="font-semibold text-orange-600 dark:text-orange-400">Raj</span>
+              </p>
+            </div>
+          ) : (
+            <div className="text-center text-gray-600 dark:text-gray-300">
               <p className="mb-2">
-                <strong>Durga Puja Pandal Finder</strong> - Discover the best pandals in your area
+                <strong className="text-gray-800 dark:text-white">Durga Puja Pandal Finder</strong> - Discover the best pandals in your area
               </p>
               <p className="text-sm">
-                Built with ❤️ By Raj
+                Built with ❤️ By <span className="font-semibold text-orange-600 dark:text-orange-400">Raj</span>
               </p>
               <div className="mt-4 flex justify-center items-center gap-4 text-sm">
-                <span>🙏 শুভ দুর্গা পূজা</span>
-                <span>•</span>
+                <span className="text-orange-600 dark:text-orange-400">🙏 শুভ দুর্গা পূজা</span>
+                <span className="text-gray-400 dark:text-gray-500">•</span>
                 <span>Made with ❤️ for the community</span>
               </div>
             </div>
-          </div>
-        </footer>
-      )}
+          )}
+        </div>
+      </footer>
     </div>
   );
 }
