@@ -72,16 +72,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     return (
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 mb-4 relative">
             {/* Main Filter Row */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 ">
                 {/* Search Bar */}
-                <div className="flex-1 relative">
+                <div className="flex-1 relative ">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500 dark:text-orange-400 w-4 h-4" />
                     <input
                         type="text"
                         placeholder="Search pandals..."
                         value={searchQuery}
                         onChange={(e) => onSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-white/20 dark:border-gray-700/20 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-300 dark:focus:border-orange-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white placeholder-orange-400/70 dark:placeholder-orange-300/70 transition-all shadow-lg"
+                        className="w-full pl-10 pr-4 py-2 border border-white/10 dark:border-gray-700/20 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-300 dark:focus:border-orange-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white placeholder-orange-400/70 dark:placeholder-orange-300/70 transition-all shadow-lg "
                     />
                 </div>
 
@@ -159,7 +159,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
             {/* Advanced Filters */}
             {showAdvancedFilters && (
-                <div className="mt-4 pt-4 border-t border-white/20 dark:border-gray-700/20">
+                <div className="mt-2 pt-4 border-t border-white/20 dark:border-gray-700/20">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Area */}
                         <div>
@@ -186,7 +186,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         </div>
 
                         {/* Category */}
-                        <div>
+                        {/* <div>
                             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Category</label>
                             <select
                                 value={filters.category || ''}
@@ -201,10 +201,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
 
                         {/* Max Distance */}
-                        <div>
+                        {/* <div>
                             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 Max Distance ({filters.maxDistance ? `${filters.maxDistance}km` : 'Any'})
                             </label>
@@ -225,10 +225,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                     className="w-full accent-orange-600 dark:accent-orange-500"
                                 />
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Min Rating */}
-                        <div>
+                        {/* <div>
                             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 Min Rating ({filters.minRating ? `${filters.minRating}+` : 'Any'})
                             </label>
@@ -249,11 +249,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                     className="w-full accent-orange-600 dark:accent-orange-500"
                                 />
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Crowd Level */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Crowd Level</label>
                             <div className="space-y-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg p-3 border border-white/20 dark:border-gray-700/20">
@@ -276,7 +276,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             )}
         </div>
