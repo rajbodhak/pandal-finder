@@ -1,0 +1,255 @@
+{
+    "routes": [
+        {
+            "id": "north_kolkata_howrah_classic",
+            "name": "North Kolkata Classic from Howrah",
+            "description": "Traditional pandals covering famous North Kolkata areas starting from Howrah Station",
+            "areaId": "north_kolkata",
+            "startingPoint": {
+                "id": "howrah_station",
+                "name": "Howrah Railway Station",
+                "type": "railway",
+                "latitude": 22.5838,
+                "longitude": 88.3465,
+                "description": "Main railway terminus"
+            },
+            "difficulty": "moderate",
+            "estimatedTotalTime": "5-6 hours",
+            "bestTimeToStart": "9:00 AM",
+            "pandalSequence": [
+                "pandal_bagbazar_sarbojanin",
+                "pandal_kumartuli_park",
+                "pandal_shyambazar_rajdanga",
+                "pandal_college_street",
+                "pandal_sovabazar_rajbari"
+            ],
+            "startingConnection": {
+                "startingPointId": "howrah_station",
+                "firstPandalId": "pandal_bagbazar_sarbojanin",
+                "connection": {
+                    "fromPandalId": "howrah_station",
+                    "toPandalId": "pandal_bagbazar_sarbojanin",
+                    "distance": 2500,
+                    "estimatedTime": 25,
+                    "transportMode": "bus",
+                    "transportDetails": {
+                        "busNumber": "45, 46A, 5",
+                        "busStops": [
+                            "Howrah Station",
+                            "Strand Road",
+                            "Bagbazar"
+                        ]
+                    },
+                    "cost": 8,
+                    "notes": "Take bus from Howrah Station Bus Stand (Platform 1)"
+                }
+            },
+            "routeSegments": [
+                {
+                    "fromPandalId": "pandal_bagbazar_sarbojanin",
+                    "toPandalId": "pandal_kumartuli_park",
+                    "distance": 800,
+                    "estimatedTime": 12,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Via Bagbazar Street → Kumartuli Street"
+                    },
+                    "cost": 0,
+                    "notes": "Pleasant walk through traditional pottery makers' area",
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_bagbazar_sarbojanin",
+                            "toPandalId": "pandal_kumartuli_park",
+                            "distance": 1200,
+                            "estimatedTime": 8,
+                            "transportMode": "auto",
+                            "cost": 15,
+                            "notes": "If walking is difficult"
+                        }
+                    ]
+                },
+                {
+                    "fromPandalId": "pandal_kumartuli_park",
+                    "toPandalId": "pandal_shyambazar_rajdanga",
+                    "distance": 1200,
+                    "estimatedTime": 8,
+                    "transportMode": "bus",
+                    "transportDetails": {
+                        "busNumber": "12, 30, 78",
+                        "busStops": [
+                            "Kumartuli",
+                            "Shyambazar 5-Point Crossing"
+                        ]
+                    },
+                    "cost": 5,
+                    "notes": "Frequent buses available",
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_kumartuli_park",
+                            "toPandalId": "pandal_shyambazar_rajdanga",
+                            "distance": 1200,
+                            "estimatedTime": 18,
+                            "transportMode": "walk",
+                            "cost": 0,
+                            "notes": "If buses are crowded, walk via Kumartuli Ghat Road"
+                        }
+                    ]
+                },
+                {
+                    "fromPandalId": "pandal_shyambazar_rajdanga",
+                    "toPandalId": "pandal_college_street",
+                    "distance": 1500,
+                    "estimatedTime": 12,
+                    "transportMode": "metro",
+                    "transportDetails": {
+                        "metroLine": "Blue Line",
+                        "busStops": [
+                            "Shyambazar Metro",
+                            "College Street Metro"
+                        ]
+                    },
+                    "cost": 15,
+                    "notes": "Metro is fastest and most comfortable",
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_shyambazar_rajdanga",
+                            "toPandalId": "pandal_college_street",
+                            "distance": 1800,
+                            "estimatedTime": 15,
+                            "transportMode": "bus",
+                            "transportDetails": {
+                                "busNumber": "35, 215"
+                            },
+                            "cost": 8,
+                            "notes": "Budget option, but can be crowded"
+                        }
+                    ]
+                },
+                {
+                    "fromPandalId": "pandal_college_street",
+                    "toPandalId": "pandal_sovabazar_rajbari",
+                    "distance": 600,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Via College Street → Sovabazar Street"
+                    },
+                    "cost": 0,
+                    "notes": "Walk through famous book market area"
+                }
+            ],
+            "totalWalkingDistance": 1400,
+            "totalCost": 28,
+            "tips": [
+                "Start early (9 AM) to avoid afternoon crowds",
+                "Keep small change (₹5, ₹10 notes) for bus fares",
+                "College Street area gets very crowded after 4 PM",
+                "Carry water bottle - walking can be tiring",
+                "Download offline maps as network can be patchy"
+            ],
+            "warnings": [
+                "Avoid travelling during peak hours (8-10 AM, 6-8 PM)",
+                "Be careful with belongings in crowded areas",
+                "Some roads may be closed during peak festival days",
+                "Metro services may be disrupted during bandhs"
+            ],
+            "created_at": "2024-10-01T00:00:00Z",
+            "updated_at": "2024-10-01T00:00:00Z"
+        },
+        {
+            "id": "north_kolkata_sealdah_heritage",
+            "name": "North Kolkata Heritage Route from Sealdah",
+            "description": "Focus on heritage and traditional pandals starting from Sealdah Station",
+            "areaId": "north_kolkata",
+            "startingPoint": {
+                "id": "sealdah_station",
+                "name": "Sealdah Railway Station",
+                "type": "railway",
+                "latitude": 22.5699,
+                "longitude": 88.3697,
+                "description": "Major railway station in North Kolkata"
+            },
+            "difficulty": "easy",
+            "estimatedTotalTime": "4-5 hours",
+            "bestTimeToStart": "10:00 AM",
+            "pandalSequence": [
+                "pandal_girish_park",
+                "pandal_hatibagan",
+                "pandal_beadon_street",
+                "pandal_jorasanko"
+            ],
+            "startingConnection": {
+                "startingPointId": "sealdah_station",
+                "firstPandalId": "pandal_girish_park",
+                "connection": {
+                    "fromPandalId": "sealdah_station",
+                    "toPandalId": "pandal_girish_park",
+                    "distance": 500,
+                    "estimatedTime": 7,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Exit from Sealdah Main Gate → Girish Avenue"
+                    },
+                    "cost": 0,
+                    "notes": "Short walk from station"
+                }
+            },
+            "routeSegments": [
+                {
+                    "fromPandalId": "pandal_girish_park",
+                    "toPandalId": "pandal_hatibagan",
+                    "distance": 900,
+                    "estimatedTime": 6,
+                    "transportMode": "bus",
+                    "transportDetails": {
+                        "busNumber": "35, 9A",
+                        "busStops": [
+                            "Girish Park",
+                            "Hatibagan"
+                        ]
+                    },
+                    "cost": 5,
+                    "notes": "Short bus ride"
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan",
+                    "toPandalId": "pandal_beadon_street",
+                    "distance": 700,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Via Cornwallis Street → Beadon Street"
+                    },
+                    "cost": 0,
+                    "notes": "Walk through heritage area"
+                },
+                {
+                    "fromPandalId": "pandal_beadon_street",
+                    "toPandalId": "pandal_jorasanko",
+                    "distance": 800,
+                    "estimatedTime": 12,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Via Beadon Street → Jorasanko Thakur Bari area"
+                    },
+                    "cost": 0,
+                    "notes": "Visit Tagore House area while walking"
+                }
+            ],
+            "totalWalkingDistance": 2000,
+            "totalCost": 5,
+            "tips": [
+                "Perfect route for heritage lovers",
+                "Visit Jorasanko Thakur Bari (Tagore House) nearby",
+                "Good for photography enthusiasts",
+                "Less crowded than other routes"
+            ],
+            "warnings": [
+                "Some heritage buildings under renovation",
+                "Narrow lanes can get congested"
+            ],
+            "created_at": "2024-10-01T00:00:00Z",
+            "updated_at": "2024-10-01T00:00:00Z"
+        }
+    ]
+}
