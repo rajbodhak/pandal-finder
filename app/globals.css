@@ -9,7 +9,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Optional: CSS custom properties approach (if you want to use them) */
 :root {
   --background: #ffffff;
   --foreground: #000000;
@@ -20,7 +19,6 @@
   --foreground: #ffffff;
 }
 
-/* Remove the data-theme approach since we're using class */
 body {
   background-color: var(--background);
   color: var(--foreground);

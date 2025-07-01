@@ -5,7 +5,7 @@ import { Sun, Moon } from 'lucide-react'
 
 export default function ThemeSwitcher() {
     const [mounted, setMounted] = useState(false)
-    const { theme, setTheme, resolvedTheme } = useTheme()
+    const { setTheme, resolvedTheme } = useTheme()
 
     useEffect(() => {
         setMounted(true)

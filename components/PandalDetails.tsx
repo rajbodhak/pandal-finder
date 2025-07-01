@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { X, Star, MapPin, Clock, Users, Calendar, Navigation, ChevronRight } from 'lucide-react';
+import { X, Star, MapPin, Users, Navigation, ChevronRight } from 'lucide-react';
 import { PandalWithDistance, UserLocation } from '@/lib/types';
 import { formatDistance, generateRouteUrl } from '@/lib/utils';
 

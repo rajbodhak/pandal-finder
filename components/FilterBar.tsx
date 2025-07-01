@@ -26,23 +26,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         { value: 'name', label: 'Alphabetical' },
     ];
 
-    const categoryOptions = [
-        { value: '', label: 'All Categories' },
-        { value: 'traditional', label: 'Traditional' },
-        { value: 'modern', label: 'Modern' },
-        { value: 'theme-based', label: 'Theme Based' },
-    ];
 
     const areaOptions = [
         { value: 'north_kolkata', label: 'North Kolkata' },
         { value: 'south_kolkata', label: 'South Kolkata' },
         { value: 'central_kolkata', label: 'Central Kolkata' },
-    ];
-
-    const crowdLevelOptions = [
-        { value: 'low', label: 'Low Crowd' },
-        { value: 'medium', label: 'Medium Crowd' },
-        { value: 'high', label: 'High Crowd' },
     ];
 
     const clearFilters = () => {

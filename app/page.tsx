@@ -78,7 +78,6 @@ export default function PandalFinderPage() {
     visibleCount: mobileVisibleCount,
     loadMore: loadMoreMobile,
     loadMoreRef: mobileLoadMoreRef,
-    hasMore: mobileHasMore
   } = useInfiniteScroll({
     totalItems: filteredPandals.length,
     initialCount: 10,
@@ -89,9 +88,7 @@ export default function PandalFinderPage() {
   // Desktop infinite scroll
   const {
     visibleCount: desktopVisibleCount,
-    loadMore: loadMoreDesktop,
     loadMoreRef: desktopLoadMoreRef,
-    hasMore: desktopHasMore
   } = useInfiniteScroll({
     totalItems: filteredPandals.length,
     initialCount: 12,

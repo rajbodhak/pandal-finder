@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { databaseService } from '@/lib/database';
 import { Pandal } from '@/lib/types';
 import { ID, storage } from '@/lib/appwrite';
-import { useRouter } from 'next/navigation';
-
+import Image from 'next/image';
 // Area detection utility
 const detectArea = (address: string): Pandal['area'] => {
     const lowerAddress = address.toLowerCase();
@@ -83,7 +82,6 @@ export default function AdminPage() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [autoDetectArea, setAutoDetectArea] = useState(true);
-    const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -445,7 +443,7 @@ export default function AdminPage() {
                                 <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors bg-gray-700/50">
                                     {imagePreview ? (
                                         <div className="space-y-4">
-                                            <img
+                                            <Image
                                                 src={imagePreview}
                                                 alt="Preview"
                                                 className="max-h-48 mx-auto rounded-lg shadow-lg border border-gray-600"

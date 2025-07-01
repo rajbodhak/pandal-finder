@@ -217,8 +217,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             markersRef.current.addLayer(marker);
         });
 
-        // Only fit bounds on initial load or when pandals change (not when selection changes)
-        // This prevents the zoom reset when clicking markers
         if (markersRef.current.getLayers().length > 0 && !selectedPandal) {
             const group = L.featureGroup(markersRef.current.getLayers());
             mapRef.current.fitBounds(group.getBounds().pad(0.1));
