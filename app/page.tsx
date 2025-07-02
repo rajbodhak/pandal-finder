@@ -223,12 +223,14 @@ export default function PandalFinderPage() {
       {isMobile ? (
         <MobileHeader
           onToggleSidebar={toggleSidebar}
+          onCloseSidebar={closeSidebar}
           onToggleSearch={toggleMobileSearch}
           showSearch={showMobileSearch}
           searchQuery={searchQuery}
           onSearchChange={updateSearchQuery}
           filteredPandals={filteredPandals}
           onSearchSelect={handleSearchSelect}
+          isSidebarOpen={isSidebarOpen}
         />
       ) : (
         <DesktopHeader

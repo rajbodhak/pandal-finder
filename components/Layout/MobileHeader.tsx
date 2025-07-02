@@ -8,24 +8,44 @@ import ThemeSwitcher from '@/components/ThemeSwitcher';
 interface MobileHeaderProps {
     onToggleSidebar: () => void;
     onToggleSearch: () => void;
+    onCloseSidebar: () => void,
     showSearch: boolean;
     searchQuery: string;
     onSearchChange: (query: string) => void;
     filteredPandals: PandalWithDistance[];
     onSearchSelect: (pandal: PandalWithDistance) => void;
+    isSidebarOpen?: boolean;
 }
 
 export const MobileHeader: React.FC<MobileHeaderProps> = ({
     onToggleSidebar,
+    onCloseSidebar,
     onToggleSearch,
     showSearch,
     searchQuery,
     onSearchChange,
     filteredPandals,
-    onSearchSelect
+    onSearchSelect,
+    isSidebarOpen = false
 }) => {
     const [showSearchDropdown, setShowSearchDropdown] = useState(false);
     const searchRef = useRef<HTMLDivElement>(null);
+
+    // Handle header click when sidebar is open
+    const handleHeaderClick = (e: React.MouseEvent) => {
+        if (isSidebarOpen && onCloseSidebar) {
+            e.preventDefault();
+            onCloseSidebar();
+        }
+    };
+
+    // Handle interactive element clicks
+    const handleInteractiveClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation(); // Prevent header click when clicking interactive elements
+        if (!isSidebarOpen) {
+            action();
+        }
+    };
 
     // Get search suggestions (top 5 matches)
     const searchSuggestions = React.useMemo(() => {
@@ -72,10 +92,14 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     }, [showSearch]);
 
     return (
-        <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all">
+        <header
+            className={`fixed top-0 left-0 right-0 bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all duration-300 ${isSidebarOpen ? 'blur-sm brightness-75 cursor-pointer' : ''
+                }`}
+            onClick={handleHeaderClick}
+        >
             <div className="flex items-center px-4 py-3">
                 <button
-                    onClick={onToggleSidebar}
+                    onClick={(e) => handleInteractiveClick(e, onToggleSidebar)}
                     className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm"
                 >
                     <Menu className="w-5 h-5" />
@@ -88,24 +112,46 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                 </div>
 
                 <Link
-                    href={"/roadmap"}
-                    className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg mx-2"
+                    href={isSidebarOpen ? "#" : "/roadmap"}
+                    onClick={(e) => {
+                        if (isSidebarOpen) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
+                    }}
+                    className={`p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 transition-all transform shadow-lg mx-2 ${isSidebarOpen
+                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
+                        : 'hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 hover:scale-105'
+                        }`}
                 >
                     <Route className="w-5 h-5" />
                 </Link>
 
                 <button
-                    onClick={onToggleSearch}
-                    className="p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg mr-2"
+                    onClick={(e) => handleInteractiveClick(e, onToggleSearch)}
+                    disabled={isSidebarOpen}
+                    className={`p-2 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 transition-all transform shadow-lg mr-2 ${isSidebarOpen
+                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
+                        : 'hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 hover:scale-105'
+                        }`}
                 >
                     <Search className="w-5 h-5" />
                 </button>
 
-                <ThemeSwitcher />
+                <div
+                    className={isSidebarOpen ? 'pointer-events-none opacity-50' : ''}
+                    onClick={(e) => e.stopPropagation()} // Prevent header click on theme switcher
+                >
+                    <ThemeSwitcher />
+                </div>
             </div>
 
-            {showSearch && (
-                <div className="px-4 pb-3 border-t border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm transition-all" ref={searchRef}>
+            {showSearch && !isSidebarOpen && (
+                <div
+                    className="px-4 pb-3 border-t border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm transition-all"
+                    ref={searchRef}
+                    onClick={(e) => e.stopPropagation()} // Prevent header click in search area
+                >
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-orange-300/80 w-4 h-4 z-10" />
                         <input
