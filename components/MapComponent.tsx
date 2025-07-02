@@ -31,6 +31,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const markersRef = useRef<L.LayerGroup>(new L.LayerGroup());
     const previousSelectedPandalRef = useRef<PandalWithDistance | null>(null);
+    const pandalMarkersRef = useRef<Map<string, L.Marker>>(new Map());
 
     // Initialize map
     useEffect(() => {
@@ -61,10 +62,20 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
         // Only zoom if this is a new selection (not just a re-render)
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
+            // Zoom to the selected pandal
             mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
                 duration: 0.5
             });
+
+            // Open the popup for the selected pandal after zoom
+            setTimeout(() => {
+                const marker = pandalMarkersRef.current.get(selectedPandal.$id);
+                if (marker && !marker.isPopupOpen()) {
+                    marker.openPopup();
+                }
+            }, 500);
+
             previousSelectedPandalRef.current = selectedPandal;
         }
     }, [selectedPandal]);
@@ -74,6 +85,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         if (!mapRef.current) return;
 
         markersRef.current.clearLayers();
+        pandalMarkersRef.current.clear();
 
         // Add user location marker
         if (userLocation) {
@@ -119,9 +131,13 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 })
             });
 
-            marker.bindPopup(`
+            const popup = L.popup({
+                closeButton: false, // We'll use custom close button
+                className: 'custom-popup',
+                minWidth: 200
+            }).setContent(`
         <button 
-            onclick="this.closest('.leaflet-popup').style.display='none'"
+            onclick="window.pandalMapActions?.closePopup()"
             style="
                 position: absolute;
                 top: 8px;
@@ -207,21 +223,25 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 "
             >Directions</button>
         </div>
-`, {
-                closeButton: false,
-                className: 'custom-popup',
-                minWidth: 200
+`);
+
+            // Create the marker with popup
+            marker.bindPopup(popup);
+
+            // Handle click - trigger callback only (zoom effect will handle popup)
+            marker.on('click', (e) => {
+                onPandalClick(pandal);
             });
 
-            marker.on('click', () => onPandalClick(pandal));
             markersRef.current.addLayer(marker);
+            pandalMarkersRef.current.set(pandal.$id, marker);
         });
 
         if (markersRef.current.getLayers().length > 0 && !selectedPandal) {
             const group = L.featureGroup(markersRef.current.getLayers());
             mapRef.current.fitBounds(group.getBounds().pad(0.1));
         }
-    }, [pandals, userLocation]);
+    }, [pandals, userLocation, selectedPandal]);
 
     // Setup global map actions for popup buttons
     useEffect(() => {
@@ -229,7 +249,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             viewDetails: (pandalId: string) => {
                 const pandal = pandals.find(p => p.$id === pandalId);
                 if (pandal) {
-                    onViewDetails(pandal); // Use the dedicated callback
+                    onViewDetails(pandal);
                 }
             },
             getDirections: (pandalId: string) => {
@@ -238,13 +258,18 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                     const url = `https://www.google.com/maps/dir/${userLocation.latitude},${userLocation.longitude}/${pandal.latitude},${pandal.longitude}`;
                     window.open(url, '_blank');
                 }
+            },
+            closePopup: () => {
+                if (mapRef.current) {
+                    mapRef.current.closePopup();
+                }
             }
         };
 
         return () => {
             delete (window as any).pandalMapActions;
         };
-    }, [pandals, userLocation, onPandalClick, onViewDetails])
+    }, [pandals, userLocation, onViewDetails]);
 
     return (
         <div
@@ -254,5 +279,3 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         />
     );
 };
-
-
