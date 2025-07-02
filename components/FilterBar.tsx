@@ -22,7 +22,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     const sortOptions = [
         { value: 'distance', label: 'Nearest First' },
         { value: 'rating', label: 'Highest Rated' },
-        { value: 'popular', label: 'Most Popular' },
         { value: 'name', label: 'Alphabetical' },
     ];
 
@@ -58,7 +57,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             {/* Main Filter Row */}
             <div className="flex flex-col sm:flex-row gap-4">
                 {/* Search Bar */}
-                <div className="flex-1 relative text-base">
+                <div className="flex-1 relative text-sm">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 w-4 h-4 z-10" />
                     <input
                         type="text"
@@ -76,7 +75,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         onChange={(value) => onFiltersChange({ ...filters, sortBy: value })}
                     >
                         <div className="relative">
-                            <Listbox.Button className="relative w-full sm:min-w-[180px] cursor-pointer rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 pl-4 pr-10 text-left text-base text-gray-900 dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 hover:bg-orange-50 dark:hover:bg-gray-700 transition-all">
+                            <Listbox.Button className="relative w-full sm:min-w-[180px] cursor-pointer rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 pl-4 pr-10 text-left text-sm text-gray-900 dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 hover:bg-orange-50 dark:hover:bg-gray-700 transition-all">
                                 {
                                     sortOptions.find((o) => o.value === filters.sortBy)?.label || 'Sort by'
                                 }
@@ -119,7 +118,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 {/* Advanced Filters Toggle */}
                 <button
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all hover:scale-105 shadow-sm ${showAdvancedFilters
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all hover:scale-105 shadow-sm text-sm ${showAdvancedFilters
                         ? 'bg-orange-100 dark:bg-orange-950/70 border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300'
                         : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-700'
                         }`}
@@ -132,7 +131,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="flex items-center gap-2 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-xl border border-red-300 dark:border-red-700 bg-white dark:bg-gray-800 transition-all hover:scale-105 shadow-sm"
+                        className="flex items-center gap-2 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-xl border border-red-300 dark:border-red-700 bg-white dark:bg-gray-800 transition-all hover:scale-105 shadow-sm text-sm"
                     >
                         <X className="w-4 h-4" />
                         Clear
