@@ -9,8 +9,6 @@
                 "id": "ballygunge_station",
                 "name": "Ballygunge Railway Station",
                 "type": "railway",
-                "latitude": 22.5195,
-                "longitude": 88.3720,
                 "description": "Suburban railway station connecting South Kolkata"
             },
             "difficulty": "moderate",
@@ -47,7 +45,8 @@
                     "transportDetails": {
                         "walkingRoute": "via PC Sarkar Sarani and Ekdalia Rd"
                     },
-                    "cost": 0
+                    "cost": 0,
+                    "notes": "via PC Sarkar Sarani and Ekdalia Rd"
                 }
             },
             "routeSegments": [
@@ -142,66 +141,91 @@
                 {
                     "fromPandalId": "pandal_chetla_aagrani_club",
                     "toPandalId": "pandal_suruchi_sangha",
+                    "distance": 1280,
+                    "estimatedTime": 17,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Durgapur Bridge"
+                    },
+                    "cost": 0,
+                    "notes": "You can end your journey here and go to the nearest metro station, Rabindra Sarobar, or take a bus to Sealdah or Howrah."
+                },
+                {
+                    "fromPandalId": "pandal_suruchi_sangha",
+                    "toPandalId": "pandal_buroshibtala",
+                    "distance": 1000,
+                    "estimatedTime": 14,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Buroshibtalla Main Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_buroshibtala",
+                    "toPandalId": "pandal_behala_friends_club",
+                    "distance": 1700,
+                    "estimatedTime": 22,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Roy Bahadur Rd"
+                    },
+                    "cost": 0,
+                    "notes": "Optional"
+                },
+                {
+                    "fromPandalId": "pandal_behala_friends_club",
+                    "toPandalId": "pandal_behala_notundal",
+                    "distance": 140,
+                    "estimatedTime": 2,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Sashi Bhushan Mukerjee Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_behala_notundal",
+                    "toPandalId": "pandal_behala_notunsangha",
                     "distance": 250,
                     "estimatedTime": 4,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Sikdar Bagan St, Nalin Sarkar St and Arabinda Sarani"
+                        "walkingRoute": "via Roy Bahadur Rd"
                     },
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_nalin_sarkar_street",
-                    "toPandalId": "pandal_hatibagan_sarbojonin",
-                    "distance": 300,
-                    "estimatedTime": 5,
+                    "fromPandalId": "pandal_behala_notunsangha",
+                    "toPandalId": "pandal_behala_debdaru_fatak",
+                    "distance": 230,
+                    "estimatedTime": 4,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Grey St/Shri Aurobindo Sarani Rd"
+                        "walkingRoute": ""
                     },
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_hatibagan_sarbojonin",
-                    "toPandalId": "pandal_kashi_bose_lane",
-                    "distance": 600,
+                    "fromPandalId": "pandal_behala_debdaru_fatak",
+                    "toPandalId": "pandal_barisha_sarbojonin",
+                    "distance": 2900,
+                    "estimatedTime": 17,
+                    "transportMode": "bus",
+                    "transportDetails": {
+                        "busNumber": "83, 3D, C-37, EB-16, S-12D",
+                        "busStops": "Sakher Bazar"
+                    },
+                    "cost": 10
+                },
+                {
+                    "fromPandalId": "pandal_barisha_sarbojonin",
+                    "toPandalId": "pandal_barisha_club_puja",
+                    "distance": 650,
                     "estimatedTime": 10,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Principal Khudiram Bose Rd and Bidhan Sarani Rd"
-                    },
-                    "cost": 0
-                },
-                {
-                    "fromPandalId": "pandal_kashi_bose_lane",
-                    "toPandalId": "pandal_beadon_street",
-                    "distance": 300,
-                    "estimatedTime": 5,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "via Hari Ghosh St"
-                    },
-                    "cost": 0
-                },
-                {
-                    "fromPandalId": "pandal_beadon_street",
-                    "toPandalId": "pandal_chaltabagan_sarbojonin",
-                    "distance": 700,
-                    "estimatedTime": 11,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "via Bidhan Sarani Rd"
-                    },
-                    "cost": 0
-                },
-                {
-                    "fromPandalId": "pandal_chaltabagan_sarbojanin",
-                    "toPandalId": "pandal_chorebagan_sarbojonin",
-                    "distance": 850,
-                    "estimatedTime": 13,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "via Vivekananda Rd and Amar Basu Sarani"
+                        "walkingRoute": "via Santosh Roy Rd"
                     },
                     "cost": 0
                 }
