@@ -27,7 +27,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                                🎭 Durga Puja Pandal Finder
+                                DuggaKhoj
                             </h1>
                             <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                                 <span className="text-orange-600 dark:text-orange-400 font-bold">{filteredCount}</span> pandals found
@@ -50,8 +50,8 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                             <button
                                 onClick={() => onViewModeChange('map')}
                                 className={`p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'map'
-                                        ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
+                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
                                     }`}
                             >
                                 <MapPin className="w-4 h-4" />
@@ -59,8 +59,8 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                             <button
                                 onClick={() => onViewModeChange('grid')}
                                 className={`p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'grid'
-                                        ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
+                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
                                     }`}
                             >
                                 <Grid className="w-4 h-4" />
@@ -68,8 +68,8 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                             <button
                                 onClick={() => onViewModeChange('list')}
                                 className={`p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'list'
-                                        ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
+                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
                                     }`}
                             >
                                 <List className="w-4 h-4" />

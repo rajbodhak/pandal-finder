@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pandal Finder",
+  title: "DuggaKhoj",
   description: "Find the best pandals near you",
 };
 

@@ -385,7 +385,7 @@ export default function PandalFinderPage() {
           {isMobile ? (
             <div className="text-center">
               <p className="text-xs text-gray-600 dark:text-gray-300 mb-1">
-                © 2024 Durga Puja Pandal Finder
+                © 2025 DuggaKhoj
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Made with ❤️ for the community by <span className="font-semibold text-orange-600 dark:text-orange-400">Raj</span>
@@ -394,7 +394,7 @@ export default function PandalFinderPage() {
           ) : (
             <div className="text-center text-gray-600 dark:text-gray-300">
               <p className="mb-2">
-                <strong className="text-gray-800 dark:text-white">Durga Puja Pandal Finder</strong> - Discover the best pandals in your area
+                <strong className="text-gray-800 dark:text-white">DuggaKhoj</strong> - Discover the best pandals in your area
               </p>
               <p className="text-sm">
                 Built with ❤️ By <span className="font-semibold text-orange-600 dark:text-orange-400">Raj</span>

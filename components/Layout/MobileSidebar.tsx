@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { X, MapPin } from 'lucide-react';
+import { MapPin, Menu } from 'lucide-react';
 import { FilterBar } from '@/components/FilterBar';
 import { FilterOptions, PandalWithDistance } from '@/lib/types';
 
@@ -53,16 +53,20 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-                    <h2 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                        Pandals Near You
-                    </h2>
+                <div className="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-white/20 dark:border-gray-700/20">
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg text-gray-400 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-white/50 dark:hover:bg-gray-700/50 transition-all"
+                        className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm"
                     >
-                        <X className="w-5 h-5" />
+                        <Menu className="w-5 h-5" />
                     </button>
+
+                    <div className="flex-1 ml-4">
+                        <h1 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                            DuggaKhoj
+                        </h1>
+                    </div>
+
                 </div>
 
                 {/* Content - Scrollable */}
