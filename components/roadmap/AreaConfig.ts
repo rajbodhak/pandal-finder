@@ -43,16 +43,10 @@ export const KOLKATA_AREAS: AreaConfig[] = [
         estimatedAreas: ['Park Street', 'Ballygunge', 'Jadavpur', 'Gariahat', 'Rashbehari'],
         startingPoints: [
             {
-                id: 'park_street_metro',
-                name: 'Park Street Metro Station',
-                type: 'metro',
-                description: 'Central location for South Kolkata pandals'
-            },
-            {
-                id: 'sealdah_south',
-                name: 'Sealdah Station (South Route)',
-                type: 'railway',
-                description: 'Starting point for South Kolkata via metro'
+                id: "ballygunge_station",
+                name: "Ballygunge Railway Station",
+                type: "railway",
+                description: "Starting point for South Kolkata pandals"
             },
             {
                 id: 'jadavpur_station',

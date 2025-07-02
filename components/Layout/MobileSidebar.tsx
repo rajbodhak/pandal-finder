@@ -49,13 +49,13 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             <div className={`
                     fixed top-0 left-0 h-full bg-gradient-to-b from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950
                     z-40 shadow-2xl transform transition-transform duration-300 ease-in-out
-                    w-80 flex flex-col backdrop-blur-lg border-r border-white/20 dark:border-gray-700/20
+                    w-[75%] max-w-sm flex flex-col backdrop-blur-lg border-r border-white/20 dark:border-gray-700/20
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
                     <h2 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                        🎭 Pandals Near You
+                        Pandals Near You
                     </h2>
                     <button
                         onClick={onClose}
@@ -78,7 +78,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     </div>
 
                     {/* Stats */}
-                    <div className="p-4 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm z-0">
+                    <div className="px-4 py-3 border-b border-white/20 dark:border-gray-700/20 flex-shrink-0 bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm z-0">
                         <div className="grid grid-cols-2 gap-3">
                             <div className="bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/70 dark:to-orange-900/70 backdrop-blur-sm rounded-xl p-3 text-center border border-orange-200/50 dark:border-orange-800/50">
                                 <div className="text-lg font-bold text-orange-600 dark:text-orange-400">{filteredPandals.length}</div>

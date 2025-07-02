@@ -1,141 +1,209 @@
 {
     "routes": [
         {
-            "id": "north_kolkata_howrah_classic",
-            "name": "North Kolkata Classic from Howrah",
-            "description": "Traditional pandals covering famous North Kolkata areas starting from Howrah Station",
-            "areaId": "north_kolkata",
+            "id": "south_kolkata_ballygunge_asthetic",
+            "name": "South Kolkata Classic from Ballygunge",
+            "description": "Traditional pandals covering famous South Kolkata areas starting from Ballygunge",
+            "areaId": "south_kolkata",
             "startingPoint": {
-                "id": "howrah_station",
-                "name": "Howrah Railway Station",
+                "id": "ballygunge_station",
+                "name": "Ballygunge Railway Station",
                 "type": "railway",
-                "latitude": 22.5838,
-                "longitude": 88.3465,
-                "description": "Main railway terminus"
+                "latitude": 22.5195,
+                "longitude": 88.3720,
+                "description": "Suburban railway station connecting South Kolkata"
             },
             "difficulty": "moderate",
             "estimatedTotalTime": "5-6 hours",
             "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
-                "pandal_bagbazar_sarbojanin",
-                "pandal_kumartuli_park",
-                "pandal_shyambazar_rajdanga",
-                "pandal_college_street",
-                "pandal_sovabazar_rajbari"
+                "pandal_ekdalia_evergreen_club",
+                "pandal_singhi_park",
+                "pandal_hindustan_park",
+                "pandal_ballygunge_cultural_association",
+                "pandal_samaj_sebi_sangha",
+                "pandal_deshapriya_park",
+                "pandal_badamtola_ashar_sangha",
+                "pandal_66_pally",
+                "pandal_chetla_aagrani_club",
+                "pandal_suruchi_sangha",
+                "pandal_buroshibtala",
+                "pandal_behala_friends_club",
+                "pandal_behala_notundal",
+                "pandal_behala_notunsangha",
+                "pandal_behala_debdaru_fatak",
+                "pandal_barisha_sarbojonin",
+                "pandal_barisha_club_puja"
             ],
             "startingConnection": {
-                "startingPointId": "howrah_station",
-                "firstPandalId": "pandal_bagbazar_sarbojanin",
+                "startingPointId": "ballygunge_station",
+                "firstPandalId": "pandal_ekdalia_evergreen_club",
                 "connection": {
-                    "fromPandalId": "howrah_station",
-                    "toPandalId": "pandal_bagbazar_sarbojanin",
-                    "distance": 2500,
-                    "estimatedTime": 25,
-                    "transportMode": "bus",
+                    "fromPandalId": "ballygunge_station",
+                    "toPandalId": "pandal_ekdalia_evergreen_club",
+                    "distance": 750,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "busNumber": "45, 46A, 5",
-                        "busStops": [
-                            "Howrah Station",
-                            "Strand Road",
-                            "Bagbazar"
-                        ]
+                        "walkingRoute": "via PC Sarkar Sarani and Ekdalia Rd"
                     },
-                    "cost": 8,
-                    "notes": "Take bus from Howrah Station Bus Stand (Platform 1)"
+                    "cost": 0
                 }
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_bagbazar_sarbojanin",
-                    "toPandalId": "pandal_kumartuli_park",
+                    "fromPandalId": "pandal_ekdalia_evergreen_club",
+                    "toPandalId": "pandal_singhi_park",
+                    "distance": 350,
+                    "estimatedTime": 6,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via N C Chowdhury Rd and Dover Ln"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_singhi_park",
+                    "toPandalId": "pandal_hindustan_park",
+                    "distance": 500,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ramani Chatterjee Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_hindustan_park",
+                    "toPandalId": "pandal_ballygunge_cultural_association",
                     "distance": 800,
-                    "estimatedTime": 12,
+                    "estimatedTime": 11,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Via Bagbazar Street → Kumartuli Street"
+                        "walkingRoute": "via Lake Terrace Rd"
                     },
-                    "cost": 0,
-                    "notes": "Pleasant walk through traditional pottery makers' area",
-                    "alternativeRoutes": [
-                        {
-                            "fromPandalId": "pandal_bagbazar_sarbojanin",
-                            "toPandalId": "pandal_kumartuli_park",
-                            "distance": 1200,
-                            "estimatedTime": 8,
-                            "transportMode": "auto",
-                            "cost": 15,
-                            "notes": "If walking is difficult"
-                        }
-                    ]
+                    "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_kumartuli_park",
-                    "toPandalId": "pandal_shyambazar_rajdanga",
-                    "distance": 1200,
-                    "estimatedTime": 8,
-                    "transportMode": "bus",
+                    "fromPandalId": "pandal_ballygunge_cultural_association",
+                    "toPandalId": "pandal_samaj_sebi_sangha",
+                    "distance": 130,
+                    "estimatedTime": 2,
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "busNumber": "12, 30, 78",
-                        "busStops": [
-                            "Kumartuli",
-                            "Shyambazar 5-Point Crossing"
-                        ]
+                        "walkingRoute": "via Lake View Rd and Kavi Bharati Sarani/Lake Rd"
                     },
-                    "cost": 5,
-                    "notes": "Frequent buses available",
-                    "alternativeRoutes": [
-                        {
-                            "fromPandalId": "pandal_kumartuli_park",
-                            "toPandalId": "pandal_shyambazar_rajdanga",
-                            "distance": 1200,
-                            "estimatedTime": 18,
-                            "transportMode": "walk",
-                            "cost": 0,
-                            "notes": "If buses are crowded, walk via Kumartuli Ghat Road"
-                        }
-                    ]
+                    "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_shyambazar_rajdanga",
-                    "toPandalId": "pandal_college_street",
-                    "distance": 1500,
-                    "estimatedTime": 12,
-                    "transportMode": "metro",
+                    "fromPandalId": "pandal_samaj_sebi_sangha",
+                    "toPandalId": "pandal_deshapriya_park",
+                    "distance": 630,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "metroLine": "Blue Line",
-                        "busStops": [
-                            "Shyambazar Metro",
-                            "College Street Metro"
-                        ]
+                        "walkingRoute": "via Lake View Rd"
                     },
-                    "cost": 15,
-                    "notes": "Metro is fastest and most comfortable",
-                    "alternativeRoutes": [
-                        {
-                            "fromPandalId": "pandal_shyambazar_rajdanga",
-                            "toPandalId": "pandal_college_street",
-                            "distance": 1800,
-                            "estimatedTime": 15,
-                            "transportMode": "bus",
-                            "transportDetails": {
-                                "busNumber": "35, 215"
-                            },
-                            "cost": 8,
-                            "notes": "Budget option, but can be crowded"
-                        }
-                    ]
+                    "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_college_street",
-                    "toPandalId": "pandal_sovabazar_rajbari",
+                    "fromPandalId": "pandal_deshapriya_park",
+                    "toPandalId": "pandal_badamtola_ashar_sangha",
+                    "distance": 1000,
+                    "estimatedTime": 16,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rash Behari Ave"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_badamtola_ashar_sangha",
+                    "toPandalId": "pandal_66_pally",
+                    "distance": 99,
+                    "estimatedTime": 1,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Nepal Bhattacharya St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_66_pally",
+                    "toPandalId": "pandal_chetla_aagrani_club",
+                    "distance": 800,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Chetla Brg"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_chetla_aagrani_club",
+                    "toPandalId": "pandal_suruchi_sangha",
+                    "distance": 250,
+                    "estimatedTime": 4,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Sikdar Bagan St, Nalin Sarkar St and Arabinda Sarani"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_nalin_sarkar_street",
+                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Grey St/Shri Aurobindo Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan_sarbojonin",
+                    "toPandalId": "pandal_kashi_bose_lane",
                     "distance": 600,
-                    "estimatedTime": 8,
+                    "estimatedTime": 10,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Via College Street → Sovabazar Street"
+                        "walkingRoute": "via Principal Khudiram Bose Rd and Bidhan Sarani Rd"
                     },
-                    "cost": 0,
-                    "notes": "Walk through famous book market area"
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kashi_bose_lane",
+                    "toPandalId": "pandal_beadon_street",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Hari Ghosh St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_beadon_street",
+                    "toPandalId": "pandal_chaltabagan_sarbojonin",
+                    "distance": 700,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Bidhan Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_chaltabagan_sarbojanin",
+                    "toPandalId": "pandal_chorebagan_sarbojonin",
+                    "distance": 850,
+                    "estimatedTime": 13,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Vivekananda Rd and Amar Basu Sarani"
+                    },
+                    "cost": 0
                 }
             ],
             "totalWalkingDistance": 1400,

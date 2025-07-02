@@ -11,12 +11,14 @@ import { databaseService } from '@/lib/database';
 import { MapPin, Route, AlertCircle, Clock, DollarSign } from 'lucide-react';
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
+import { SOUTH_PANDALS } from '@/data/pandals/south-pandals';
 import RoadmapHeader from './RoadmapHeader';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 // Add other area pandals as needed
 const ALL_LOCAL_PANDALS: Pandal[] = [
     ...NORTH_PANDALS,
+    ...SOUTH_PANDALS
     // Add SOUTH_PANDALS, CENTRAL_PANDALS etc. when you have them
 ];
 
