@@ -151,27 +151,6 @@ export const PandalDetails: React.FC<PandalDetailsProps> = ({
                         </div>
                     )}
 
-                    {/* Special Features */}
-                    {pandal.special_features && pandal.special_features.length > 0 && (
-                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20 dark:border-gray-700/20 shadow-sm hover:shadow-md transition-shadow duration-300 mb-4">
-                            <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                    <Star className="w-4 h-4 text-white" />
-                                </div>
-                                <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Special Features</h3>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {pandal.special_features.map((feature, index) => (
-                                    <span
-                                        key={index}
-                                        className="bg-gradient-to-r from-orange-100 to-pink-100 dark:from-orange-950/50 dark:to-pink-950/50 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-xs sm:text-sm font-medium border border-orange-200/50 dark:border-orange-800/50"
-                                    >
-                                        {feature}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 {/* Footer Actions */}

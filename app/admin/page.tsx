@@ -39,7 +39,6 @@ const defaultPandal: Partial<Pandal> = {
     area: 'other',
     category: 'traditional',
     crowd_level: 'medium',
-    special_features: [],
 };
 
 const AREA_OPTIONS = [
@@ -63,13 +62,6 @@ const CROWD_LEVEL_OPTIONS = [
     { value: 'medium', label: 'Moderate Crowd', icon: '🔵' },
     { value: 'medium-high', label: 'Popular & Crowded', icon: '🟡' },
     { value: 'high', label: 'Very Popular', icon: '🟢' }
-];
-
-const SPECIAL_FEATURES_OPTIONS = [
-    'Grand Lighting', 'Cultural Programs', 'Food Court', 'Live Music',
-    'Traditional Dance', 'Art Exhibition', 'Photography Spot', 'Theme Decoration',
-    'Award Winning', 'Celebrity Visits', 'Historical Significance', 'Eco Friendly',
-    'Social Awareness Theme', 'Community Service', 'Heritage Architecture'
 ];
 
 
@@ -412,26 +404,6 @@ export default function AdminPage() {
                                         placeholder="4.5"
                                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors"
                                     />
-                                </div>
-                            </div>
-
-                            {/* Special Features */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-3">
-                                    Special Features
-                                </label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {SPECIAL_FEATURES_OPTIONS.map(feature => (
-                                        <label key={feature} className="flex items-center space-x-2 cursor-pointer p-2 rounded-md hover:bg-gray-700 transition-colors">
-                                            <input
-                                                type="checkbox"
-                                                checked={(form.special_features || []).includes(feature)}
-                                                onChange={e => handleMultiSelect('special_features', feature, e.target.checked)}
-                                                className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
-                                            />
-                                            <span className="text-sm text-gray-300">{feature}</span>
-                                        </label>
-                                    ))}
                                 </div>
                             </div>
 
