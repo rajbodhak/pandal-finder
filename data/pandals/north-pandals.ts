@@ -4,7 +4,7 @@ export const NORTH_PANDALS: Pandal[] = [
         $id: "pandal_ahiritola_sarbojanin",
         name: "Ahiritola Sarbojanin",
         address: "172/C B.K. Paul Ave, Ahiritola, Kolkata",
-        rating: 4.6, // LBB mentions unique theme & rustic charm :contentReference[oaicite:1]{index=1}
+        rating: 4.6,
         crowd_level: "high",
         area: "north_kolkata",
         category: "theme-based"
@@ -13,7 +13,7 @@ export const NORTH_PANDALS: Pandal[] = [
         $id: "pandal_ahiritola_jubok_binda",
         name: "Ahiritola Jubok Brinda",
         address: "Ahiritola, Kolkata",
-        rating: 4.5, // typical regional score estimate
+        rating: 4.5,
         crowd_level: "medium",
         area: "north_kolkata",
         category: "traditional"
@@ -22,7 +22,7 @@ export const NORTH_PANDALS: Pandal[] = [
         $id: "pandal_beniatola_sarbojonin",
         name: "Beniatola Sarbojanin",
         address: "Beniatola, Kolkata",
-        rating: 4.4, // similar to Ahiritola 
+        rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
         category: "traditional"
