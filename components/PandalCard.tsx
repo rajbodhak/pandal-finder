@@ -115,24 +115,6 @@ export const PandalCard: React.FC<PandalCardProps> = ({
                             </div>
                         </div>
 
-                        {/* Special Features */}
-                        {pandal.special_features && pandal.special_features.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-orange-200/50 dark:border-orange-800/50">
-                                {pandal.special_features.slice(0, 2).map((feature, index) => (
-                                    <span
-                                        key={index}
-                                        className="text-xs bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 text-orange-700 dark:text-orange-300 px-2 py-1 rounded-full border border-orange-200/50 dark:border-orange-800/50"
-                                    >
-                                        {feature}
-                                    </span>
-                                ))}
-                                {pandal.special_features.length > 2 && (
-                                    <span className="text-xs text-orange-600 dark:text-orange-400 font-medium px-1">
-                                        +{pandal.special_features.length - 2}
-                                    </span>
-                                )}
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
@@ -207,22 +189,6 @@ export const PandalCard: React.FC<PandalCardProps> = ({
                         <span className={`text-sm px-3 py-1 rounded-full font-medium capitalize border ${getCrowdLevelColor(pandal.crowd_level)}`}>
                             {pandal.crowd_level} Crowd
                         </span>
-                    </div>
-                )}
-
-                {/* Special Features */}
-                {pandal.special_features && pandal.special_features.length > 0 && (
-                    <div className="mb-6 flex-grow">
-                        <div className="flex flex-wrap gap-2">
-                            {pandal.special_features.map((feature, index) => (
-                                <span
-                                    key={index}
-                                    className="text-sm bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full border border-orange-200/50 dark:border-orange-800/50"
-                                >
-                                    {feature}
-                                </span>
-                            ))}
-                        </div>
                     </div>
                 )}
 
