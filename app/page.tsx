@@ -96,16 +96,15 @@ export default function PandalFinderPage() {
     resetDeps: [filters, searchQuery]
   });
 
-  // Memoized visible pandals with better dependency tracking
+  // Memoized visible pandals on Mobile with better dependency tracking
   const mobileVisiblePandals = useMemo(() => {
     return filteredPandals.slice(0, mobileVisibleCount);
   }, [filteredPandals, mobileVisibleCount]);
 
+  // Memoized visible pandals on Desktop with better dependency tracking
   const desktopVisiblePandals = useMemo(() => {
     return filteredPandals.slice(0, desktopVisibleCount);
   }, [filteredPandals, desktopVisibleCount]);
-
-  // ALL CALLBACKS DEFINED HERE - BEFORE ANY CONDITIONAL LOGIC
 
   // Handle location request with better error handling
   const handleLocationRequest = useCallback(async () => {
@@ -160,8 +159,6 @@ export default function PandalFinderPage() {
     }
   }, [userLocation, locationLoading, locationError, hasUserDeclinedLocation, locationPromptDismissed, handleLocationRequest]);
 
-  // COMPUTED VALUES (after all hooks)
-
   //loading state handling
   const isInitialLoading = (locationLoading && !hasUserDeclinedLocation) ||
     (pandalsLoading && !allPandals.length);
@@ -175,6 +172,7 @@ export default function PandalFinderPage() {
   // IMPROVED: Better error handling for when we have some data but errors
   const shouldShowPandalsError = pandalsError && allPandals.length === 0;
 
+  //Loading
   if (isInitialLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950">
@@ -193,6 +191,7 @@ export default function PandalFinderPage() {
     );
   }
 
+  //Location Permission Prompt
   if (shouldShowLocationPrompt) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950">
