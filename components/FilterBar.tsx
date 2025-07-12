@@ -53,11 +53,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         searchQuery;
 
     return (
-        <div className="bg-transparent rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 relative">
+        <div className="bg-transparent rounded-xl border border-gray-200 dark:border-gray-700 p-3 md:p-4 relative">
             {/* Main Filter Row */}
             <div className="flex flex-col sm:flex-row gap-4">
                 {/* Search Bar */}
-                <div className="flex-1 relative text-sm">
+                <div className="hidden md:block flex-1 relative text-sm">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 w-4 h-4 z-10" />
                     <input
                         type="text"
@@ -118,7 +118,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 {/* Advanced Filters Toggle */}
                 <button
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all hover:scale-105 shadow-sm text-sm ${showAdvancedFilters
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all hover:scale-102 shadow-sm text-sm ${showAdvancedFilters
                         ? 'bg-orange-100 dark:bg-orange-950/70 border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300'
                         : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-700'
                         }`}
@@ -141,7 +141,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
             {/* Advanced Filters */}
             {showAdvancedFilters && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-3 md:mt-4 pt-2 md:pt-4 border-t border-gray-200 dark:border-gray-700">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Area */}
                         <div>

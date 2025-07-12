@@ -15,6 +15,7 @@ import { LocationPermissionPrompt } from '@/components/Layout/LocationPermission
 import { MapView } from '@/components/views/MapView';
 import { GridListView } from '@/components/views/GridListView';
 import { StatsSection } from '@/components/Layout/StatsSection';
+import { MobileListView } from '@/components/views/MobileListView';
 
 // Hooks
 import { useGeolocation } from '@/hooks/useGeoLocation';
@@ -29,6 +30,7 @@ export default function PandalFinderPage() {
 
   // View state
   const [viewMode, setViewMode] = useState<'map' | 'grid' | 'list'>('map');
+  const [mobileViewMode, setMobileViewMode] = useState<'map' | 'list'>('map');
   const [hasUserDeclinedLocation, setHasUserDeclinedLocation] = useState(false);
   const [locationPromptDismissed, setLocationPromptDismissed] = useState(false);
 
@@ -223,13 +225,13 @@ export default function PandalFinderPage() {
         <MobileHeader
           onToggleSidebar={toggleSidebar}
           onCloseSidebar={closeSidebar}
-          onToggleSearch={toggleMobileSearch}
-          showSearch={showMobileSearch}
           searchQuery={searchQuery}
           onSearchChange={updateSearchQuery}
           filteredPandals={filteredPandals}
           onSearchSelect={handleSearchSelect}
           isSidebarOpen={isSidebarOpen}
+          viewMode={mobileViewMode}
+          onViewModeChange={setMobileViewMode}
         />
       ) : (
         <DesktopHeader
@@ -245,17 +247,6 @@ export default function PandalFinderPage() {
         <MobileSidebar
           isOpen={isSidebarOpen}
           onClose={closeSidebar}
-          filters={filters}
-          onFiltersChange={updateFilters}
-          searchQuery={searchQuery}
-          onSearchChange={updateSearchQuery}
-          filteredPandals={filteredPandals}
-          visiblePandals={mobileVisiblePandals}
-          visibleCount={mobileVisibleCount}
-          totalCount={filteredPandals.length}
-          onPandalClick={handlePandalClick}
-          onLoadMore={loadMoreMobile}
-          loadMoreRef={mobileLoadMoreRef}
         />
       )}
 
@@ -304,11 +295,11 @@ export default function PandalFinderPage() {
       )}
 
       {/* Main Content */}
-      <main className={`${isMobile ? 'fixed top-16 bottom-16 left-0 right-0 overflow-hidden' : ''} ${locationError && locationPromptDismissed && isMobile ? 'top-32' : ''}`}>
+      <main className={`${isMobile ? 'fixed top-[68px] bottom-16 left-0 right-0 overflow-hidden' : ''} ${locationError && locationPromptDismissed && isMobile ? 'top-32' : ''}`}>
         {/* Desktop Filters */}
         {!isMobile && (
           <div className="container mx-auto px-4 py-6 relative z-10">
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl  border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
               <FilterBar
                 filters={filters}
                 onFiltersChange={updateFilters}
@@ -320,10 +311,10 @@ export default function PandalFinderPage() {
         )}
 
         {/* Content based on view mode */}
-        {isMobile || viewMode === 'map' ? (
-          <div className={`relative ${isMobile ? 'h-full' : ''}`}>
-            <div className={`bg-trasparent overflow-hidden ${isMobile ? 'h-full' : 'md:mx-4 mb-4'
-              }`}>
+        {isMobile ? (
+          // Mobile view logic
+          mobileViewMode === 'map' ? (
+            <div className="relative h-full">
               <MapView
                 filteredPandals={filteredPandals}
                 userLocation={userLocation}
@@ -334,21 +325,54 @@ export default function PandalFinderPage() {
                 onGetDirections={handleGetDirections}
               />
             </div>
-          </div>
+          ) : (
+            <MobileListView
+              filters={filters}
+              onFiltersChange={updateFilters}
+              searchQuery={searchQuery}
+              onSearchChange={updateSearchQuery}
+              filteredPandals={filteredPandals}
+              visiblePandals={mobileVisiblePandals}
+              visibleCount={mobileVisibleCount}
+              totalCount={filteredPandals.length}
+              onPandalClick={handlePandalClick}
+              onViewDetails={handleViewDetails}
+              onGetDirections={handleGetDirections}
+              onLoadMore={loadMoreMobile}
+              loadMoreRef={mobileLoadMoreRef}
+            />
+          )
         ) : (
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
-              <GridListView
-                viewMode={viewMode}
-                visiblePandals={desktopVisiblePandals}
-                totalCount={filteredPandals.length}
-                visibleCount={desktopVisibleCount}
-                loadMoreRef={desktopLoadMoreRef}
-                onGetDirections={handleGetDirections}
-                onViewDetails={handleViewDetails}
-              />
+          // Desktop view logic (unchanged)
+          viewMode === 'map' ? (
+            <div className="relative">
+              <div className="bg-transparent overflow-hidden md:mx-4 mb-4">
+                <MapView
+                  filteredPandals={filteredPandals}
+                  userLocation={userLocation}
+                  selectedPandal={selectedPandal}
+                  isMobile={isMobile}
+                  onPandalClick={handlePandalClick}
+                  onViewDetails={handleViewDetails}
+                  onGetDirections={handleGetDirections}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+                <GridListView
+                  viewMode={viewMode}
+                  visiblePandals={desktopVisiblePandals}
+                  totalCount={filteredPandals.length}
+                  visibleCount={desktopVisibleCount}
+                  loadMoreRef={desktopLoadMoreRef}
+                  onGetDirections={handleGetDirections}
+                  onViewDetails={handleViewDetails}
+                />
+              </div>
+            </div>
+          )
         )}
 
         {/* Desktop Stats */}
