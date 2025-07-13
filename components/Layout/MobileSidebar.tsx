@@ -65,7 +65,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                             <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md">
                                 <Route className="w-4 h-4" />
                             </div>
-                            <span className="text-gray-900 dark:text-white font-medium">Routemap</span>
+                            <span className="text-gray-900 dark:text-white font-medium">Roadmap</span>
                         </Link>
 
                         {/* Pandals Link */}
