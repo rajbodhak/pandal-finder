@@ -10,6 +10,11 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
         setSelectedPandal(pandal);
     }, []);
 
+    const clearSelection = useCallback(() => {
+        setSelectedPandal(null);
+        setShowDetails(false);
+    }, []);
+
     const handleViewDetails = useCallback((pandal: PandalWithDistance) => {
         setSelectedPandal(pandal);
         setShowDetails(true);
@@ -45,6 +50,7 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
         handlePandalClick,
         handleViewDetails,
         handleGetDirections,
-        handleCloseDetails
+        handleCloseDetails,
+        clearSelection
     };
 };
