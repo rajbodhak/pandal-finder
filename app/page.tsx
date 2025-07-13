@@ -33,6 +33,7 @@ export default function PandalFinderPage() {
   const [mobileViewMode, setMobileViewMode] = useState<'map' | 'list'>('map');
   const [hasUserDeclinedLocation, setHasUserDeclinedLocation] = useState(false);
   const [locationPromptDismissed, setLocationPromptDismissed] = useState(false);
+  const [pendingPandalSelection, setPendingPandalSelection] = useState<PandalWithDistance | null>(null);
 
   // Custom hooks
   const { isMobile } = useResponsive();
@@ -64,7 +65,8 @@ export default function PandalFinderPage() {
     handlePandalClick,
     handleViewDetails,
     handleGetDirections,
-    handleCloseDetails
+    handleCloseDetails,
+    clearSelection
   } = usePandalSelection(userLocation);
 
   const {
@@ -136,7 +138,37 @@ export default function PandalFinderPage() {
     }
   }, [handlePandalClick, isMobile, showMobileSearch, toggleMobileSearch]);
 
-  // ALL EFFECTS DEFINED HERE
+  const handleSwitchToMap = useCallback((selectedPandal?: PandalWithDistance) => {
+    console.log('handleSwitchToMap called - current mode:', mobileViewMode);
+    setMobileViewMode('map');
+    console.log('Should switch to map view now');
+
+    // If a pandal is provided, select it after the map is ready
+    if (selectedPandal) {
+      setTimeout(() => {
+        handlePandalClick(selectedPandal);
+      }, 1000);
+    }
+  }, [mobileViewMode, handlePandalClick]);
+
+  // Clear selected pandal when switching to list view on mobile
+  useEffect(() => {
+    if (isMobile && mobileViewMode === 'list' && selectedPandal) {
+      clearSelection(); // Use the new clear function
+    }
+  }, [isMobile, mobileViewMode, selectedPandal, clearSelection]);
+
+  useEffect(() => {
+    if (mobileViewMode === 'map' && pendingPandalSelection) {
+      // Use a more reasonable delay for map initialization
+      const timer = setTimeout(() => {
+        handlePandalClick(pendingPandalSelection);
+        setPendingPandalSelection(null);
+      }, 800);
+
+      return () => clearTimeout(timer);
+    }
+  }, [mobileViewMode, pendingPandalSelection, handlePandalClick]);
 
   // Close sidebar when switching to desktop
   useEffect(() => {
@@ -340,6 +372,7 @@ export default function PandalFinderPage() {
               onGetDirections={handleGetDirections}
               onLoadMore={loadMoreMobile}
               loadMoreRef={mobileLoadMoreRef}
+              onSwitchToMap={handleSwitchToMap}
             />
           )
         ) : (

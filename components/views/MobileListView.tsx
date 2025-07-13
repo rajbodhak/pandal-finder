@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MapPin, Navigation, Eye, Star } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import { PandalWithDistance } from '@/lib/types';
 import { FilterBar } from '@/components/FilterBar';
 import { FilterOptions } from '@/lib/types';
@@ -19,6 +19,7 @@ interface MobileListViewProps {
     onGetDirections: (pandal: PandalWithDistance) => void;
     onLoadMore: () => void;
     loadMoreRef: React.RefObject<HTMLDivElement | null>;
+    onSwitchToMap?: (selectedPandal?: PandalWithDistance) => void; // Updated to accept optional pandal
 }
 
 export const MobileListView: React.FC<MobileListViewProps> = ({
@@ -30,12 +31,17 @@ export const MobileListView: React.FC<MobileListViewProps> = ({
     visiblePandals,
     visibleCount,
     totalCount,
-    onPandalClick,
-    onViewDetails,
-    onGetDirections,
     onLoadMore,
-    loadMoreRef
+    loadMoreRef,
+    onSwitchToMap
 }) => {
+
+    const handlePandalClick = (pandal: PandalWithDistance) => {
+        if (onSwitchToMap) {
+            onSwitchToMap(pandal);
+        }
+    };
+
     return (
         <div className="h-full flex flex-col bg-gradient-to-br from-orange-50/50 via-rose-50/50 to-pink-50/50 dark:from-gray-900/50 dark:via-orange-950/50 dark:to-rose-950/50">
             {/* Filters */}
@@ -81,7 +87,7 @@ export const MobileListView: React.FC<MobileListViewProps> = ({
                             {/* Pandal Header */}
                             <div
                                 className="cursor-pointer"
-                                onClick={() => onPandalClick(pandal)}
+                                onClick={() => handlePandalClick(pandal)}
                             >
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="flex-1">
@@ -110,7 +116,7 @@ export const MobileListView: React.FC<MobileListViewProps> = ({
                                     </div>
                                     <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
                                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                                        Tap for details
+                                        Tap to view on map
                                     </div>
                                 </div>
                             </div>
