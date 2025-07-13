@@ -10,8 +10,14 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
         setSelectedPandal(pandal);
     }, []);
 
+    // New function to clear only selection (used when completely resetting)
     const clearSelection = useCallback(() => {
         setSelectedPandal(null);
+        setShowDetails(false);
+    }, []);
+
+    // New function to hide only details (used when switching to list view)
+    const hideDetails = useCallback(() => {
         setShowDetails(false);
     }, []);
 
@@ -39,9 +45,9 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
         window.open(url, '_blank');
     }, [userLocation]);
 
+    // Modified to only hide details, keep selection for zoom
     const handleCloseDetails = useCallback(() => {
         setShowDetails(false);
-        setSelectedPandal(null);
     }, []);
 
     return {
@@ -51,6 +57,7 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
         handleViewDetails,
         handleGetDirections,
         handleCloseDetails,
-        clearSelection
+        clearSelection,
+        hideDetails
     };
 };

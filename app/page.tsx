@@ -154,7 +154,7 @@ export default function PandalFinderPage() {
   // Clear selected pandal when switching to list view on mobile
   useEffect(() => {
     if (isMobile && mobileViewMode === 'list' && selectedPandal) {
-      clearSelection(); // Use the new clear function
+      clearSelection();
     }
   }, [isMobile, mobileViewMode, selectedPandal, clearSelection]);
 

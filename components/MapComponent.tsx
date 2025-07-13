@@ -132,7 +132,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             });
 
             const popup = L.popup({
-                closeButton: false, // We'll use custom close button
+                closeButton: false,
                 className: 'custom-popup',
                 minWidth: 200
             }).setContent(`
@@ -142,7 +142,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 position: absolute;
                 top: 8px;
                 right: 8px;
-                background: rgba(107, 114, 128, 0.1);
+                background: rgba(255, 0, 0, 0.1);
                 border: none;
                 border-radius: 50%;
                 width: 24px;
@@ -155,8 +155,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 color: #6b7280;
                 transition: all 0.2s ease;
             "
-            onmouseover="this.style.background='rgba(107, 114, 128, 0.2)'"
-            onmouseout="this.style.background='rgba(107, 114, 128, 0.1)'"
+            onmouseover="this.style.background='rgba(139, 0, 0, 0.2)'"
+            onmouseout="this.style.background='rgba(139, 0, 0, 0.1)'"
         >×</button>
 
         <h3 style="
