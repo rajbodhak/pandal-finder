@@ -66,7 +66,7 @@ export default function PandalFinderPage() {
     handleViewDetails,
     handleGetDirections,
     handleCloseDetails,
-    clearSelection
+    hideDetails
   } = usePandalSelection(userLocation);
 
   const {
@@ -139,28 +139,24 @@ export default function PandalFinderPage() {
   }, [handlePandalClick, isMobile, showMobileSearch, toggleMobileSearch]);
 
   const handleSwitchToMap = useCallback((selectedPandal?: PandalWithDistance) => {
-    console.log('handleSwitchToMap called - current mode:', mobileViewMode);
     setMobileViewMode('map');
-    console.log('Should switch to map view now');
 
     // If a pandal is provided, select it after the map is ready
     if (selectedPandal) {
       setTimeout(() => {
         handlePandalClick(selectedPandal);
-      }, 1000);
+      }, 500);
     }
   }, [mobileViewMode, handlePandalClick]);
 
-  // Clear selected pandal when switching to list view on mobile
   useEffect(() => {
-    if (isMobile && mobileViewMode === 'list' && selectedPandal) {
-      clearSelection();
+    if (isMobile && mobileViewMode === 'list' && showDetails) {
+      hideDetails();
     }
-  }, [isMobile, mobileViewMode, selectedPandal, clearSelection]);
+  }, [isMobile, mobileViewMode, showDetails, hideDetails]);
 
   useEffect(() => {
     if (mobileViewMode === 'map' && pendingPandalSelection) {
-      // Use a more reasonable delay for map initialization
       const timer = setTimeout(() => {
         handlePandalClick(pendingPandalSelection);
         setPendingPandalSelection(null);
@@ -177,7 +173,6 @@ export default function PandalFinderPage() {
     }
   }, [isMobile, closeSidebar]);
 
-  // IMPROVED: More controlled location request
   useEffect(() => {
     // Only auto-request if user hasn't explicitly declined and we haven't already prompted
     if (!userLocation &&

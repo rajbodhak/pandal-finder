@@ -56,6 +56,22 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         };
     }, []);
 
+    useEffect(() => {
+        if (!mapRef.current || !selectedPandal) return;
+
+        // Small delay to ensure map is fully rendered when switching to map view
+        const timer = setTimeout(() => {
+            if (mapRef.current && selectedPandal.latitude && selectedPandal.longitude) {
+                mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
+                    animate: true,
+                    duration: 0.5
+                });
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, [selectedPandal, pandals]);
+
     // Handle zoom when selectedPandal changes
     useEffect(() => {
         if (!mapRef.current || !selectedPandal) return;
