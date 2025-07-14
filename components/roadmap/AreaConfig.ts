@@ -21,12 +21,12 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 type: 'railway',
                 description: 'Major railway station in North Kolkata'
             },
-            {
-                id: 'girish_park_metro',
-                name: 'Girish Park Metro Station',
-                type: 'metro',
-                description: 'Metro station close to heritage pandals'
-            },
+            // {
+            //     id: 'girish_park_metro',
+            //     name: 'Girish Park Metro Station',
+            //     type: 'metro',
+            //     description: 'Metro station close to heritage pandals'
+            // },
             {
                 id: 'shyambazar_metro',
                 name: 'Shyambazar Metro Station',
