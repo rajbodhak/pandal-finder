@@ -13,11 +13,12 @@ const detectArea = (address: string): Pandal['area'] => {
 
     const areaKeywords = {
         north_kolkata: ['shyambazar', 'kumartuli', 'shobhabazar', 'bagbazar', 'north kolkata', 'hatibagan', 'chitpur', 'jorasanko', 'beadon street'],
-        south_kolkata: ['ballygunge', 'gariahat', 'jadavpur', 'tollygunge', 'south kolkata', 'kalighat', 'alipore', 'bhowanipore', 'rashbehari'],
+        south_kolkata: ['ballygunge', 'gariahat', 'jadavpur', 'tollygunge', 'south kolkata', 'kalighat', 'alipore', 'bhawanipore', 'rashbehari', 'kasba'],
         central_kolkata: ['park street', 'college street', 'bow barracks', 'central kolkata', 'esplanade', 'dalhousie', 'dharmatala', 'chowringhee'],
         salt_lake: ['salt lake', 'bidhannagar', 'sector', 'city centre', 'salt lake city'],
         new_town: ['new town', 'action area', 'eco park', 'rajarhat', 'newtown'],
-        howrah: ['howrah', 'shibpur', 'santragachi', 'liluah', 'belur']
+        howrah: ['howrah', 'shibpur', 'santragachi', 'liluah', 'belur'],
+        kalyani: ['kalyani',]
     };
 
     for (const [area, keywords] of Object.entries(areaKeywords)) {
@@ -48,6 +49,7 @@ const AREA_OPTIONS = [
     { value: 'salt_lake', label: 'Salt Lake', icon: '🏙️' },
     { value: 'new_town', label: 'New Town', icon: '🌃' },
     { value: 'howrah', label: 'Howrah', icon: '🌉' },
+    { value: 'kalyani', label: 'Kalyani', icon: '🔱' },
     { value: 'other', label: 'Other', icon: '📍' }
 ];
 

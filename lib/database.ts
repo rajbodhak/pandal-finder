@@ -1,5 +1,5 @@
 import { databases, Query, storage } from "./appwrite";
-import { Pandal, FilterOptions, PandalWithDistance } from "./types";
+import { Pandal } from "./types";
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_PANDALS_COLLECTION_ID!;
@@ -57,7 +57,9 @@ export class DatabaseService {
             const response = await databases.listDocuments(
                 DATABASE_ID,
                 COLLECTION_ID,
-                [Query.orderDesc('created_at')]
+                [Query.orderDesc('created_at'),
+                Query.limit(100)
+                ]
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
