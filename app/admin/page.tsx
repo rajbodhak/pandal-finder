@@ -13,7 +13,7 @@ const detectArea = (address: string): Pandal['area'] => {
 
     const areaKeywords = {
         north_kolkata: ['shyambazar', 'kumartuli', 'shobhabazar', 'bagbazar', 'north kolkata', 'hatibagan', 'chitpur', 'jorasanko', 'beadon street'],
-        south_kolkata: ['ballygunge', 'gariahat', 'jadavpur', 'tollygunge', 'south kolkata', 'kalighat', 'alipore', 'bhawanipore', 'rashbehari', 'kasba'],
+        south_kolkata: ['ballygunge', 'gariahat', 'jadavpur', 'tollygunge', 'south kolkata', 'kalighat', 'alipore', 'bhawanipore', 'rashbehari', 'kasba', 'khidirpur'],
         central_kolkata: ['park street', 'college street', 'bow barracks', 'central kolkata', 'esplanade', 'dalhousie', 'dharmatala', 'chowringhee'],
         salt_lake: ['salt lake', 'bidhannagar', 'sector', 'city centre', 'salt lake city'],
         new_town: ['new town', 'action area', 'eco park', 'rajarhat', 'newtown'],
