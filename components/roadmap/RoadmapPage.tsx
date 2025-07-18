@@ -123,12 +123,6 @@ const RoadmapPage: React.FC = () => {
         }
     };
 
-    // Handle route selection
-    const handleRouteSelect = (route: ManualRoute) => {
-        setSelectedRoute(route);
-        setCurrentStep('route-display');
-    };
-
     // Navigation handlers
     const handleBackToArea = () => {
         setCurrentStep('area');
@@ -223,7 +217,7 @@ const RoadmapPage: React.FC = () => {
                         {currentStep === 'routes' && availableRoutes.length > 0 && (
                             <div className="space-y-4 sm:space-y-6">
                                 {/* Header */}
-                                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3 sm:p-6">
+                                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3 sm:p-6 mt-20">
                                     <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                                         <button
                                             onClick={handleBackToStartingPoint}
@@ -239,58 +233,6 @@ const RoadmapPage: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Route Selection */}
-                                {/* <div className="grid gap-3 sm:gap-4">
-                                    {availableRoutes.map((route) => (
-                                        <div
-                                            key={route.id}
-                                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6 hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-xl cursor-pointer transition-all transform hover:scale-[1.02]"
-                                            onClick={() => handleRouteSelect(route)}
-                                        >
-                                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mb-4">
-                                                <div className="flex-1 min-w-0">
-                                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2 truncate">
-                                                        {route.name}
-                                                    </h3>
-                                                    <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base line-clamp-2 mb-3">{route.description}</p>
-                                                </div>
-                                                <span className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getDifficultyColor(route.difficulty)} shrink-0`}>
-                                                    {route.difficulty}
-                                                </span>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm mb-4">
-                                                <div className="flex items-center gap-2">
-                                                    <Route className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
-                                                    <span className="text-gray-700 dark:text-gray-300 truncate">{route.pandalSequence.length} pandals</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
-                                                    <span className="text-gray-700 dark:text-gray-300 truncate">{route.estimatedTotalTime}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
-                                                    <span className="text-gray-700 dark:text-gray-300 truncate">₹{route.totalCost}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-orange-500 text-sm">🕘</span>
-                                                    <span className="text-gray-700 dark:text-gray-300 text-xs truncate">Start: {route.bestTimeToStart}</span>
-                                                </div>
-                                            </div>
-
-                                            {/* Tips Preview */}
-                                {/* {route.tips.length > 0 && (
-                                                <div className="bg-blue-50/80 dark:bg-blue-950/50 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                                                    <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
-                                                        <strong>💡 Tip:</strong> {route.tips[0]}
-                                                        {route.tips.length > 1 && ' (and more...)'}
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div> */}
                             </div>
                         )}
 
