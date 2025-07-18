@@ -33,6 +33,10 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const previousSelectedPandalRef = useRef<PandalWithDistance | null>(null);
     const pandalMarkersRef = useRef<Map<string, L.Marker>>(new Map());
 
+    // NEW: Track if user has manually interacted with the map
+    const hasUserInteractedRef = useRef(false);
+    const initialFitDoneRef = useRef(false);
+
     // Initialize map
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -48,6 +52,15 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         markersRef.current.addTo(map);
         mapRef.current = map;
 
+        // NEW: Track user interactions with the map
+        map.on('zoomstart', () => {
+            hasUserInteractedRef.current = true;
+        });
+
+        map.on('dragstart', () => {
+            hasUserInteractedRef.current = true;
+        });
+
         return () => {
             if (mapRef.current) {
                 mapRef.current.remove();
@@ -56,28 +69,15 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         };
     }, []);
 
-    useEffect(() => {
-        if (!mapRef.current || !selectedPandal) return;
-
-        // Small delay to ensure map is fully rendered when switching to map view
-        const timer = setTimeout(() => {
-            if (mapRef.current && selectedPandal.latitude && selectedPandal.longitude) {
-                mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
-                    animate: true,
-                    duration: 0.5
-                });
-            }
-        }, 100);
-
-        return () => clearTimeout(timer);
-    }, [selectedPandal, pandals]);
-
     // Handle zoom when selectedPandal changes
     useEffect(() => {
         if (!mapRef.current || !selectedPandal) return;
 
         // Only zoom if this is a new selection (not just a re-render)
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
+            // Reset user interaction flag when programmatically zooming to selected pandal
+            hasUserInteractedRef.current = false;
+
             // Zoom to the selected pandal
             mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
@@ -253,11 +253,37 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             pandalMarkersRef.current.set(pandal.$id, marker);
         });
 
-        if (markersRef.current.getLayers().length > 0 && !selectedPandal) {
+        // FIXED: Only auto-fit bounds on initial load, not on every update
+        if (markersRef.current.getLayers().length > 0 &&
+            !selectedPandal &&
+            !hasUserInteractedRef.current &&
+            !initialFitDoneRef.current) {
+
             const group = L.featureGroup(markersRef.current.getLayers());
             mapRef.current.fitBounds(group.getBounds().pad(0.1));
+            initialFitDoneRef.current = true;
         }
-    }, [pandals, userLocation, selectedPandal]);
+    }, [pandals, userLocation, selectedPandal, onPandalClick]);
+
+    // NEW: Handle zoom when selectedPandal changes from mobile view
+    useEffect(() => {
+        if (!mapRef.current || !selectedPandal) return;
+
+        // Small delay to ensure map is fully rendered when switching to map view
+        const timer = setTimeout(() => {
+            if (mapRef.current && selectedPandal.latitude && selectedPandal.longitude) {
+                // Reset user interaction flag when programmatically zooming
+                hasUserInteractedRef.current = false;
+
+                mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
+                    animate: true,
+                    duration: 0.5
+                });
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, [selectedPandal, pandals]);
 
     // Setup global map actions for popup buttons
     useEffect(() => {
