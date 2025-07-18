@@ -241,7 +241,7 @@ const RoadmapPage: React.FC = () => {
                                 </div>
 
                                 {/* Route Selection */}
-                                <div className="grid gap-3 sm:gap-4">
+                                {/* <div className="grid gap-3 sm:gap-4">
                                     {availableRoutes.map((route) => (
                                         <div
                                             key={route.id}
@@ -280,7 +280,7 @@ const RoadmapPage: React.FC = () => {
                                             </div>
 
                                             {/* Tips Preview */}
-                                            {route.tips.length > 0 && (
+                                {/* {route.tips.length > 0 && (
                                                 <div className="bg-blue-50/80 dark:bg-blue-950/50 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                                                     <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
                                                         <strong>💡 Tip:</strong> {route.tips[0]}
@@ -290,7 +290,7 @@ const RoadmapPage: React.FC = () => {
                                             )}
                                         </div>
                                     ))}
-                                </div>
+                                </div> */}
                             </div>
                         )}
 

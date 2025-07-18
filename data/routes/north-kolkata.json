@@ -241,37 +241,38 @@
             "startingPoint": {
                 "id": "sealdah_station",
                 "name": "Sealdah Railway Station",
+                "type": "railway",
                 "description": "Major railway station in North Kolkata"
             },
             "difficulty": "easy",
             "estimatedTotalTime": "4-5 hours",
             "bestTimeToStart": "10:00 AM",
             "pandalSequence": [
-                "pandal_girish_park",
-                "pandal_hatibagan",
+                "pandal_chorebagan_sarbojonin",
+                "pandal_chaltabagan_sarbojonin",
                 "pandal_beadon_street",
-                "pandal_jorasanko"
+                "pandal_hatibagan_sarbojonin"
             ],
             "startingConnection": {
                 "startingPointId": "sealdah_station",
-                "firstPandalId": "pandal_girish_park",
+                "firstPandalId": "pandal_chorebagan_sarbojonin",
                 "connection": {
                     "fromPandalId": "sealdah_station",
-                    "toPandalId": "pandal_girish_park",
+                    "toPandalId": "pandal_chorebagan_sarbojonin",
                     "distance": 500,
                     "estimatedTime": 7,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Exit from Sealdah Main Gate → Girish Avenue"
+                        "walkingRoute": "Exit from Sealdah Main Gate → Girish Avenue → Chorebagan"
                     },
                     "cost": 0,
-                    "notes": "Short walk from station"
+                    "notes": "Short walk from station to Chorebagan area"
                 }
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_girish_park",
-                    "toPandalId": "pandal_hatibagan",
+                    "fromPandalId": "pandal_chorebagan_sarbojonin",
+                    "toPandalId": "pandal_chaltabagan_sarbojonin",
                     "distance": 900,
                     "estimatedTime": 6,
                     "transportMode": "bus",
@@ -286,41 +287,43 @@
                     "notes": "Short bus ride"
                 },
                 {
-                    "fromPandalId": "pandal_hatibagan",
+                    "fromPandalId": "pandal_chaltabagan_sarbojonin",
                     "toPandalId": "pandal_beadon_street",
                     "distance": 700,
-                    "estimatedTime": 10,
+                    "estimatedTime": 11,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Via Cornwallis Street → Beadon Street"
+                        "walkingRoute": "via Bidhan Sarani Rd"
                     },
                     "cost": 0,
-                    "notes": "Walk through heritage area"
+                    "notes": "Pleasant walk through heritage area"
                 },
                 {
                     "fromPandalId": "pandal_beadon_street",
-                    "toPandalId": "pandal_jorasanko",
-                    "distance": 800,
-                    "estimatedTime": 12,
+                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "distance": 600,
+                    "estimatedTime": 10,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Via Beadon Street → Jorasanko Thakur Bari area"
+                        "walkingRoute": "via Principal Khudiram Bose Rd and Bidhan Sarani Rd"
                     },
                     "cost": 0,
-                    "notes": "Visit Tagore House area while walking"
+                    "notes": "Final stretch to complete the heritage circuit"
                 }
             ],
-            "totalWalkingDistance": 2000,
+            "totalWalkingDistance": 1400,
             "totalCost": 5,
             "tips": [
                 "Perfect route for heritage lovers",
                 "Visit Jorasanko Thakur Bari (Tagore House) nearby",
                 "Good for photography enthusiasts",
-                "Less crowded than other routes"
+                "Less crowded than other routes",
+                "Start early to avoid afternoon heat"
             ],
             "warnings": [
                 "Some heritage buildings under renovation",
-                "Narrow lanes can get congested"
+                "Narrow lanes can get congested",
+                "Be careful with photography near heritage sites"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"

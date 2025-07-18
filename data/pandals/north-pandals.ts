@@ -31,7 +31,7 @@ export const NORTH_PANDALS: Pandal[] = [
         $id: "pandal_kumartuli_park",
         name: "Kumartuli Park Sarbojanin",
         address: "Sovabazar, Kolkata",
-        rating: 4.7, // LBB lists as top pandal :contentReference[oaicite:2]{index=2}
+        rating: 4.7,
         crowd_level: "high",
         area: "north_kolkata",
         category: "traditional"

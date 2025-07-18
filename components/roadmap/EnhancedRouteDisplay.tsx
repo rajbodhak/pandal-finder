@@ -211,18 +211,19 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                     {/* Pandals and Routes */}
                     {route.pandalSequence.map((pandalId, index) => {
                         const pandal = getPandalById(pandalId);
-                        const nextSegment = route.routeSegments[index];
+                        const nextSegment = index < route.routeSegments.length ? route.routeSegments[index] : null;
+                        const uniqueKey = `${route.id}-pandal-${pandalId}-${index}`;
 
                         if (!pandal) {
                             return (
-                                <div key={pandalId} className="bg-red-50/80 dark:bg-red-950/50 backdrop-blur-sm border border-red-200 dark:border-red-800 rounded-lg p-3 sm:p-4">
+                                <div key={uniqueKey} className="bg-red-50/80 dark:bg-red-950/50 backdrop-blur-sm border border-red-200 dark:border-red-800 rounded-lg p-3 sm:p-4">
                                     <p className="text-red-700 dark:text-red-300 text-xs sm:text-sm">⚠️ Pandal not found: {pandalId}</p>
                                 </div>
                             );
                         }
 
                         return (
-                            <div key={pandalId} className="relative">
+                            <div key={uniqueKey} className="relative">
                                 {/* Connecting Line */}
                                 <div className="flex items-center justify-center py-2 sm:py-4">
                                     <div className="w-px h-4 sm:h-8 bg-gray-300 dark:bg-gray-600"></div>
@@ -231,6 +232,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 {/* Pandal Card */}
                                 <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-3 sm:p-4 transition-all ${completedSteps.has(pandalId) ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50' : 'border-gray-200 dark:border-gray-700'
                                     }`}>
+                                    {/* Pandal content */}
                                     <div className="flex items-center justify-between gap-3 mb-3">
                                         <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0">
@@ -252,6 +254,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                         </button>
                                     </div>
 
+                                    {/* Pandal stats */}
                                     <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm flex-wrap">
                                         {pandal.rating && (
                                             <div className="flex items-center gap-1">
@@ -268,7 +271,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                     </div>
                                 </div>
 
-                                {/* Next Route Segment */}
+                                {/* Next Route Segment - Only if it exists */}
                                 {nextSegment && (
                                     <>
                                         <div className="flex items-center justify-center py-2 sm:py-4">
@@ -276,6 +279,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                         </div>
 
                                         <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border rounded-lg p-3 sm:p-4 mx-4 sm:mx-8 ${getTransportColor(nextSegment.transportMode)}`}>
+                                            {/* Transport segment content */}
                                             <div className="flex items-center justify-between gap-3 flex-wrap">
                                                 <div className="flex items-center gap-3 flex-wrap">
                                                     <div className="flex items-center gap-2">
@@ -297,11 +301,9 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                                 )}
                                             </div>
 
+                                            {/* Transport details */}
                                             {nextSegment.transportDetails?.busNumber && (
                                                 <p className="text-xs sm:text-sm mt-2">Bus: {nextSegment.transportDetails.busNumber}</p>
-                                            )}
-                                            {nextSegment.transportDetails?.metroLine && (
-                                                <p className="text-xs sm:text-sm mt-2">Metro: {nextSegment.transportDetails.metroLine}</p>
                                             )}
                                             {nextSegment.transportDetails?.walkingRoute && (
                                                 <p className="text-xs sm:text-sm mt-2">Route: {nextSegment.transportDetails.walkingRoute}</p>
@@ -315,7 +317,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                                 <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                                                     <p className="text-xs sm:text-sm font-medium mb-2">Alternatives:</p>
                                                     {nextSegment.alternativeRoutes.map((alt, altIndex) => (
-                                                        <div key={altIndex} className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
+                                                        <div key={`${route.id}-alt-${altIndex}-${nextSegment.fromPandalId}-${nextSegment.toPandalId}`} className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
                                                             • {getTransportIcon(alt.transportMode)} {alt.transportMode} - {alt.distance}m, {alt.estimatedTime} min, ₹{alt.cost || 0}
                                                             {alt.notes && <span className="ml-2 text-gray-500 dark:text-gray-500">({alt.notes})</span>}
                                                         </div>
