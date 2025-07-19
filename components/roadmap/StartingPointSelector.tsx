@@ -81,7 +81,7 @@ export const StartingPointSelector: React.FC<{
                     </div>
 
                     {/* Area Info */}
-                    <div className="bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 rounded-lg p-3 sm:p-4 border border-orange-200/50 dark:border-orange-800/50">
+                    <div className="bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/50 dark:to-pink-950/50 rounded-lg p-3 sm:p-4 border border-orange-200/50 dark:border-orange-800/50">
                         <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">
                             {area.description}
                         </p>
@@ -115,10 +115,10 @@ export const StartingPointSelector: React.FC<{
                                                 {getTypeIcon(point.type)}
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300 truncate">
+                                                <h3 className="text-base md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300 truncate">
                                                     {point.name}
                                                 </h3>
-                                                <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs sm:text-sm rounded-full font-medium ${getTypeBadgeColor(point.type)}`}>
+                                                <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs md:text-sm rounded-full font-medium ${getTypeBadgeColor(point.type)}`}>
                                                     {getTypeIcon(point.type)}
                                                     {point.type.replace('_', ' ').toUpperCase()}
                                                 </span>
@@ -155,7 +155,7 @@ export const StartingPointSelector: React.FC<{
                 </div>
 
                 {/* Help Section */}
-                <div className="mt-8 sm:mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+                {/* <div className="mt-6 md:mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
                     <div className="text-center">
                         <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
                             💡 Choose Your Perfect Starting Point
@@ -165,7 +165,7 @@ export const StartingPointSelector: React.FC<{
                             access to various pandal routes. Consider your mode of transport and preferred exploration style.
                         </p>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
