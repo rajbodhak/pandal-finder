@@ -28,6 +28,8 @@ const RoadmapPage: React.FC = () => {
     const [selectedArea, setSelectedArea] = useState<AreaConfig | null>(null);
     const [selectedStartingPoint, setSelectedStartingPoint] = useState<StartingPoint | null>(null);
     const [availableRoutes, setAvailableRoutes] = useState<ManualRoute[]>([]);
+    // ADD: Store original area routes separately
+    const [areaRoutes, setAreaRoutes] = useState<ManualRoute[]>([]);
     const [selectedRoute, setSelectedRoute] = useState<ManualRoute | null>(null);
     const [pandals, setPandals] = useState<Pandal[]>([]);
     const [loading, setLoading] = useState(false);
@@ -67,7 +69,6 @@ const RoadmapPage: React.FC = () => {
             );
 
             if (localPandals.length > 0) {
-
                 return localPandals;
             }
 
@@ -93,17 +94,18 @@ const RoadmapPage: React.FC = () => {
         const areaPandals = await fetchPandalsForArea(area.id);
         setPandals(areaPandals);
 
-        // Get available routes for this area
+        // Get available routes for this area and store them separately
         const routes = ManualRouteService.getRoutesByArea(area.id);
-        setAvailableRoutes(routes);
+        setAreaRoutes(routes); // Store original area routes
+        setAvailableRoutes(routes); // Also set as current available routes
     };
 
-    // Handle starting point selection
+    // FIXED: Handle starting point selection
     const handleStartingPointSelect = (startingPoint: StartingPoint) => {
         setSelectedStartingPoint(startingPoint);
 
-        // Filter routes by starting point
-        const routesForStartingPoint = availableRoutes.filter(
+        // IMPORTANT: Filter from areaRoutes (original) instead of availableRoutes (potentially filtered)
+        const routesForStartingPoint = areaRoutes.filter(
             route => route.startingPoint.id === startingPoint.id
         );
 
@@ -129,15 +131,17 @@ const RoadmapPage: React.FC = () => {
         setSelectedArea(null);
         setSelectedStartingPoint(null);
         setAvailableRoutes([]);
+        setAreaRoutes([]); // ADDED: Reset area routes
         setSelectedRoute(null);
         setCameFromRoutes(false);
         setError(null);
     };
 
+    // FIXED: Reset availableRoutes to original area routes when going back to starting point
     const handleBackToStartingPoint = () => {
         setCurrentStep('starting-point');
         setSelectedStartingPoint(null);
-        setAvailableRoutes([]);
+        setAvailableRoutes(areaRoutes); // IMPORTANT: Reset to original area routes
         setSelectedRoute(null);
         setCameFromRoutes(false);
         setError(null);
@@ -148,15 +152,6 @@ const RoadmapPage: React.FC = () => {
         setCurrentStep('routes');
         setSelectedRoute(null);
         // Don't reset other states as we want to stay in the routes selection
-    };
-
-    const getDifficultyColor = (difficulty: string) => {
-        switch (difficulty) {
-            case 'easy': return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-300 dark:border-green-700';
-            case 'moderate': return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-300 dark:border-yellow-700';
-            case 'hard': return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-300 dark:border-red-700';
-            default: return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600';
-        }
     };
 
     // Show initial loading spinner

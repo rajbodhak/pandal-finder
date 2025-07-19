@@ -234,96 +234,193 @@
             "updated_at": "2024-10-01T00:00:00Z"
         },
         {
-            "id": "north_kolkata_sealdah_heritage",
-            "name": "North Kolkata Heritage Route from Sealdah",
-            "description": "Focus on heritage and traditional pandals starting from Sealdah Station",
+            "id": "north_kolkata_sealdah_metro",
+            "name": "North Kolkata Traditional Route from Sealdah Junction",
+            "description": "Explore famous traditional pandals in North Kolkata starting from Sealdah Station",
             "areaId": "north_kolkata",
             "startingPoint": {
-                "id": "sealdah_station",
+                "id": "sealdaho_station",
                 "name": "Sealdah Railway Station",
-                "type": "railway",
-                "description": "Major railway station in North Kolkata"
+                "type": "metro",
+                "description": "Railway station in Center of Kolkata"
             },
             "difficulty": "easy",
-            "estimatedTotalTime": "4-5 hours",
+            "estimatedTotalTime": "3-4 hours",
             "bestTimeToStart": "10:00 AM",
             "pandalSequence": [
-                "pandal_chorebagan_sarbojonin",
-                "pandal_chaltabagan_sarbojonin",
-                "pandal_beadon_street",
+                "pandal_sovabazar_rajbari",
+                "pandal_baghbazar_sarbojonin",
+                "pandal_kumartuli_park",
                 "pandal_hatibagan_sarbojonin"
             ],
             "startingConnection": {
-                "startingPointId": "sealdah_station",
-                "firstPandalId": "pandal_chorebagan_sarbojonin",
+                "startingPointId": "sealdaho_station",
+                "firstPandalId": "pandal_sovabazar_rajbari",
                 "connection": {
-                    "fromPandalId": "sealdah_station",
-                    "toPandalId": "pandal_chorebagan_sarbojonin",
-                    "distance": 500,
-                    "estimatedTime": 7,
+                    "fromPandalId": "sealdaho_station",
+                    "toPandalId": "pandal_sovabazar_rajbari",
+                    "distance": 800,
+                    "estimatedTime": 12,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Exit from Sealdah Main Gate → Girish Avenue → Chorebagan"
+                        "walkingRoute": "Exit from Shyambazar Metro → Shyama Charan Dey Street → Raja Nabakrishna Street"
                     },
                     "cost": 0,
-                    "notes": "Short walk from station to Chorebagan area"
+                    "notes": "Pleasant walk through heritage area to reach Sovabazar Rajbari"
                 }
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_chorebagan_sarbojonin",
-                    "toPandalId": "pandal_chaltabagan_sarbojonin",
-                    "distance": 900,
-                    "estimatedTime": 6,
+                    "fromPandalId": "pandal_sovabazar_rajbari",
+                    "toPandalId": "pandal_baghbazar_sarbojonin",
+                    "distance": 650,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Girish Avenue and Bagbazar Street"
+                    },
+                    "cost": 0,
+                    "notes": "Walk through historic lanes to reach one of Kolkata's oldest pandals"
+                },
+                {
+                    "fromPandalId": "pandal_baghbazar_sarbojonin",
+                    "toPandalId": "pandal_kumartuli_park",
+                    "distance": 750,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rabindra Sarani and Nandaram Sen Street"
+                    },
+                    "cost": 0,
+                    "notes": "Visit famous artisan quarters on the way"
+                },
+                {
+                    "fromPandalId": "pandal_kumartuli_park",
+                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "distance": 1200,
+                    "estimatedTime": 8,
                     "transportMode": "bus",
                     "transportDetails": {
-                        "busNumber": "35, 9A",
+                        "busNumber": "9A, 35",
                         "busStops": [
-                            "Girish Park",
+                            "Sovabazar",
                             "Hatibagan"
                         ]
                     },
                     "cost": 5,
-                    "notes": "Short bus ride"
-                },
-                {
-                    "fromPandalId": "pandal_chaltabagan_sarbojonin",
-                    "toPandalId": "pandal_beadon_street",
-                    "distance": 700,
-                    "estimatedTime": 11,
+                    "notes": "Short bus ride to complete the traditional circuit"
+                }
+            ],
+            "totalWalkingDistance": 2200,
+            "totalCost": 5,
+            "tips": [
+                "Perfect route for heritage and traditional puja lovers",
+                "Visit Kumartuli artisan workshops nearby",
+                "Great for photography of traditional decorations",
+                "Less crowded compared to ferry routes",
+                "Easy metro access makes it convenient"
+            ],
+            "warnings": [
+                "Some heritage areas have narrow lanes",
+                "Be respectful while photographing in heritage sites",
+                "Metro station can get crowded during peak hours",
+                "Carry small change for bus fare"
+            ],
+            "created_at": "2024-10-01T00:00:00Z",
+            "updated_at": "2024-10-01T00:00:00Z"
+        },
+        {
+            "id": "north_kolkata_shyambazar_metro",
+            "name": "North Kolkata Traditional Route from Shyambazar Metro",
+            "description": "Explore famous traditional pandals in North Kolkata starting from Shyambazar Metro Station",
+            "areaId": "north_kolkata",
+            "startingPoint": {
+                "id": "shyambazar_metro",
+                "name": "Shyambazar Metro Station",
+                "type": "metro",
+                "description": "Metro station in heart of North Kolkata"
+            },
+            "difficulty": "easy",
+            "estimatedTotalTime": "3-4 hours",
+            "bestTimeToStart": "10:00 AM",
+            "pandalSequence": [
+                "pandal_sovabazar_rajbari",
+                "pandal_baghbazar_sarbojonin",
+                "pandal_kumartuli_park",
+                "pandal_hatibagan_sarbojonin"
+            ],
+            "startingConnection": {
+                "startingPointId": "shyambazar_metro",
+                "firstPandalId": "pandal_sovabazar_rajbari",
+                "connection": {
+                    "fromPandalId": "shyambazar_metro",
+                    "toPandalId": "pandal_sovabazar_rajbari",
+                    "distance": 800,
+                    "estimatedTime": 12,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Bidhan Sarani Rd"
+                        "walkingRoute": "Exit from Shyambazar Metro → Shyama Charan Dey Street → Raja Nabakrishna Street"
                     },
                     "cost": 0,
-                    "notes": "Pleasant walk through heritage area"
-                },
+                    "notes": "Pleasant walk through heritage area to reach Sovabazar Rajbari"
+                }
+            },
+            "routeSegments": [
                 {
-                    "fromPandalId": "pandal_beadon_street",
-                    "toPandalId": "pandal_hatibagan_sarbojonin",
-                    "distance": 600,
+                    "fromPandalId": "pandal_sovabazar_rajbari",
+                    "toPandalId": "pandal_baghbazar_sarbojonin",
+                    "distance": 650,
                     "estimatedTime": 10,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Principal Khudiram Bose Rd and Bidhan Sarani Rd"
+                        "walkingRoute": "via Girish Avenue and Bagbazar Street"
                     },
                     "cost": 0,
-                    "notes": "Final stretch to complete the heritage circuit"
+                    "notes": "Walk through historic lanes to reach one of Kolkata's oldest pandals"
+                },
+                {
+                    "fromPandalId": "pandal_baghbazar_sarbojonin",
+                    "toPandalId": "pandal_kumartuli_park",
+                    "distance": 750,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rabindra Sarani and Nandaram Sen Street"
+                    },
+                    "cost": 0,
+                    "notes": "Visit famous artisan quarters on the way"
+                },
+                {
+                    "fromPandalId": "pandal_kumartuli_park",
+                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "distance": 1200,
+                    "estimatedTime": 8,
+                    "transportMode": "bus",
+                    "transportDetails": {
+                        "busNumber": "9A, 35",
+                        "busStops": [
+                            "Sovabazar",
+                            "Hatibagan"
+                        ]
+                    },
+                    "cost": 5,
+                    "notes": "Short bus ride to complete the traditional circuit"
                 }
             ],
-            "totalWalkingDistance": 1400,
+            "totalWalkingDistance": 2200,
             "totalCost": 5,
             "tips": [
-                "Perfect route for heritage lovers",
-                "Visit Jorasanko Thakur Bari (Tagore House) nearby",
-                "Good for photography enthusiasts",
-                "Less crowded than other routes",
-                "Start early to avoid afternoon heat"
+                "Perfect route for heritage and traditional puja lovers",
+                "Visit Kumartuli artisan workshops nearby",
+                "Great for photography of traditional decorations",
+                "Less crowded compared to ferry routes",
+                "Easy metro access makes it convenient"
             ],
             "warnings": [
-                "Some heritage buildings under renovation",
-                "Narrow lanes can get congested",
-                "Be careful with photography near heritage sites"
+                "Some heritage areas have narrow lanes",
+                "Be respectful while photographing in heritage sites",
+                "Metro station can get crowded during peak hours",
+                "Carry small change for bus fare"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"

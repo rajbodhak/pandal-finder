@@ -16,7 +16,7 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 description: 'Main railway terminus - good connection to all North Kolkata areas'
             },
             {
-                id: 'sealdah_station',
+                id: 'sealdaho_station',
                 name: 'Sealdah Railway Station',
                 type: 'railway',
                 description: 'Major railway station in North Kolkata'
