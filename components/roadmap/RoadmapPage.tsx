@@ -8,7 +8,7 @@ import { ManualRouteService } from './ManualRouteService';
 import { KOLKATA_AREAS } from './AreaConfig';
 import { AreaConfig, StartingPoint, Pandal, ManualRoute } from '@/lib/types';
 import { databaseService } from '@/lib/database';
-import { MapPin, Route, AlertCircle, Clock, DollarSign } from 'lucide-react';
+import { MapPin, AlertCircle } from 'lucide-react';
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
 import { SOUTH_PANDALS } from '@/data/pandals/south-pandals';
@@ -19,7 +19,7 @@ import { LoadingSpinner } from '../LoadingSpinner';
 const ALL_LOCAL_PANDALS: Pandal[] = [
     ...NORTH_PANDALS,
     ...SOUTH_PANDALS
-    // Add SOUTH_PANDALS, CENTRAL_PANDALS etc. when you have them
+
 ];
 
 // Main Roadmap Page Component
@@ -28,14 +28,12 @@ const RoadmapPage: React.FC = () => {
     const [selectedArea, setSelectedArea] = useState<AreaConfig | null>(null);
     const [selectedStartingPoint, setSelectedStartingPoint] = useState<StartingPoint | null>(null);
     const [availableRoutes, setAvailableRoutes] = useState<ManualRoute[]>([]);
-    // ADD: Store original area routes separately
     const [areaRoutes, setAreaRoutes] = useState<ManualRoute[]>([]);
     const [selectedRoute, setSelectedRoute] = useState<ManualRoute | null>(null);
     const [pandals, setPandals] = useState<Pandal[]>([]);
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    // Add this state to track if we came from routes step
     const [cameFromRoutes, setCameFromRoutes] = useState(false);
 
     // Initialize route service
