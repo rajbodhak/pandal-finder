@@ -40,7 +40,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
                     <div className="flex items-center gap-4">
                         <Link
-                            href={"/roadmap"}
+                            href={"/routemap"}
                             className="p-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all transform hover:scale-105 shadow-lg"
                         >
                             <Route className="w-5 h-5" />

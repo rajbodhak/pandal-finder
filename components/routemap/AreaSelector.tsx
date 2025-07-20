@@ -15,7 +15,7 @@ export const AreaSelector: React.FC<{
                             <Navigation className="h-5 w-5 text-white" />
                         </div>
                         <h1 className="text-xl font-bold text-gray-800 dark:text-white mb-1">
-                            Choose Your Exploration Area
+                            Route Maps
                         </h1>
                         <p className="text-gray-600 dark:text-gray-300 text-sm max-w-2xl mx-auto">
                             Select an area to discover amazing pandals and create your perfect route

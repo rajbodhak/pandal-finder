@@ -12,7 +12,7 @@ import { MapPin, AlertCircle } from 'lucide-react';
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
 import { SOUTH_PANDALS } from '@/data/pandals/south-pandals';
-import RoadmapHeader from './RoadmapHeader';
+import RoadmapHeader from './RouteMapHeader';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 // Add other area pandals as needed
@@ -23,7 +23,7 @@ const ALL_LOCAL_PANDALS: Pandal[] = [
 ];
 
 // Main Roadmap Page Component
-const RoadmapPage: React.FC = () => {
+const RouteMapPage: React.FC = () => {
     const [currentStep, setCurrentStep] = useState<'area' | 'starting-point' | 'routes' | 'route-display'>('area');
     const [selectedArea, setSelectedArea] = useState<AreaConfig | null>(null);
     const [selectedStartingPoint, setSelectedStartingPoint] = useState<StartingPoint | null>(null);
@@ -262,4 +262,4 @@ const RoadmapPage: React.FC = () => {
     );
 };
 
-export default RoadmapPage;
+export default RouteMapPage;

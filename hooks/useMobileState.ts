@@ -5,10 +5,16 @@ export const useMobileState = () => {
     const [showMobileSearch, setShowMobileSearch] = useState(false);
 
     const toggleSidebar = useCallback(() => {
-        setIsSidebarOpen(prev => !prev);
-    }, []);
+        console.log('toggleSidebar called, current state:', isSidebarOpen);
+        setIsSidebarOpen(prev => {
+            const newState = !prev;
+            console.log('Setting sidebar to:', newState);
+            return newState;
+        });
+    }, [isSidebarOpen]);
 
     const closeSidebar = useCallback(() => {
+        console.log('closeSidebar called');
         setIsSidebarOpen(false);
     }, []);
 

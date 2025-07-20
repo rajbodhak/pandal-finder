@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
-import { Menu, Route, MapPin, Sun, Moon } from 'lucide-react';
+import { Menu, Home, Route, MapPin, Sun, Moon } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
 
 interface MobileSidebarProps {
     isOpen: boolean;
@@ -14,10 +15,33 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
     onClose
 }) => {
     const { theme, setTheme } = useTheme();
+    const pathname = usePathname();
 
     const toggleTheme = () => {
         setTheme(theme === 'dark' ? 'light' : 'dark');
     };
+
+    // Navigation items
+    const navigationItems = [
+        {
+            href: '/',
+            icon: Home,
+            label: 'Home',
+            isActive: pathname === '/' || pathname === '/home'
+        },
+        {
+            href: '/routemap',
+            icon: Route,
+            label: 'Routemap',
+            isActive: pathname === '/routemap'
+        },
+        {
+            href: '/pandals',
+            icon: MapPin,
+            label: 'Pandals',
+            isActive: pathname === '/pandals'
+        }
+    ];
 
     return (
         <>
@@ -56,29 +80,49 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                 <div className="flex-1 flex flex-col justify-between p-4">
                     {/* Navigation Links */}
                     <div className="space-y-3">
-                        {/* Roadmap Link */}
-                        <Link
-                            href="/roadmap"
-                            onClick={onClose}
-                            className="group flex items-center gap-3 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
-                        >
-                            <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md">
-                                <Route className="w-4 h-4" />
-                            </div>
-                            <span className="text-gray-900 dark:text-white font-medium">Routemap</span>
-                        </Link>
+                        {navigationItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={onClose}
+                                    className={`
+                                        group flex items-center gap-3 p-3 backdrop-blur-sm border rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl
+                                        ${item.isActive
+                                            ? 'bg-gradient-to-r from-orange-100 to-pink-100 dark:from-orange-900/80 dark:to-pink-900/80 border-orange-300 dark:border-orange-500 shadow-orange-200/50 dark:shadow-orange-900/50'
+                                            : 'bg-white/80 dark:bg-gray-800/80 border-white/20 dark:border-gray-700/20 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50'
+                                        }
+                                    `}
+                                >
+                                    <div className={`
+                                        p-2 rounded-lg shadow-md transition-all
+                                        ${item.isActive
+                                            ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white scale-105 shadow-lg'
+                                            : 'bg-gradient-to-r from-orange-500 to-pink-500 text-white'
+                                        }
+                                    `}>
+                                        <Icon className="w-4 h-4" />
+                                    </div>
+                                    <span className={`
+                                        font-medium transition-colors
+                                        ${item.isActive
+                                            ? 'text-orange-700 dark:text-orange-300 font-semibold'
+                                            : 'text-gray-900 dark:text-white'
+                                        }
+                                    `}>
+                                        {item.label}
+                                    </span>
 
-                        {/* Pandals Link */}
-                        <Link
-                            href="/pandals"
-                            onClick={onClose}
-                            className="group flex items-center gap-3 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
-                        >
-                            <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md">
-                                <MapPin className="w-4 h-4" />
-                            </div>
-                            <span className="text-gray-900 dark:text-white font-medium">Pandals</span>
-                        </Link>
+                                    {/* Active indicator dot */}
+                                    {item.isActive && (
+                                        <div className="ml-auto">
+                                            <div className="w-2 h-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse"></div>
+                                        </div>
+                                    )}
+                                </Link>
+                            );
+                        })}
                     </div>
 
                     {/* Theme Switcher Section */}

@@ -1,13 +1,12 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, Search, Route, MapPin, Grid, List, X } from 'lucide-react';
-import Link from 'next/link';
+import { Menu, Search, MapPin, List, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { PandalWithDistance } from '@/lib/types';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
 
 interface MobileHeaderProps {
     onToggleSidebar: () => void;
-    onCloseSidebar: () => void,
+    onCloseSidebar: () => void;
     searchQuery: string;
     onSearchChange: (query: string) => void;
     filteredPandals: PandalWithDistance[];
@@ -15,6 +14,7 @@ interface MobileHeaderProps {
     isSidebarOpen?: boolean;
     viewMode: 'map' | 'list';
     onViewModeChange: (mode: 'map' | 'list') => void;
+    title?: string; // Optional custom title
 }
 
 export const MobileHeader: React.FC<MobileHeaderProps> = ({
@@ -26,11 +26,16 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     onSearchSelect,
     isSidebarOpen = false,
     viewMode,
-    onViewModeChange
+    onViewModeChange,
 }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const searchRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
+
+    // Get current pathname to detect route
+    const pathname = usePathname();
+    const isHomePage = pathname === '/' || pathname === '/home';
+
+    // Determine title - use custom title if provided, otherwise default based on page
 
     // Handle header click when sidebar is open
     const handleHeaderClick = (e: React.MouseEvent) => {
@@ -56,13 +61,13 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     // Handle search close
     const handleSearchClose = () => {
         setIsSearchOpen(false);
-        onSearchChange(''); // Clear search when closing
+        onSearchChange('');
     };
 
     // Handle search select
     const handleSearchSelectInternal = (pandal: PandalWithDistance) => {
         onSearchSelect(pandal);
-        setIsSearchOpen(false); // Close search after selection
+        setIsSearchOpen(false);
     };
 
     // Auto-focus search input when opened
@@ -102,40 +107,45 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                         </h1>
                     </div>
 
-                    {/* Search Button */}
-                    <button
-                        onClick={(e) => handleInteractiveClick(e, handleSearchClick)}
-                        className={`p-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm mr-3 ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}
-                    >
-                        <Search className="w-5 h-5" />
-                    </button>
+                    {/* Only show search and view toggle on home page */}
+                    {isHomePage && (
+                        <>
+                            {/* Search Button */}
+                            <button
+                                onClick={(e) => handleInteractiveClick(e, handleSearchClick)}
+                                className={`p-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm mr-3 ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}
+                            >
+                                <Search className="w-5 h-5" />
+                            </button>
 
-                    {/* View Mode Toggle */}
-                    <div className={`flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl p-1 shadow-lg ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}>
-                        <button
-                            onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('map'))}
-                            className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'map'
-                                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
-                                }`}
-                        >
-                            <MapPin className="w-4 h-4" />
-                        </button>
-                        <button
-                            onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('list'))}
-                            className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'list'
-                                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
-                                }`}
-                        >
-                            <List className="w-4 h-4" />
-                        </button>
-                    </div>
+                            {/* View Mode Toggle */}
+                            <div className={`flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl p-1 shadow-lg ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}>
+                                <button
+                                    onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('map'))}
+                                    className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'map'
+                                        ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
+                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                        }`}
+                                >
+                                    <MapPin className="w-4 h-4" />
+                                </button>
+                                <button
+                                    onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('list'))}
+                                    className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'list'
+                                        ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
+                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                        }`}
+                                >
+                                    <List className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </>
+                    )}
                 </div>
             </header>
 
-            {/* Search Overlay */}
-            {isSearchOpen && (
+            {/* Search Overlay - Only show on home page */}
+            {isHomePage && isSearchOpen && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
                     <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg rounded-xl shadow-2xl border border-white/20 dark:border-gray-700/20 mx-4 w-full max-w-md">
                         {/* Search Header */}
