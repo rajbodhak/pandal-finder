@@ -32,6 +32,9 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const markersRef = useRef<L.LayerGroup>(new L.LayerGroup());
     const previousSelectedPandalRef = useRef<PandalWithDistance | null>(null);
     const pandalMarkersRef = useRef<Map<string, L.Marker>>(new Map());
+    const userMarkerRef = useRef<L.Marker | null>(null);
+    const isUserInteractingRef = useRef(false);
+    const lastUserLocationRef = useRef<UserLocation | null>(null);
 
     // Initialize map
     useEffect(() => {
@@ -47,6 +50,17 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
         markersRef.current.addTo(map);
         mapRef.current = map;
+
+        // Track user interactions to prevent auto-zoom during interaction
+        map.on('movestart', () => {
+            isUserInteractingRef.current = true;
+        });
+
+        map.on('moveend', () => {
+            setTimeout(() => {
+                isUserInteractingRef.current = false;
+            }, 2000); // Allow 2 seconds after user stops interacting
+        });
 
         return () => {
             if (mapRef.current) {
@@ -96,26 +110,53 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         }
     }, [selectedPandal]);
 
-    // Update markers when pandals change
+    // Update user location marker only (without affecting zoom)
+    useEffect(() => {
+        if (!mapRef.current || !userLocation) return;
+
+        // Remove existing user marker
+        if (userMarkerRef.current) {
+            markersRef.current.removeLayer(userMarkerRef.current);
+        }
+
+        // Add new user location marker
+        const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
+            icon: L.divIcon({
+                className: 'user-location-marker',
+                html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                iconSize: [18, 18],
+                iconAnchor: [9, 9]
+            })
+        }).bindPopup('Your Location');
+
+        markersRef.current.addLayer(userMarker);
+        userMarkerRef.current = userMarker;
+
+        // Only auto-center on first location or if user hasn't interacted recently
+        const isFirstLocation = !lastUserLocationRef.current;
+        const hasLocationChanged = lastUserLocationRef.current &&
+            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.001 ||
+                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.001);
+
+        if ((isFirstLocation || hasLocationChanged) && !isUserInteractingRef.current && !selectedPandal) {
+            mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13, {
+                animate: true,
+                duration: 1
+            });
+        }
+
+        lastUserLocationRef.current = userLocation;
+    }, [userLocation, selectedPandal]);
+
+    // Update pandal markers when pandals change
     useEffect(() => {
         if (!mapRef.current) return;
 
-        markersRef.current.clearLayers();
+        // Clear only pandal markers, keep user marker
+        pandalMarkersRef.current.forEach(marker => {
+            markersRef.current.removeLayer(marker);
+        });
         pandalMarkersRef.current.clear();
-
-        // Add user location marker
-        if (userLocation) {
-            const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
-                icon: L.divIcon({
-                    className: 'user-location-marker',
-                    html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
-                    iconSize: [18, 18],
-                    iconAnchor: [9, 9]
-                })
-            }).bindPopup('Your Location');
-
-            markersRef.current.addLayer(userMarker);
-        }
 
         // Add pandal markers
         pandals.forEach(pandal => {
@@ -253,11 +294,11 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             pandalMarkersRef.current.set(pandal.$id, marker);
         });
 
-        if (markersRef.current.getLayers().length > 0 && !selectedPandal) {
+        if (markersRef.current.getLayers().length > 0 && !selectedPandal && !isUserInteractingRef.current) {
             const group = L.featureGroup(markersRef.current.getLayers());
             mapRef.current.fitBounds(group.getBounds().pad(0.1));
         }
-    }, [pandals, userLocation, selectedPandal]);
+    }, [pandals, selectedPandal]);
 
     // Setup global map actions for popup buttons
     useEffect(() => {
