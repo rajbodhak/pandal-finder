@@ -31,10 +31,10 @@ export const useGeolocation = () => {
             setLoading(false);
         };
 
-        // Start watching position for live updates
+        // Start watching position for live updates with less frequent updates
         watchIdRef.current = navigator.geolocation.watchPosition(success, errorHandler, {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 15000,
             maximumAge: 30000
         });
     }, []);

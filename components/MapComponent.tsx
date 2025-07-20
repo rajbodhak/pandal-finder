@@ -33,8 +33,9 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const previousSelectedPandalRef = useRef<PandalWithDistance | null>(null);
     const pandalMarkersRef = useRef<Map<string, L.Marker>>(new Map());
     const userMarkerRef = useRef<L.Marker | null>(null);
-    const isUserInteractingRef = useRef(false);
     const lastUserLocationRef = useRef<UserLocation | null>(null);
+    const mapInitializedRef = useRef(false);
+    const userHasInteractedRef = useRef(false);
 
     // Initialize map
     useEffect(() => {
@@ -51,48 +52,30 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         markersRef.current.addTo(map);
         mapRef.current = map;
 
-        // Track user interactions to prevent auto-zoom during interaction
-        map.on('movestart', () => {
-            isUserInteractingRef.current = true;
+        // Track any user interaction
+        map.on('dragstart zoomstart', () => {
+            userHasInteractedRef.current = true;
         });
 
-        map.on('moveend', () => {
-            setTimeout(() => {
-                isUserInteractingRef.current = false;
-            }, 2000); // Allow 2 seconds after user stops interacting
-        });
+        mapInitializedRef.current = true;
 
         return () => {
             if (mapRef.current) {
                 mapRef.current.remove();
                 mapRef.current = null;
+                mapInitializedRef.current = false;
             }
         };
     }, []);
 
+    // Handle selected pandal zoom (separate effect)
     useEffect(() => {
         if (!mapRef.current || !selectedPandal) return;
 
-        // Small delay to ensure map is fully rendered when switching to map view
-        const timer = setTimeout(() => {
-            if (mapRef.current && selectedPandal.latitude && selectedPandal.longitude) {
-                mapRef.current.setView([selectedPandal.latitude, selectedPandal.longitude], 16, {
-                    animate: true,
-                    duration: 0.5
-                });
-            }
-        }, 100);
-
-        return () => clearTimeout(timer);
-    }, [selectedPandal, pandals]);
-
-    // Handle zoom when selectedPandal changes
-    useEffect(() => {
-        if (!mapRef.current || !selectedPandal) return;
-
-        // Only zoom if this is a new selection (not just a re-render)
+        // Only zoom if this is a new selection
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
-            // Zoom to the selected pandal
+            userHasInteractedRef.current = true; // Mark as user interaction to prevent auto-center
+
             mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
                 duration: 0.5
@@ -104,15 +87,15 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 if (marker && !marker.isPopupOpen()) {
                     marker.openPopup();
                 }
-            }, 500);
+            }, 600);
 
             previousSelectedPandalRef.current = selectedPandal;
         }
     }, [selectedPandal]);
 
-    // Update user location marker only (without affecting zoom)
+    // Handle user location updates (separate effect)
     useEffect(() => {
-        if (!mapRef.current || !userLocation) return;
+        if (!mapRef.current || !userLocation || !mapInitializedRef.current) return;
 
         // Remove existing user marker
         if (userMarkerRef.current) {
@@ -132,13 +115,13 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         markersRef.current.addLayer(userMarker);
         userMarkerRef.current = userMarker;
 
-        // Only auto-center on first location or if user hasn't interacted recently
+        // Only auto-center if user hasn't interacted and this is first location or significant change
         const isFirstLocation = !lastUserLocationRef.current;
-        const hasLocationChanged = lastUserLocationRef.current &&
-            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.001 ||
-                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.001);
+        const hasSignificantChange = lastUserLocationRef.current &&
+            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.01 ||
+                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.01);
 
-        if ((isFirstLocation || hasLocationChanged) && !isUserInteractingRef.current && !selectedPandal) {
+        if ((isFirstLocation || hasSignificantChange) && !userHasInteractedRef.current && !selectedPandal) {
             mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13, {
                 animate: true,
                 duration: 1
@@ -146,13 +129,52 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         }
 
         lastUserLocationRef.current = userLocation;
-    }, [userLocation, selectedPandal]);
+    }, [userLocation]);
 
-    // Update pandal markers when pandals change
+    // Handle pandal markers (separate effect with memoization)
     useEffect(() => {
-        if (!mapRef.current) return;
+        if (!mapRef.current || !mapInitializedRef.current) return;
 
-        // Clear only pandal markers, keep user marker
+        // Only update markers if pandals actually changed
+        const currentPandalIds = pandals.map(p => p.$id).sort().join(',');
+        const existingPandalIds = Array.from(pandalMarkersRef.current.keys()).sort().join(',');
+
+        if (currentPandalIds === existingPandalIds && pandals.length > 0) {
+            // Just update selected state without recreating markers
+            pandalMarkersRef.current.forEach((marker, pandalId) => {
+                const pandal = pandals.find(p => p.$id === pandalId);
+                if (pandal) {
+                    const isSelected = selectedPandal?.$id === pandal.$id;
+                    const icon = L.divIcon({
+                        className: 'pandal-marker',
+                        html: `
+                <div style="
+                  background-color: ${isSelected ? '#ef4444' : '#f97316'}; 
+                  width: 30px; 
+                  height: 30px; 
+                  border-radius: 50%; 
+                  border: 3px solid white; 
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-weight: bold;
+                  font-size: 12px;
+                ">
+                  ${(pandal.rating ?? 0).toFixed(1)}
+                </div>
+              `,
+                        iconSize: [36, 36],
+                        iconAnchor: [18, 18]
+                    });
+                    marker.setIcon(icon);
+                }
+            });
+            return;
+        }
+
+        // Clear only pandal markers
         pandalMarkersRef.current.forEach(marker => {
             markersRef.current.removeLayer(marker);
         });
@@ -191,7 +213,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             const popup = L.popup({
                 closeButton: false,
                 className: 'custom-popup',
-                minWidth: 200
+                minWidth: 200,
+                autoPan: false // Prevent auto-pan which can cause zoom issues
             }).setContent(`
         <button 
             onclick="window.pandalMapActions?.closePopup()"
@@ -282,11 +305,12 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         </div>
 `);
 
-            // Create the marker with popup
             marker.bindPopup(popup);
 
-            // Handle click - trigger callback only (zoom effect will handle popup)
+            // Handle click with debouncing
             marker.on('click', (e) => {
+                e.originalEvent?.stopPropagation();
+                userHasInteractedRef.current = true;
                 onPandalClick(pandal);
             });
 
@@ -294,9 +318,13 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             pandalMarkersRef.current.set(pandal.$id, marker);
         });
 
-        if (markersRef.current.getLayers().length > 0 && !selectedPandal && !isUserInteractingRef.current) {
-            const group = L.featureGroup(markersRef.current.getLayers());
-            mapRef.current.fitBounds(group.getBounds().pad(0.1));
+        // Only fit bounds if no user interaction and no selected pandal
+        if (!userHasInteractedRef.current && !selectedPandal && pandals.length > 0) {
+            const allLayers = markersRef.current.getLayers();
+            if (allLayers.length > 0) {
+                const group = L.featureGroup(allLayers);
+                mapRef.current.fitBounds(group.getBounds().pad(0.1));
+            }
         }
     }, [pandals, selectedPandal]);
 
