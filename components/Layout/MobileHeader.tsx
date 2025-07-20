@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Search, MapPin, List, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { PandalWithDistance } from '@/lib/types';
+import Link from 'next/link';
 
 interface MobileHeaderProps {
     onToggleSidebar: () => void;
@@ -101,11 +102,14 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                         <Menu className="w-5 h-5" />
                     </button>
 
-                    <div className="flex-1 ml-4">
+                    <Link
+                        className="flex-1 ml-4"
+                        href={'/'}
+                    >
                         <h1 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
                             DuggaKhoj
                         </h1>
-                    </div>
+                    </Link>
 
                     {/* Only show search and view toggle on home page */}
                     {isHomePage && (

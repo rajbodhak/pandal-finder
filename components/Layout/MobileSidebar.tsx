@@ -35,12 +35,12 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             label: 'Routemap',
             isActive: pathname === '/routemap'
         },
-        {
-            href: '/pandals',
-            icon: MapPin,
-            label: 'Pandals',
-            isActive: pathname === '/pandals'
-        }
+        // {
+        //     href: '/pandals',
+        //     icon: MapPin,
+        //     label: 'Pandals',
+        //     isActive: pathname === '/pandals'
+        // }
     ];
 
     return (
