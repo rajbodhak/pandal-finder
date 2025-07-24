@@ -234,97 +234,240 @@
             "updated_at": "2024-10-01T00:00:00Z"
         },
         {
-            "id": "north_kolkata_sealdah_metro",
-            "name": "North Kolkata Traditional Route from Sealdah Junction",
-            "description": "Explore famous traditional pandals in North Kolkata starting from Sealdah Station",
+            "id": "north_kolkata_sealdah_station",
+            "name": "North Kolkata Classic from Sealdah",
+            "description": "Traditional pandals covering famous North Kolkata areas starting from Sealdah Station - reverse sequence of Howrah route",
             "areaId": "north_kolkata",
             "startingPoint": {
                 "id": "sealdaho_station",
                 "name": "Sealdah Railway Station",
-                "type": "metro",
-                "description": "Railway station in Center of Kolkata"
+                "type": "railway",
+                "description": "Main railway terminus in Central Kolkata"
             },
-            "difficulty": "easy",
-            "estimatedTotalTime": "3-4 hours",
-            "bestTimeToStart": "10:00 AM",
+            "difficulty": "moderate",
+            "estimatedTotalTime": "5-6 hours",
+            "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
+                "pandal_chorebagan_sarbojonin",
+                "pandal_chaltabagan_sarbojonin",
+                "pandal_beadon_street",
+                "pandal_kashi_bose_lane",
+                "pandal_hatibagan_sarbojonin",
+                "pandal_nalin_sarkar_street",
+                "pandal_hatibagan_nobin_pally",
+                "pandal_sikdar_bagan_sadharan",
                 "pandal_sovabazar_rajbari",
+                "pandal_jagat_mukherjee_park",
                 "pandal_baghbazar_sarbojonin",
                 "pandal_kumartuli_park",
-                "pandal_hatibagan_sarbojonin"
+                "pandal_beniatola_sarbojonin",
+                "pandal_ahiritola_jubok_binda",
+                "pandal_ahiritola_sarbojanin"
             ],
             "startingConnection": {
                 "startingPointId": "sealdaho_station",
-                "firstPandalId": "pandal_sovabazar_rajbari",
+                "firstPandalId": "pandal_chorebagan_sarbojonin",
                 "connection": {
                     "fromPandalId": "sealdaho_station",
-                    "toPandalId": "pandal_sovabazar_rajbari",
-                    "distance": 800,
-                    "estimatedTime": 12,
-                    "transportMode": "walk",
+                    "toPandalId": "pandal_chorebagan_sarbojonin",
+                    "distance": 2200,
+                    "estimatedTime": 15,
+                    "transportMode": "bus",
                     "transportDetails": {
-                        "walkingRoute": "Exit from Shyambazar Metro → Shyama Charan Dey Street → Raja Nabakrishna Street"
+                        "busNumber": "S9, 78",
+                        "busStops": [
+                            "Sealdah Station",
+                            "Chorebagan"
+                        ]
                     },
-                    "cost": 0,
-                    "notes": "Pleasant walk through heritage area to reach Sovabazar Rajbari"
+                    "cost": 8,
+                    "notes": "Take bus from Sealdah to Chorebagan area, then walk 200 meters to pandal.",
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "sealdaho_station",
+                            "toPandalId": "pandal_chorebagan_sarbojonin",
+                            "distance": 2200,
+                            "estimatedTime": 12,
+                            "transportMode": "taxi",
+                            "cost": 180,
+                            "notes": "If bus not available or during peak hours"
+                        }
+                    ]
                 }
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_sovabazar_rajbari",
-                    "toPandalId": "pandal_baghbazar_sarbojonin",
+                    "fromPandalId": "pandal_chorebagan_sarbojonin",
+                    "toPandalId": "pandal_chaltabagan_sarbojonin",
+                    "distance": 850,
+                    "estimatedTime": 13,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Amar Basu Sarani and Vivekananda Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_chaltabagan_sarbojonin",
+                    "toPandalId": "pandal_beadon_street",
+                    "distance": 700,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Bidhan Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_beadon_street",
+                    "toPandalId": "pandal_kashi_bose_lane",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Hari Ghosh St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kashi_bose_lane",
+                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "distance": 600,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Bidhan Sarani Rd and Principal Khudiram Bose Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan_sarbojonin",
+                    "toPandalId": "pandal_nalin_sarkar_street",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Grey St/Shri Aurobindo Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_nalin_sarkar_street",
+                    "toPandalId": "pandal_hatibagan_nobin_pally",
+                    "distance": 250,
+                    "estimatedTime": 4,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Arabinda Sarani and Nalin Sarkar St, Sikdar Bagan St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan_nobin_pally",
+                    "toPandalId": "pandal_sikdar_bagan_sadharan",
+                    "distance": 200,
+                    "estimatedTime": 3,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Sikdar Bagan St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_sikdar_bagan_sadharan",
+                    "toPandalId": "pandal_sovabazar_rajbari",
                     "distance": 650,
                     "estimatedTime": 10,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Girish Avenue and Bagbazar Street"
+                        "walkingRoute": "via Shyampukur St"
                     },
-                    "cost": 0,
-                    "notes": "Walk through historic lanes to reach one of Kolkata's oldest pandals"
+                    "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_baghbazar_sarbojonin",
-                    "toPandalId": "pandal_kumartuli_park",
+                    "fromPandalId": "pandal_sovabazar_rajbari",
+                    "toPandalId": "pandal_jagat_mukherjee_park",
+                    "distance": 500,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Raja Nabakrishna St and Jatindra Mohan Ave"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_jagat_mukherjee_park",
+                    "toPandalId": "pandal_baghbazar_sarbojonin",
                     "distance": 750,
                     "estimatedTime": 11,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Rabindra Sarani and Nandaram Sen Street"
+                        "walkingRoute": "via Girish Ave"
                     },
                     "cost": 0,
-                    "notes": "Visit famous artisan quarters on the way"
+                    "notes": "This is optional, you can also go directly to Kumartuli Park"
+                },
+                {
+                    "fromPandalId": "pandal_baghbazar_sarbojonin",
+                    "toPandalId": "pandal_kumartuli_park",
+                    "distance": 900,
+                    "estimatedTime": 13,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rabindra Sarani"
+                    },
+                    "cost": 0
                 },
                 {
                     "fromPandalId": "pandal_kumartuli_park",
-                    "toPandalId": "pandal_hatibagan_sarbojonin",
-                    "distance": 1200,
-                    "estimatedTime": 8,
-                    "transportMode": "bus",
+                    "toPandalId": "pandal_beniatola_sarbojonin",
+                    "distance": 550,
+                    "estimatedTime": 9,
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "busNumber": "9A, 35",
-                        "busStops": [
-                            "Sovabazar",
-                            "Hatibagan"
-                        ]
+                        "walkingRoute": "via Nandaram Sen St"
                     },
-                    "cost": 5,
-                    "notes": "Short bus ride to complete the traditional circuit"
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_beniatola_sarbojonin",
+                    "toPandalId": "pandal_ahiritola_jubok_binda",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rabindra Sarani and Ahiritola St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_ahiritola_jubok_binda",
+                    "toPandalId": "pandal_ahiritola_sarbojanin",
+                    "distance": 350,
+                    "estimatedTime": 6,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ahiritola St and BK Paul Ave"
+                    },
+                    "cost": 0
                 }
             ],
-            "totalWalkingDistance": 2200,
-            "totalCost": 5,
+            "totalWalkingDistance": 1400,
+            "totalCost": 8,
             "tips": [
-                "Perfect route for heritage and traditional puja lovers",
-                "Visit Kumartuli artisan workshops nearby",
-                "Great for photography of traditional decorations",
-                "Less crowded compared to ferry routes",
-                "Easy metro access makes it convenient"
+                "Start early (9 AM) to avoid afternoon crowds",
+                "Keep small change (₹5, ₹10 notes) for bus fares",
+                "College Street area gets very crowded after 4 PM",
+                "Carry water bottle - walking can be tiring",
+                "Download offline maps as network can be patchy",
+                "This reverse route ends near the river - perfect for evening ferry rides"
             ],
             "warnings": [
-                "Some heritage areas have narrow lanes",
-                "Be respectful while photographing in heritage sites",
-                "Metro station can get crowded during peak hours",
-                "Carry small change for bus fare"
+                "Avoid travelling during peak hours (8-10 AM, 6-8 PM)",
+                "Be careful with belongings in crowded areas",
+                "Some roads may be closed during peak festival days",
+                "Metro services may be disrupted during bandhs",
+                "River areas can get foggy in early morning"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"
@@ -344,67 +487,270 @@
             "estimatedTotalTime": "3-4 hours",
             "bestTimeToStart": "10:00 AM",
             "pandalSequence": [
-                "pandal_sovabazar_rajbari",
-                "pandal_baghbazar_sarbojonin",
+                "pandal_shyambazar_pallysangha",
+                "pandal_jagat_mukherjee_park",
                 "pandal_kumartuli_park",
-                "pandal_hatibagan_sarbojonin"
+                "pandal_ahiritola_sarbojanin",
+                "pandal_ahiritola_jubok_binda",
+                "pandal_beniatola_sarbojonin",
+                "pandal_sovabazar_rajbari",
+                "pandal_kashi_bose_lane",
+                "pandal_hatibagan_sarbojonin",
+                "pandal_sikdar_bagan_sadharan",
+                "pandal_hatibagan_nobin_pally",
+                "pandal_tridhara_sarbojonin",
+                "pandal_nalin_sarkar_street",
+                "pandal_gouriberia_sarbojonin",
+                "pandal_yuba_brinda",
+                "pandal_karbagan_sarbojonin",
+                "pandal_telengabagan_durgotsab",
+                "pandal_jagarani_sangha",
+                "pandal_bidhan_sangha"
             ],
             "startingConnection": {
                 "startingPointId": "shyambazar_metro",
-                "firstPandalId": "pandal_sovabazar_rajbari",
+                "firstPandalId": "pandal_shyambazar_pallysangha",
                 "connection": {
                     "fromPandalId": "shyambazar_metro",
-                    "toPandalId": "pandal_sovabazar_rajbari",
-                    "distance": 800,
-                    "estimatedTime": 12,
+                    "toPandalId": "pandal_shyambazar_pallysangha",
+                    "distance": 130,
+                    "estimatedTime": 2,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Exit from Shyambazar Metro → Shyama Charan Dey Street → Raja Nabakrishna Street"
+                        "walkingRoute": "Exit from Shyambazar Metro Gate 4 → Via Shyam Bazar St"
                     },
-                    "cost": 0,
-                    "notes": "Pleasant walk through heritage area to reach Sovabazar Rajbari"
+                    "cost": 0
                 }
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_sovabazar_rajbari",
-                    "toPandalId": "pandal_baghbazar_sarbojonin",
-                    "distance": 650,
-                    "estimatedTime": 10,
+                    "fromPandalId": "pandal_shyambazar_pallysangha",
+                    "toPandalId": "pandal_jagat_mukherjee_park",
+                    "distance": 450,
+                    "estimatedTime": 6,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Girish Avenue and Bagbazar Street"
+                        "walkingRoute": "via Bhupendra Bose Ave"
                     },
                     "cost": 0,
-                    "notes": "Walk through historic lanes to reach one of Kolkata's oldest pandals"
+                    "notes": "One of the top Durga Puja in North Kolkata"
                 },
                 {
-                    "fromPandalId": "pandal_baghbazar_sarbojonin",
+                    "fromPandalId": "pandal_jagat_mukherjee_park",
                     "toPandalId": "pandal_kumartuli_park",
+                    "distance": 550,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Abhay Mitra St and Madanmohan Tala St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kumartuli_park",
+                    "toPandalId": "pandal_ahiritola_sarbojanin",
+                    "distance": 850,
+                    "estimatedTime": 12,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Beniatola St"
+                    },
+                    "cost": 0,
+                    "notes": "Take Beniatola Street. We are visiting Ahiritola Jubak Brinda and Beniatola later."
+                },
+                {
+                    "fromPandalId": "pandal_ahiritola_sarbojanin",
+                    "toPandalId": "pandal_ahiritola_jubok_binda",
+                    "distance": 350,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via BK Paul Ave and Ahiritola St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_ahiritola_jubok_binda",
+                    "toPandalId": "pandal_beniatola_sarbojonin",
+                    "distance": 300,
+                    "estimatedTime": 5,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ahiritola St and Rabindra Sarani"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_beniatola_sarbojonin",
+                    "toPandalId": "pandal_sovabazar_rajbari",
                     "distance": 750,
                     "estimatedTime": 11,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "via Rabindra Sarani and Nandaram Sen Street"
+                        "walkingRoute": "via Raja Nabakrishna St and BK Paul Ave"
                     },
                     "cost": 0,
-                    "notes": "Visit famous artisan quarters on the way"
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_beniatola_sarbojonin",
+                            "toPandalId": "pandal_sovabazar_rajbari",
+                            "distance": 750,
+                            "estimatedTime": 5,
+                            "transportMode": "bus",
+                            "transportDetails": {
+                                "busNumber": "215A, 211, 211B, RT-25, S-180, S-168, S-185, S-189",
+                                "busStops": "Sovabazar Rajbari"
+                            },
+                            "cost": 5,
+                            "notes": "Get off the bus and walk around 70 meters"
+                        }
+                    ]
                 },
                 {
-                    "fromPandalId": "pandal_kumartuli_park",
+                    "fromPandalId": "pandal_sovabazar_rajbari",
+                    "toPandalId": "pandal_kashi_bose_lane",
+                    "distance": 800,
+                    "estimatedTime": 12,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Raja Nabakrishna St and Hari Ghosh St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kashi_bose_lane",
                     "toPandalId": "pandal_hatibagan_sarbojonin",
-                    "distance": 1200,
-                    "estimatedTime": 8,
+                    "distance": 600,
+                    "estimatedTime": 6,
                     "transportMode": "bus",
                     "transportDetails": {
-                        "busNumber": "9A, 35",
-                        "busStops": [
-                            "Sovabazar",
-                            "Hatibagan"
-                        ]
+                        "busNumber": "78/1, 34B, S-158"
                     },
                     "cost": 5,
-                    "notes": "Short bus ride to complete the traditional circuit"
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_kashi_bose_lane",
+                            "toPandalId": "pandal_hatibagan_sarbojonin",
+                            "distance": 600,
+                            "estimatedTime": 9,
+                            "transportMode": "walk",
+                            "transportDetails": {
+                                "walkingRoute": "via Bidhan Sarani Rd and Principal Khudiram Bose Rd"
+                            },
+                            "cost": 0
+                        }
+                    ]
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan_sarbojonin",
+                    "toPandalId": "pandal_sikdar_bagan_sadharan",
+                    "distance": 400,
+                    "estimatedTime": 6,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Grey St/Shri Aurobindo Sarani Rd and Bidhan Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_sikdar_bagan_sadharan",
+                    "toPandalId": "pandal_hatibagan_nobin_pally",
+                    "distance": 200,
+                    "estimatedTime": 3,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Sikdar Bagan St"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_hatibagan_nobin_pally",
+                    "toPandalId": "pandal_tridhara_sarbojonin",
+                    "distance": 130,
+                    "estimatedTime": 2,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ganendra Mitra Ln"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_tridhara_sarbojonin",
+                    "toPandalId": "pandal_nalin_sarkar_street",
+                    "distance": 170,
+                    "estimatedTime": 2,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Arabinda Sarani"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_nalin_sarkar_street",
+                    "toPandalId": "pandal_gouriberia_sarbojonin",
+                    "distance": 550,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Grey St/Shri Aurobindo Sarani Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_gouriberia_sarbojonin",
+                    "toPandalId": "pandal_yuba_brinda",
+                    "distance": 550,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Canal W Rd and Ultadanga Main Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_yuba_brinda",
+                    "toPandalId": "pandal_karbagan_sarbojonin",
+                    "distance": 290,
+                    "estimatedTime": 4,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ultadanga Main Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_karbagan_sarbojonin",
+                    "toPandalId": "pandal_telengabagan_durgotsab",
+                    "distance": 300,
+                    "estimatedTime": 4,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Ultadanga Main Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_telengabagan_durgotsab",
+                    "toPandalId": "pandal_jagarani_sangha",
+                    "distance": 210,
+                    "estimatedTime": 3,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Adhar Chandra Das Ln"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_jagarani_sangha",
+                    "toPandalId": "pandal_bidhan_sangha",
+                    "distance": 77,
+                    "estimatedTime": 1,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Adhar Chandra Das Ln"
+                    },
+                    "cost": 0,
+                    "notes": "You can end your journey here, but if you want to continue, follow the steps below"
                 }
             ],
             "totalWalkingDistance": 2200,

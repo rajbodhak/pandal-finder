@@ -118,7 +118,7 @@ export const NORTH_PANDALS: Pandal[] = [
         category: "theme-based"
     },
     {
-        $id: "pandal_beadon_street", //Due
+        $id: "pandal_beadon_street",
         name: "Beadon Street Sarbojanin",
         address: "Beadon St, Jorasanko, Kolkata",
         rating: 4.3, // estimated
@@ -127,21 +127,101 @@ export const NORTH_PANDALS: Pandal[] = [
         category: "traditional"
     },
     {
-        $id: "pandal_chaltabagan_sarbojonin", //Due
+        $id: "pandal_chaltabagan_sarbojonin",
         name: "Chaltabagan Sarbojanin",
         address: "Chaltabagan, Kolkata",
         rating: 4.5,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "traditional"
+        category: "theme-based"
     },
     {
-        $id: "pandal_chorebagan_sarbojonin", //Due
+        $id: "pandal_chorebagan_sarbojonin",
         name: "Chorebagan Sarbojanin",
         address: "Chorebagan, Kolkata",
         rating: 4.4,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "traditional"
+        category: "theme-based"
     },
+
+    //added for shyambazar route
+    {
+        $id: "pandal_shyambazar_pallysangha",
+        name: "ShyamBazar Pally Sangha",
+        address: "Shyambazar, Kolkata",
+        rating: 4.2,
+        crowd_level: "low",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_tridhara_sarbojonin",
+        name: "North Tridhara Sarbojanin",
+        address: "Hatibagan, Kolkata",
+        rating: 4.3,
+        crowd_level: "low",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_gouriberia_sarbojonin",
+        name: "Gouriberia Sarbojanin Durgotsab",
+        address: "Ultadanga, Kolkata",
+        rating: 4.4,
+        crowd_level: "medium",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_yuba_brinda",
+        name: "Ultadanga Yuba Brinda",
+        address: "Ultadanga, Kolkata",
+        rating: 4.3,
+        crowd_level: "medium",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_karbagan_sarbojonin",
+        name: "Karbagan Sarbojanin Durgotsav",
+        address: "Ultadanga, Kolkata",
+        rating: 4.5,
+        crowd_level: "high",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_telengabagan_durgotsab",
+        name: "Telengabagan Durgotsav",
+        address: "Ultadanga, Kolkata",
+        rating: 4.5,
+        crowd_level: "high",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+
+    {
+        $id: "pandal_jagarani_sangha",
+        name: "Ultadanga Jagarani Sangha",
+        address: "Ultadanga, Kolkata",
+        rating: 4.3,
+        crowd_level: "medium",
+        area: "north_kolkata",
+        category: "theme-based"
+    },
+    {
+        $id: "pandal_bidhan_sangha",
+        name: "Ultadanga Bidhan Sangha",
+        address: "Ultadanga, Kolkata",
+        rating: 4.4,
+        crowd_level: "medium",
+        area: "north_kolkata",
+        category: "modern"
+    }
 ];
