@@ -92,7 +92,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
             </div>
 
             {/* Scrollable Content */}
-            <div className="pt-34 px-4 pb-6">
+            <div className="pt-36 px-4 pb-6">
                 <div className="max-w-4xl mx-auto">
                     {/* Route Stats */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 my-2">
