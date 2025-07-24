@@ -117,7 +117,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                             {/* Search Button */}
                             <button
                                 onClick={(e) => handleInteractiveClick(e, handleSearchClick)}
-                                className={`p-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm mr-3 ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}
+                                className={`p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm mr-3 ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}
                             >
                                 <Search className="w-5 h-5" />
                             </button>
