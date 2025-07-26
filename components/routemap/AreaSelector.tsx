@@ -80,17 +80,7 @@ export const AreaSelector: React.FC<{
                 </div>
 
                 {/* Footer Info */}
-                <div className="mt-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3">
-                    <div className="text-center">
-                        <h3 className="text-base font-bold text-gray-800 dark:text-white mb-1">
-                            Ready to Start Your Journey? 🎉
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300 text-xs max-w-3xl mx-auto leading-relaxed">
-                            Each area offers unique pandals and experiences. Choose your preferred area to discover optimized routes,
-                            crowd information, and the best times to visit. Your adventure awaits!
-                        </p>
-                    </div>
-                </div>
+
             </div>
         </div>
     );
