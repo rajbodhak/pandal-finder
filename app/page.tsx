@@ -280,20 +280,23 @@ export default function PandalFinderPage() {
       {/* IMPROVED: Better error messaging with theme - Only show in map view */}
       {locationError && locationPromptDismissed &&
         ((isMobile && mobileViewMode === 'map') || (!isMobile && viewMode === 'map')) && (
-          <div className={`bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 border-l-4 border-orange-400 dark:border-orange-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
+          <div className={`bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/90 dark:to-pink-950/90 border-l-4 border-orange-400 dark:border-orange-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
             <div className="container mx-auto px-4">
               <div className="flex justify-between items-start">
                 <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm text-orange-700 dark:text-orange-300">
-                      <strong>Location permission denied:</strong> Please allow location access in your browser to see accurate distances and get personalized results.
-                    </p>
-                    <p className="text-xs text-orange-600 dark:text-orange-400 opacity-90 mt-1">
-                      Settings → Site settings → Location → Allow
-                    </p>
+                  <div className="ml-3 relative">
+                    <div>
+                      <p className="text-sm text-orange-700 dark:text-orange-300">
+                        <strong>Location permission denied:</strong> Please allow location access in your browser to see accurate distances and get personalized results.
+                      </p>
+                      <p className="text-xs text-orange-600 dark:text-orange-400 opacity-90 mt-1">
+                        Settings → Site settings → Location → Allow
+                      </p>
+                    </div>
+
                     <button
                       onClick={handleLocationRequest}
-                      className="mt-2 underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors text-sm"
+                      className="absolute right-0 bottom-0 text-sm underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
                     >
                       Try again
                     </button>
