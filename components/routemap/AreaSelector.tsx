@@ -6,7 +6,7 @@ export const AreaSelector: React.FC<{
     onSelectArea: (area: AreaConfig) => void;
 }> = ({ areas, onSelectArea }) => {
     return (
-        <div className="mt-12 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 pt-2">
+        <div className="mt-12 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 pt-2 mb-7">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3 mb-4">
@@ -78,8 +78,6 @@ export const AreaSelector: React.FC<{
                         </div>
                     ))}
                 </div>
-
-                {/* Footer Info */}
 
             </div>
         </div>

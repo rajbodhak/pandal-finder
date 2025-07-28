@@ -16,7 +16,7 @@ interface MobileHeaderProps {
     isSidebarOpen?: boolean;
     viewMode: 'map' | 'list';
     onViewModeChange: (mode: 'map' | 'list') => void;
-    title?: string; // Optional custom title
+    title?: string;
 }
 
 export const MobileHeader: React.FC<MobileHeaderProps> = ({
@@ -103,14 +103,17 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                         <Menu className="w-5 h-5" />
                     </button>
 
-                    <Link
+                    <div
                         className="flex-1 ml-4"
-                        href={'/'}
                     >
                         <h1 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                            DuggaKhoj
+                            <Link
+                                href={'/'}
+                            >
+                                DuggaKhoj
+                            </Link>
                         </h1>
-                    </Link>
+                    </div>
 
                     {/* Only show search and view toggle on home page */}
                     {isHomePage && (
