@@ -47,13 +47,13 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 name: "Ballygunge Railway Station",
                 type: "railway",
                 description: "Starting point for South Kolkata pandals"
-            },
-            {
-                id: 'jadavpur_station',
-                name: 'Jadavpur Railway Station',
-                type: 'railway',
-                description: 'Good for Jadavpur and nearby areas'
             }
+            // {
+            //     id: 'jadavpur_station',
+            //     name: 'Jadavpur Railway Station',
+            //     type: 'railway',
+            //     description: 'Good for Jadavpur and nearby areas'
+            // }
         ]
     },
     {
@@ -64,16 +64,10 @@ export const KOLKATA_AREAS: AreaConfig[] = [
         estimatedAreas: ['Esplanade', 'Maidan', 'Dharmatala', 'BBD Bagh'],
         startingPoints: [
             {
-                id: 'esplanade_metro',
-                name: 'Esplanade Metro Station',
-                type: 'metro',
+                id: 'sealdah_junction',
+                name: 'Sealdah Railway Station',
+                type: 'railway',
                 description: 'Central hub for exploring central Kolkata'
-            },
-            {
-                id: 'howrah_bridge',
-                name: 'Howrah Bridge Area',
-                type: 'landmark',
-                description: 'Iconic landmark with nearby pandals'
             }
         ]
     }

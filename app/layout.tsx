@@ -4,6 +4,7 @@ import "./globals.css";
 import 'leaflet/dist/leaflet.css';
 import { AuthProvider } from '@/context/AuthContext';
 import Providers from '@/components/providers/ThemeProvider';
+import { Footer } from '@/components/Layout/Footer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors`}>
         <Providers>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <div className="min-h-screen flex flex-col">
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </AuthProvider>
         </Providers>
       </body>
     </html>
