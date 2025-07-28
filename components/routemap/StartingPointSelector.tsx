@@ -53,7 +53,7 @@ export const StartingPointSelector: React.FC<{
     };
 
     return (
-        <div className="mt-12 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 py-2 mb-8">
+        <div className="mt-12 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 py-2 mb-14">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3 mb-4">
@@ -154,18 +154,6 @@ export const StartingPointSelector: React.FC<{
                     ))}
                 </div>
 
-                {/* Help Section */}
-                {/* <div className="mt-6 md:mt-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
-                    <div className="text-center">
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
-                            💡 Choose Your Perfect Starting Point
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm max-w-3xl mx-auto leading-relaxed">
-                            Select a starting point that's most convenient for you. Each point offers different transportation options and
-                            access to various pandal routes. Consider your mode of transport and preferred exploration style.
-                        </p>
-                    </div>
-                </div> */}
             </div>
         </div>
     );
