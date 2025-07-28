@@ -277,7 +277,7 @@ export default function PandalFinderPage() {
         />
       )}
 
-      {/* IMPROVED: Better error messaging with theme */}
+      {/* IMPROVED: Better error messaging with theme - Only show in map view */}
       {locationError && locationPromptDismissed &&
         ((isMobile && mobileViewMode === 'map') || (!isMobile && viewMode === 'map')) && (
           <div className={`bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/50 dark:to-pink-950/50 border-l-4 border-orange-400 dark:border-orange-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
@@ -287,15 +287,16 @@ export default function PandalFinderPage() {
                   <div className="ml-3">
                     <p className="text-sm text-orange-700 dark:text-orange-300">
                       <strong>Location permission denied:</strong> Please allow location access in your browser to see accurate distances and get personalized results.
-                      <br />
-                      <span className="text-xs opacity-90">Settings → Site settings → Location → Allow</span>
-                      <button
-                        onClick={handleLocationRequest}
-                        className="ml-2 underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
-                      >
-                        Try again
-                      </button>
                     </p>
+                    <p className="text-xs text-orange-600 dark:text-orange-400 opacity-90 mt-1">
+                      Settings → Site settings → Location → Allow
+                    </p>
+                    <button
+                      onClick={handleLocationRequest}
+                      className="mt-2 underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors text-sm"
+                    >
+                      Try again
+                    </button>
                   </div>
                 </div>
               </div>
