@@ -12,7 +12,7 @@ export const LocationPermissionPrompt: React.FC<LocationPermissionPromptProps> =
     onContinueWithoutLocation
 }) => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex items-center justify-center p-2 sm:p-4">
+        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex items-start justify-center pt-16 sm:pt-20 lg:pt-24 p-2 sm:p-4">
             <div className="max-w-sm sm:max-w-md lg:max-w-lg mx-auto p-4 sm:p-6 lg:p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/20 text-center transition-all">
                 <div className="mb-4 sm:mb-6">
                     <div className="bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-950/70 dark:to-pink-950/70 rounded-full w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
