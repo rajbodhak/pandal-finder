@@ -284,23 +284,24 @@ export default function PandalFinderPage() {
             <div className="container mx-auto px-4">
               <div className="flex justify-between items-start">
                 <div className="flex">
-                  <div className="ml-3 relative">
+                  <div className="relative ml-3 ">
                     <div>
                       <p className="text-sm text-orange-700 dark:text-orange-300">
                         <strong>Location permission denied:</strong> Please allow location access in your browser to see accurate distances and get personalized results.
                       </p>
-                      <p className="text-xs text-orange-600 dark:text-orange-400 opacity-90 mt-1">
+                      <p className="text-xs text-orange-600 dark:text-orange-400 opacity-90 mt-1 pr-24">
                         Settings → Site settings → Location → Allow
                       </p>
                     </div>
 
                     <button
                       onClick={handleLocationRequest}
-                      className="absolute right-0 bottom-0 text-sm underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
+                      className="absolute bottom-0 right-0 text-sm underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
                     >
                       Try again
                     </button>
                   </div>
+
                 </div>
               </div>
             </div>
