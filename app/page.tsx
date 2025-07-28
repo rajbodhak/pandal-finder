@@ -286,7 +286,9 @@ export default function PandalFinderPage() {
                 <div className="flex">
                   <div className="ml-3">
                     <p className="text-sm text-orange-700 dark:text-orange-300">
-                      <strong>Location access limited:</strong> Distance calculations may not be accurate.
+                      <strong>Location permission denied:</strong> Please allow location access in your browser to see accurate distances and get personalized results.
+                      <br />
+                      <span className="text-xs opacity-90">Settings → Site settings → Location → Allow</span>
                       <button
                         onClick={handleLocationRequest}
                         className="ml-2 underline hover:no-underline text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
@@ -300,27 +302,6 @@ export default function PandalFinderPage() {
             </div>
           </div>
         )}
-
-      {/* Pandals loading error (non-blocking) */}
-      {shouldShowPandalsError && (
-        <div className={`bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/50 dark:to-rose-950/50 border-l-4 border-red-400 dark:border-red-600 p-4 relative z-10 ${isMobile ? 'mt-16' : ''}`}>
-          <div className="container mx-auto px-4">
-            <div className="flex">
-              <div className="ml-3">
-                <p className="text-sm text-red-700 dark:text-red-300">
-                  <strong>Unable to load pandals:</strong> {pandalsError}
-                  <button
-                    onClick={refetch}
-                    className="ml-2 underline hover:no-underline text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
-                  >
-                    Retry
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Content */}
       <main className={`${isMobile ? 'fixed top-[68px] bottom-16 left-0 right-0 overflow-hidden' : ''} ${locationError && locationPromptDismissed && isMobile ? 'top-32' : ''}`}>
