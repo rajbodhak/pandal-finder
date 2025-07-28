@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Search, MapPin, List, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { PandalWithDistance } from '@/lib/types';
+import { HighlightedText } from './HighlightedText';
 import Link from 'next/link';
 
 interface MobileHeaderProps {
@@ -186,10 +187,18 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                                                 className="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
                                             >
                                                 <div className="font-medium text-gray-900 dark:text-white">
-                                                    {pandal.name}
+                                                    <HighlightedText
+                                                        text={pandal.name}
+                                                        highlight={searchQuery}
+                                                        highlightClassName="text-orange-600 dark:text-orange-400 font-bold"
+                                                    />
                                                 </div>
                                                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                                                    {pandal.area}
+                                                    <HighlightedText
+                                                        text={pandal.area}
+                                                        highlight={searchQuery}
+                                                        highlightClassName="text-orange-600 dark:text-orange-400 font-semibold"
+                                                    />
                                                 </div>
                                                 {pandal.distance && (
                                                     <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">
