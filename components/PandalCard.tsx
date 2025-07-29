@@ -114,20 +114,19 @@ export const PandalCard: React.FC<PandalCardProps> = ({
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         );
     }
 
-    // Desktop version
+    // Desktop version - FIXED: Consistent height with proper flex layout
     return (
-        <div className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 min-h-[420px] flex flex-col">
+        <div className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-[480px] flex flex-col relative">
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-pink-500/5 dark:from-orange-400/10 dark:to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-pink-500/5 dark:from-orange-400/10 dark:to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
 
-            {/* Image Section */}
+            {/* Image Section - Fixed height */}
             <div className="relative h-48 w-full flex-shrink-0">
                 {pandal.imageUrl ? (
                     <Image
@@ -162,48 +161,54 @@ export const PandalCard: React.FC<PandalCardProps> = ({
                 )}
             </div>
 
-            {/* Content Section */}
-            <div className="relative z-10 p-6 flex-1 flex flex-col">
-                {/* Title */}
-                <h3 className="font-bold text-xl text-gray-800 dark:text-white mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300 leading-tight">
-                    {pandal.name}
-                </h3>
-
-                {/* Description */}
-                {pandal.description && (
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-                        {pandal.description.length > 120 ? `${pandal.description.substring(0, 120)}...` : pandal.description}
-                    </p>
-                )}
-
-                {/* Location */}
-                <div className="flex items-center gap-2 mb-3">
-                    <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" />
-                    <span className="text-sm text-gray-600 dark:text-gray-300">{pandal.address}</span>
+            {/* Content Section - Flex grow to fill remaining space */}
+            <div className="relative z-10 p-4 flex-1 flex flex-col">
+                {/* Title - Fixed space */}
+                <div className="mb-2">
+                    <h3 className="font-bold text-lg text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300 leading-tight line-clamp-2">
+                        {pandal.name}
+                    </h3>
                 </div>
 
-                {/* Crowd Level */}
-                {pandal.crowd_level && (
-                    <div className="flex items-center gap-2 mb-4">
-                        <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                        <span className={`text-sm px-3 py-1 rounded-full font-medium capitalize border ${getCrowdLevelColor(pandal.crowd_level)}`}>
-                            {pandal.crowd_level} Crowd
-                        </span>
-                    </div>
-                )}
+                {/* Description - Limited space with line clamping */}
+                <div className="mb-3 min-h-[60px]">
+                    {pandal.description && (
+                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
+                            {pandal.description}
+                        </p>
+                    )}
+                </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4 border-t border-orange-200/50 dark:border-orange-800/50 mt-auto">
+                {/* Location - Fixed space */}
+                <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                    <span className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">{pandal.address}</span>
+                </div>
+
+                {/* Crowd Level - Fixed space */}
+                <div className="mb-4 min-h-[32px] flex items-center">
+                    {pandal.crowd_level && (
+                        <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className={`text-sm px-3 py-1 rounded-full font-medium capitalize border ${getCrowdLevelColor(pandal.crowd_level)}`}>
+                                {pandal.crowd_level} Crowd
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Action Buttons - Always at bottom */}
+                <div className="flex gap-3 pt-3 border-t border-orange-200/50 dark:border-orange-800/50 mt-auto">
                     <button
                         onClick={() => onGetDirections(pandal)}
-                        className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:from-orange-600 hover:to-pink-600 transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+                        className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 text-white py-2.5 px-3 rounded-lg text-sm font-medium hover:from-orange-600 hover:to-pink-600 transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
                     >
                         <Navigation className="w-4 h-4" />
                         Get Directions
                     </button>
                     <button
                         onClick={() => onViewDetails(pandal)}
-                        className="flex-1 border border-orange-300 dark:border-orange-600 text-orange-600 dark:text-orange-400 py-3 px-4 rounded-lg text-sm font-medium hover:bg-orange-50 dark:hover:bg-orange-950/50 transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+                        className="flex-1 border border-orange-300 dark:border-orange-600 text-orange-600 dark:text-orange-400 py-2.5 px-3 rounded-lg text-sm font-medium hover:bg-orange-50 dark:hover:bg-orange-950/50 transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
                     >
                         <ChevronRight className="w-4 h-4" />
                         View Details
@@ -212,7 +217,7 @@ export const PandalCard: React.FC<PandalCardProps> = ({
             </div>
 
             {/* Hover Effect Border */}
-            <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-orange-300/50 dark:group-hover:border-orange-600/50 transition-colors duration-300"></div>
+            <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-orange-300/50 dark:group-hover:border-orange-600/50 transition-colors duration-300 pointer-events-none"></div>
         </div>
     );
 };

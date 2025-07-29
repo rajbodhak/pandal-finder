@@ -93,6 +93,7 @@ export default function PandalFinderPage() {
   const {
     visibleCount: desktopVisibleCount,
     loadMoreRef: desktopLoadMoreRef,
+    hasMore: desktopHasMore,
   } = useInfiniteScroll({
     totalItems: filteredPandals.length,
     initialCount: 12,
@@ -374,13 +375,14 @@ export default function PandalFinderPage() {
               </div>
             </div>
           ) : (
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container mx-auto px-4 relative z-5">
               <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
                 <GridListView
                   viewMode={viewMode}
                   visiblePandals={desktopVisiblePandals}
                   totalCount={filteredPandals.length}
                   visibleCount={desktopVisibleCount}
+                  hasMore={desktopHasMore}
                   loadMoreRef={desktopLoadMoreRef}
                   onGetDirections={handleGetDirections}
                   onViewDetails={handleViewDetails}

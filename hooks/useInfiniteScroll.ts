@@ -15,8 +15,9 @@ export const useInfiniteScroll = ({
 }: UseInfiniteScrollProps) => {
     const [visibleCount, setVisibleCount] = useState(initialCount);
     const loadMoreRef = useRef<HTMLDivElement>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
 
-    // Use functional update to avoid stale closure
+    // Manual load more function
     const loadMore = useCallback(() => {
         setVisibleCount(prevCount => {
             const newCount = Math.min(prevCount + increment, totalItems);
@@ -29,19 +30,28 @@ export const useInfiniteScroll = ({
         setVisibleCount(initialCount);
     }, [...resetDeps, initialCount]);
 
-    // Separate the intersection observer logic and use refs for current values
+    // Set up intersection observer
     useEffect(() => {
-        if (!loadMoreRef.current) return;
+        const currentRef = loadMoreRef.current;
 
-        const observer = new IntersectionObserver(
+        if (!currentRef) return;
+
+        // Disconnect existing observer
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+
+        // Create new observer with improved logic
+        observerRef.current = new IntersectionObserver(
             (entries) => {
                 const entry = entries[0];
 
-                // FIXED: Check hasMore condition here with current state
                 if (entry.isIntersecting) {
+                    // Use functional update with current state check
                     setVisibleCount(currentCount => {
                         if (currentCount < totalItems) {
                             const newCount = Math.min(currentCount + increment, totalItems);
+                            console.log(`Loading more: ${currentCount} -> ${newCount} of ${totalItems}`);
                             return newCount;
                         }
                         return currentCount;
@@ -50,29 +60,31 @@ export const useInfiniteScroll = ({
             },
             {
                 threshold: 0.1,
-                rootMargin: '50px',
+                rootMargin: '100px', // Load earlier for better UX
                 root: null
             }
         );
 
-        const currentRef = loadMoreRef.current;
+        observerRef.current.observe(currentRef);
 
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
+        // Cleanup function
         return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
+            if (observerRef.current) {
+                observerRef.current.disconnect();
             }
         };
-    }, [totalItems, increment]);
+    }, [totalItems, increment]); // Only depend on totalItems and increment
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, []);
 
     const hasMore = visibleCount < totalItems;
-
-    // Debug log for current state
-    useEffect(() => {
-    }, [visibleCount, totalItems, hasMore]);
 
     return {
         visibleCount,
