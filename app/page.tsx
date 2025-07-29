@@ -314,7 +314,7 @@ export default function PandalFinderPage() {
         {/* Desktop Filters */}
         {!isMobile && (
           <div className="container mx-auto px-4 py-6 relative z-10">
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl  border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+            <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 sm:p-6">
               <FilterBar
                 filters={filters}
                 onFiltersChange={updateFilters}
@@ -376,7 +376,7 @@ export default function PandalFinderPage() {
             </div>
           ) : (
             <div className="container mx-auto px-4 relative z-5">
-              <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+              <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 sm:p-6">
                 <GridListView
                   viewMode={viewMode}
                   visiblePandals={desktopVisiblePandals}
@@ -395,7 +395,7 @@ export default function PandalFinderPage() {
         {/* Desktop Stats */}
         {!isMobile && (
           <div className="container mx-auto px-4 py-6 relative z-10">
-            <div className="bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 sm:p-6">
+            <div className="bg-transparent rounded-xl p-4 sm:p-6">
               <StatsSection
                 filteredPandals={filteredPandals}
                 userLocation={userLocation}

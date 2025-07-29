@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
     return (
         <footer className={`bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-white/20 dark:border-gray-700/20 transition-all ${isMobile
             ? 'fixed bottom-0 left-0 right-0 h-16 flex items-center justify-center px-4 z-20'
-            : 'mt-12 relative z-10'
+            : 'relative z-10'
             }`}>
             <div className={`${isMobile ? 'text-center' : 'container mx-auto px-4 py-8'}`}>
                 {isMobile ? (
