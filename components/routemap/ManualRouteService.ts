@@ -1,8 +1,8 @@
-// ManualRouteService.ts
 import { ManualRoute, Pandal } from '@/lib/types';
 
 import northKolkataRoutesData from '@/data/routes/north-kolkata.json';
-import southKolkataRoutesData from '@/data/routes/south-kolkata.json'
+import southKolkataRoutesData from '@/data/routes/south-kolkata.json';
+import centralKolkataRouteData from '@/data/routes/central-kolkata.json';
 
 export class ManualRouteService {
     private static routes: ManualRoute[] = [];
@@ -17,7 +17,7 @@ export class ManualRouteService {
             this.routes = [
                 ...northKolkataRoutesData.routes as ManualRoute[],
                 ...southKolkataRoutesData.routes as ManualRoute[],
-                // ...centralKolkataRoutes.routes as ManualRoute[],
+                ...centralKolkataRouteData.routes as ManualRoute[]
             ];
 
             this.isLoaded = true;

@@ -4,9 +4,9 @@
             "id": "north_kolkata_howrah_classic",
             "name": "North Kolkata Classic from Howrah",
             "description": "Traditional pandals covering famous North Kolkata areas starting from Howrah Station",
-            "areaId": "north_kolkata",
+            "areaId": "central_kolkata",
             "startingPoint": {
-                "id": "howrah_station",
+                "id": "sealdah_junction",
                 "name": "Howrah Railway Station",
                 "type": "railway",
                 "latitude": 22.5838,
@@ -24,7 +24,7 @@
                 "pandal_sovabazar_rajbari"
             ],
             "startingConnection": {
-                "startingPointId": "howrah_station",
+                "startingPointId": "sealdah_junction",
                 "firstPandalId": "pandal_bagbazar_sarbojanin",
                 "connection": {
                     "fromPandalId": "howrah_station",

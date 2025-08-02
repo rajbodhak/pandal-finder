@@ -17,9 +17,13 @@ import { LoadingSpinner } from '../LoadingSpinner';
 
 // Add other area pandals as needed
 const ALL_LOCAL_PANDALS: Pandal[] = [
-    ...NORTH_PANDALS,
-    ...SOUTH_PANDALS
-
+    ...(NORTH_PANDALS as Pandal[]),
+    ...(SOUTH_PANDALS as Pandal[]),
+    // Central Kolkata will use North Kolkata pandals
+    ...(NORTH_PANDALS as Pandal[]).map(pandal => ({
+        ...pandal,
+        area: 'central_kolkata' as const
+    }))
 ];
 
 // Main Roadmap Page Component
@@ -42,7 +46,6 @@ const RouteMapPage: React.FC = () => {
             try {
                 setInitialLoading(true);
                 await ManualRouteService.loadRoutes();
-                // Add a small delay to show the loading state
                 await new Promise(resolve => setTimeout(resolve, 500));
             } catch (error) {
                 console.error('Failed to initialize app:', error);
@@ -129,7 +132,7 @@ const RouteMapPage: React.FC = () => {
         setSelectedArea(null);
         setSelectedStartingPoint(null);
         setAvailableRoutes([]);
-        setAreaRoutes([]); // ADDED: Reset area routes
+        setAreaRoutes([]);
         setSelectedRoute(null);
         setCameFromRoutes(false);
         setError(null);
@@ -149,7 +152,7 @@ const RouteMapPage: React.FC = () => {
     const handleBackToRoutes = () => {
         setCurrentStep('routes');
         setSelectedRoute(null);
-        // Don't reset other states as we want to stay in the routes selection
+
     };
 
     // Show initial loading spinner
