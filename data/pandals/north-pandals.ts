@@ -223,5 +223,35 @@ export const NORTH_PANDALS: Pandal[] = [
         crowd_level: "medium",
         area: "north_kolkata",
         category: "modern"
-    }
+    },
+
+    {
+        $id: "pandal_santosh_mitra_square",
+        name: "Santosh Mitra Square",
+        address: "Lebutala More, Kolkata",
+        rating: 4.6,
+        crowd_level: "high",
+        area: "north_kolkata",
+        category: "modern"
+    },
+
+    {
+        $id: "pandal_college_square",
+        name: "College Square Sarbojanin",
+        address: "College Street, Kolkata",
+        rating: 4.5,
+        crowd_level: "high",
+        area: "north_kolkata",
+        category: "modern"
+    },
+
+    {
+        $id: "pandal_md_ali_park",
+        name: "Mohammad Ali Park",
+        address: "Tara Chand Dutta Street, Kolkata",
+        rating: 4.4,
+        crowd_level: "high",
+        area: "north_kolkata",
+        category: "modern"
+    },
 ];
