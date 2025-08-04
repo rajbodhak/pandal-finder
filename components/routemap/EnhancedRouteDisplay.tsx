@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from 'react';
-import { Clock, MapPin, Star, Users, Route, Bus, Train, Car, Navigation, AlertTriangle, DollarSign, ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Clock, MapPin, Star, Route, Bus, Train, Car, Navigation, AlertTriangle, ArrowLeft, } from 'lucide-react';
 import { Pandal, ManualRoute } from '@/lib/types';
+import { useStorage } from '@/hooks/useStorage';
 
 interface EnhancedRouteDisplayProps {
     route: ManualRoute;
@@ -14,8 +15,56 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
     pandals,
     onBack
 }) => {
+    const {
+        markPandalVisited,
+        isPandalVisited,
+        updateRouteProgress,
+        markRouteCompleted,
+        isRouteCompleted,
+        getRouteProgress,
+        unmarkPandalVisited
+    } = useStorage();
+
     const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
     const [showAlternatives, setShowAlternatives] = useState<Set<string>>(new Set());
+    const [isRouteComplete, setIsRouteComplete] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    // Use ref to track if we're updating from storage to prevent loops
+    const isUpdatingFromStorage = useRef(false);
+
+    // Initialize completed steps from storage on component mount
+    useEffect(() => {
+        const savedProgress = getRouteProgress(route.id);
+        if (savedProgress && savedProgress.completedSteps) {
+            isUpdatingFromStorage.current = true;
+            setCompletedSteps(new Set(savedProgress.completedSteps));
+            isUpdatingFromStorage.current = false;
+        }
+
+        // Check if route is already completed
+        setIsRouteComplete(isRouteCompleted(route.id));
+        setIsInitialized(true);
+    }, [route.id]);
+
+    // Save progress whenever completedSteps changes (but not during initialization)
+    useEffect(() => {
+        if (!isInitialized || isUpdatingFromStorage.current) {
+            return;
+        }
+
+        // Convert Set to sorted array for comparison
+        const currentStepsArray = Array.from(completedSteps).sort();
+        const savedProgress = getRouteProgress(route.id);
+        const savedStepsArray = savedProgress ? Array.from(savedProgress.completedSteps).sort() : [];
+
+        // Only update if the steps actually changed
+        const hasChanged = JSON.stringify(currentStepsArray) !== JSON.stringify(savedStepsArray);
+
+        if (hasChanged && completedSteps.size > 0) {
+            updateRouteProgress(route.id, completedSteps);
+        }
+    }, [completedSteps, route.id, updateRouteProgress, isInitialized]);
 
     const getTransportIcon = (mode: string) => {
         switch (mode) {
@@ -43,12 +92,42 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
 
     const toggleStepComplete = (stepId: string) => {
         const newCompleted = new Set(completedSteps);
+
         if (newCompleted.has(stepId)) {
+            // Removing step - handle unvisiting
             newCompleted.delete(stepId);
+
+            // If it's a pandal step and it was marked as visited, ask for confirmation
+            if (stepId !== 'start' && stepId !== 'end') {
+                const pandal = getPandalById(stepId);
+                if (pandal && isPandalVisited(stepId)) {
+                    unmarkPandalVisited(stepId)
+                }
+            }
         } else {
+            // Adding step - handle visiting
             newCompleted.add(stepId);
+
+            // If it's a pandal step, mark it as visited in storage
+            if (stepId !== 'start' && stepId !== 'end') {
+                const pandal = getPandalById(stepId);
+                if (pandal) {
+                    markPandalVisited(stepId, pandal.area);
+                }
+            }
         }
+
         setCompletedSteps(newCompleted);
+
+        // Check if route is completed (all pandals + start + end)
+        const totalSteps = route.pandalSequence.length + 2;
+        if (newCompleted.size === totalSteps && !isRouteComplete) {
+            markRouteCompleted(route.id);
+            setIsRouteComplete(true);
+        } else if (newCompleted.size < totalSteps && isRouteComplete) {
+            // Route was completed but now incomplete, update state
+            setIsRouteComplete(false);
+        }
     };
 
     const toggleAlternatives = (segmentId: string) => {
@@ -66,6 +145,134 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
         return pandals.find(p => p.$id === pandalId);
     };
 
+    const renderStepButton = (stepId: string, stepType: 'start' | 'pandal' | 'end', pandalName?: string) => {
+        const isCompleted = completedSteps.has(stepId);
+        const isPandalVisitedBefore = stepType === 'pandal' ? isPandalVisited(stepId) : false;
+        const isActive = isCompleted || isPandalVisitedBefore;
+
+        let buttonText = '';
+        let buttonClass = '';
+
+        if (stepType === 'start') {
+            buttonText = isCompleted ? '✓' : 'Start';
+        } else if (stepType === 'end') {
+            buttonText = isCompleted ? '✓' : 'Done';
+        } else {
+            if (isCompleted) {
+                buttonText = '✓';
+            } else if (isPandalVisitedBefore) {
+                buttonText = '✓';
+            } else {
+                buttonText = 'Visit';
+            }
+        }
+
+        if (isActive) {
+            buttonClass = 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600';
+        } else {
+            buttonClass = 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600';
+        }
+
+        return (
+            <div className="flex items-center gap-1">
+                <button
+                    onClick={() => toggleStepComplete(stepId)}
+                    className={`px-2 py-1 rounded-md transition-colors text-xs font-medium min-w-[45px] ${buttonClass}`}
+                >
+                    {buttonText}
+                </button>
+
+                {/* Small remove button for visited pandals */}
+                {/* {isActive && stepType === 'pandal' && (
+                    <button
+                        onClick={() => {
+                            const newCompleted = new Set(completedSteps);
+                            newCompleted.delete(stepId);
+                            setCompletedSteps(newCompleted);
+                            unmarkPandalVisited(stepId);
+
+                        }}
+                        className="w-6 h-6 rounded-full text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center justify-center"
+                        title="Remove from visited list"
+                    >
+                        ×
+                    </button>
+                )} */}
+            </div>
+        );
+    };
+
+
+    // Share functionality
+    const shareRoute = async (method: 'whatsapp' | 'copy' | 'generic') => {
+        const shareText = `Check out this Durga Puja route: ${route.name}\n${route.description}\nVisit ${route.pandalSequence.length} pandals in ${route.estimatedTotalTime}!`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}?route=${route.id}`;
+
+        switch (method) {
+            case 'whatsapp':
+                window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`);
+                break;
+            case 'copy':
+                try {
+                    await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
+                    // You might want to show a toast notification here
+                    alert('Route link copied to clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+                break;
+            case 'generic':
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: route.name,
+                            text: shareText,
+                            url: shareUrl
+                        });
+                    } catch (err) {
+                        console.error('Error sharing:', err);
+                    }
+                }
+                break;
+        }
+    };
+
+    const downloadAsPDF = () => {
+        // This would require a PDF generation library
+        // For now, just show an alert
+        alert('PDF download feature coming soon!');
+    };
+
+    const calculateActualProgress = () => {
+        let actualCompletedSteps = 0;
+
+        // Count start if completed
+        if (completedSteps.has('start')) {
+            actualCompletedSteps += 1;
+        }
+
+        // Count end if completed
+        if (completedSteps.has('end')) {
+            actualCompletedSteps += 1;
+        }
+
+        // Count pandals (either completed in current session OR previously visited)
+        route.pandalSequence.forEach(pandalId => {
+            if (completedSteps.has(pandalId) || isPandalVisited(pandalId)) {
+                actualCompletedSteps += 1;
+            }
+        });
+
+        return actualCompletedSteps;
+    };
+
+    const totalSteps = route.pandalSequence.length + 2;
+    const actualCompletedCount = calculateActualProgress();
+    const completionPercentage = (actualCompletedCount / totalSteps) * 100;
+    const visitedPandalsCount = route.pandalSequence.filter(pandalId =>
+        completedSteps.has(pandalId) || isPandalVisited(pandalId)
+    ).length;
+
     return (
         <div className="bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 min-h-screen mb-8">
             {/* Sticky Header */}
@@ -82,6 +289,11 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                         </button>
                         <div className="flex-1 min-w-0">
                             <h1 className="md:text-lg text-base font-bold text-gray-800 dark:text-white">{route.name}</h1>
+                            {isRouteComplete && (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
+                                    ✓ Completed
+                                </span>
+                            )}
                         </div>
                     </div>
 
@@ -107,8 +319,8 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                         <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
                             <MapPin className="h-3 w-3 text-orange-500 shrink-0" />
                             <div className="min-w-0">
-                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Pandals</p>
-                                <p className="font-semibold text-xs text-gray-800 dark:text-white">{route.pandalSequence.length}</p>
+                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Visited</p>
+                                <p className="font-semibold text-xs text-gray-800 dark:text-white">{visitedPandalsCount}/{route.pandalSequence.length}</p>
                             </div>
                         </div>
 
@@ -117,11 +329,11 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                             <div className="min-w-0 flex-1">
                                 <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Progress</p>
                                 <div className="flex items-center gap-1">
-                                    <p className="font-semibold text-xs text-gray-800 dark:text-white">{completedSteps.size}/{route.pandalSequence.length + 1}</p>
+                                    <p className="font-semibold text-xs text-gray-800 dark:text-white">{actualCompletedCount}/{totalSteps}</p>
                                     <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-orange-500 rounded-full transition-all duration-300"
-                                            style={{ width: `${(completedSteps.size / (route.pandalSequence.length + 1)) * 100}%` }}
+                                            style={{ width: `${completionPercentage}%` }}
                                         />
                                     </div>
                                 </div>
@@ -162,7 +374,9 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                     <div className="space-y-1">
                         {/* Starting Point */}
                         <div className="relative">
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('start') ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50' : 'border-gray-200 dark:border-gray-700'
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('start')
+                                ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
+                                : 'border-gray-200 dark:border-gray-700'
                                 }`}>
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -170,19 +384,15 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                             S
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">{route.startingPoint.name}</h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2">{route.startingPoint.description}</p>
+                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">
+                                                {route.startingPoint.name}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2">
+                                                {route.startingPoint.description}
+                                            </p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => toggleStepComplete('start')}
-                                        className={`px-2 py-1 rounded-lg transition-colors text-xs whitespace-nowrap ${completedSteps.has('start')
-                                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                                            }`}
-                                    >
-                                        {completedSteps.has('start') ? '✓' : 'Start'}
-                                    </button>
+                                    {renderStepButton('start', 'start')}
                                 </div>
                             </div>
 
@@ -225,6 +435,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                             const pandal = getPandalById(pandalId);
                             const nextSegment = index < route.routeSegments.length ? route.routeSegments[index] : null;
                             const uniqueKey = `${route.id}-pandal-${pandalId}-${index}`;
+                            const isPandalVisitedBefore = isPandalVisited(pandalId);
 
                             if (!pandal) {
                                 return (
@@ -242,32 +453,36 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                     </div>
 
                                     {/* Pandal Card */}
-                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has(pandalId) ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50' : 'border-gray-200 dark:border-gray-700'
+                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has(pandalId) || isPandalVisitedBefore
+                                        ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
+                                        : 'border-gray-200 dark:border-gray-700'
                                         }`}>
-                                        {/* Pandal content */}
+                                        {/* Pandal header */}
                                         <div className="flex items-center justify-between gap-2 mb-2">
                                             <div className="flex items-center gap-2 flex-1 min-w-0">
                                                 <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
                                                     {index + 1}
                                                 </div>
-                                                <div className="min-w-0">
-                                                    <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">{pandal.name}</h3>
-                                                    <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2">{pandal.address}</p>
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">
+                                                            {pandal.name}
+                                                        </h3>
+                                                        {/* Small badge for previously visited */}
+                                                        {isPandalVisitedBefore && !completedSteps.has(pandalId) && (
+                                                            <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" title="Previously visited"></span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-1">
+                                                        {pandal.address}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() => toggleStepComplete(pandalId)}
-                                                className={`px-2 py-1 rounded-lg transition-colors text-xs whitespace-nowrap ${completedSteps.has(pandalId)
-                                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                                                    }`}
-                                            >
-                                                {completedSteps.has(pandalId) ? '✓' : 'Visit'}
-                                            </button>
+                                            {renderStepButton(pandalId, 'pandal', pandal.name)}
                                         </div>
 
-                                        {/* Pandal stats */}
-                                        <div className="flex items-center gap-2 text-xs flex-wrap">
+                                        {/* Compact pandal stats */}
+                                        <div className="flex items-center gap-3 text-xs">
                                             {pandal.rating && (
                                                 <div className="flex items-center gap-1">
                                                     <Star className="h-3 w-3 text-yellow-500 fill-current" />
@@ -275,10 +490,12 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                                 </div>
                                             )}
                                             <div className="flex items-center gap-1">
-                                                <Users className={`h-3 w-3 ${pandal.crowd_level === 'high' ? 'text-red-500' :
-                                                    pandal.crowd_level === 'medium' ? 'text-yellow-500' : 'text-green-500'
-                                                    }`} />
-                                                <span className="capitalize text-gray-700 dark:text-gray-300">{pandal.crowd_level} crowd</span>
+                                                <div className={`w-2 h-2 rounded-full ${pandal.crowd_level === 'high' ? 'bg-red-500' :
+                                                    pandal.crowd_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                                                    }`}></div>
+                                                <span className="capitalize text-gray-700 dark:text-gray-300 text-xs">
+                                                    {pandal.crowd_level}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -349,7 +566,9 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
                             </div>
 
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('end') ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50' : 'border-gray-200 dark:border-gray-700'
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('end')
+                                ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
+                                : 'border-gray-200 dark:border-gray-700'
                                 }`}>
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -357,19 +576,15 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                             E
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white">Route Completed!</h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-xs">You've visited all pandals on this route</p>
+                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
+                                                Route Completed!
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-xs">
+                                                You've visited all pandals on this route
+                                            </p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => toggleStepComplete('end')}
-                                        className={`px-2 py-1 rounded-lg transition-colors text-xs whitespace-nowrap ${completedSteps.has('end')
-                                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                                            }`}
-                                    >
-                                        {completedSteps.has('end') ? '✓' : 'Done'}
-                                    </button>
+                                    {renderStepButton('end', 'end')}
                                 </div>
                             </div>
                         </div>
@@ -385,13 +600,23 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                     <div
                                         className="bg-gradient-to-r from-orange-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                                         style={{
-                                            width: `${(completedSteps.size / (route.pandalSequence.length + 2)) * 100}%`
+                                            width: `${completionPercentage}%`
                                         }}
                                     ></div>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                                    {completedSteps.size} of {route.pandalSequence.length + 2} steps completed
+                                    {actualCompletedCount} of {totalSteps} steps completed
                                 </p>
+
+                                {/* Additional breakdown */}
+                                <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                    <span>
+                                        🏛️ Pandals: {route.pandalSequence.filter(id => completedSteps.has(id) || isPandalVisited(id)).length}/{route.pandalSequence.length}
+                                    </span>
+                                    <span>
+                                        📍 Route: {(completedSteps.has('start') ? 1 : 0) + (completedSteps.has('end') ? 1 : 0)}/2
+                                    </span>
+                                </div>
                             </div>
 
                             <div>

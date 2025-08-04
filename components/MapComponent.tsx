@@ -74,7 +74,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
         // Only zoom if this is a new selection
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
-            userHasInteractedRef.current = true; // Mark as user interaction to prevent auto-center
+            userHasInteractedRef.current = true;
 
             mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
