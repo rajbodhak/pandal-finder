@@ -202,7 +202,6 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
         );
     };
 
-
     // Share functionality
     const shareRoute = async (method: 'whatsapp' | 'copy' | 'generic') => {
         const shareText = `Check out this Durga Puja route: ${route.name}\n${route.description}\nVisit ${route.pandalSequence.length} pandals in ${route.estimatedTotalTime}!`;
@@ -243,16 +242,23 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
         alert('PDF download feature coming soon!');
     };
 
+    const getAutoProgress = () => {
+        const visitedInRoute = route.pandalSequence.filter(id =>
+            completedSteps.has(id) || isPandalVisited(id)
+        ).length;
+
+        const autoStart = visitedInRoute > 0;
+        const autoEnd = visitedInRoute === route.pandalSequence.length;
+
+        return { autoStart, autoEnd, visitedInRoute };
+    };
+
+    const { autoStart, autoEnd } = getAutoProgress();
+
     const calculateActualProgress = () => {
         let actualCompletedSteps = 0;
 
-        // Count start if completed
-        if (completedSteps.has('start')) {
-            actualCompletedSteps += 1;
-        }
-
-        // Count end if completed
-        if (completedSteps.has('end')) {
+        if (autoStart) {
             actualCompletedSteps += 1;
         }
 
@@ -262,6 +268,11 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                 actualCompletedSteps += 1;
             }
         });
+
+        if (autoEnd) {
+            actualCompletedSteps += 1;
+        }
+
 
         return actualCompletedSteps;
     };
@@ -374,27 +385,30 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                     <div className="space-y-1">
                         {/* Starting Point */}
                         <div className="relative">
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('start')
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${autoStart
                                 ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                 : 'border-gray-200 dark:border-gray-700'
                                 }`}>
-                                <div className="flex items-center justify-between gap-2">
-                                    <div className="flex items-center gap-2 flex-1 min-w-0">
-                                        <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
-                                            S
-                                        </div>
-                                        <div className="min-w-0">
-                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">
-                                                {route.startingPoint.name}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2">
-                                                {route.startingPoint.description}
-                                            </p>
-                                        </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                        {autoStart ? '✓' : 'S'}
                                     </div>
-                                    {renderStepButton('start', 'start')}
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
+                                            {route.startingPoint.name}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs">
+                                            {autoStart ? 'Route started!' : 'Visit any pandal to start'}
+                                        </p>
+                                    </div>
+                                    {autoStart && (
+                                        <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                            Started
+                                        </span>
+                                    )}
                                 </div>
                             </div>
+
 
                             {/* Starting Connection */}
                             {route.startingConnection && (
@@ -566,27 +580,30 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
                             </div>
 
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has('end')
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${autoEnd
                                 ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                 : 'border-gray-200 dark:border-gray-700'
                                 }`}>
-                                <div className="flex items-center justify-between gap-2">
-                                    <div className="flex items-center gap-2 flex-1 min-w-0">
-                                        <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
-                                            E
-                                        </div>
-                                        <div className="min-w-0">
-                                            <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
-                                                Route Completed!
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-xs">
-                                                You've visited all pandals on this route
-                                            </p>
-                                        </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                        {autoEnd ? '✓' : 'E'}
                                     </div>
-                                    {renderStepButton('end', 'end')}
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
+                                            Route Complete
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs">
+                                            {autoEnd ? 'Route Ended!' : 'Visit all Pandals to end'}
+                                        </p>
+                                    </div>
+                                    {autoEnd && (
+                                        <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                            You've visited All Pandals
+                                        </span>
+                                    )}
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -637,9 +654,6 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                             </button>
                             <button className="px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all text-xs">
                                 Copy Route Link
-                            </button>
-                            <button className="px-3 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-xs">
-                                Download as PDF
                             </button>
                         </div>
                     </div>
