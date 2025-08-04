@@ -69,7 +69,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
     return (
         <div className="bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 min-h-screen mb-8">
             {/* Sticky Header */}
-            <div className="fixed top-14 left-0 right-0 bg-orange-50/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-lg border-b border-white/20 dark:border-gray-700/20 z-20 px-4 py-3 md:py-4">
+            <div className="fixed top-14 left-0 right-0 bg-orange-50/60 dark:bg-red-900/10 backdrop-blur-lg shadow-lg border-b border-white/20 dark:border-gray-700/20 z-20 px-4 py-3 md:py-4">
                 <div className="max-w-4xl mx-auto">
                     {/* Back Button and Title Row */}
                     <div className="flex items-center gap-3">
