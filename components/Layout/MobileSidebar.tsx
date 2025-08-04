@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
-import { Menu, Home, Route, MapPin, Sun, Moon } from 'lucide-react';
+import { Menu, Home, Route, Sun, Moon } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
+
 
 interface MobileSidebarProps {
     isOpen: boolean;
@@ -64,9 +65,12 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     </button>
 
                     <div className="flex-1 ml-4">
-                        <h1 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                        <Link
+                            className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent"
+                            href={"/"}
+                        >
                             DuggaKhoj
-                        </h1>
+                        </Link>
                     </div>
                 </div>
 
