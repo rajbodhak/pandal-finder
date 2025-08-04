@@ -219,16 +219,15 @@
             "totalCost": 28,
             "tips": [
                 "Start early (9 AM) to avoid afternoon crowds",
-                "Keep small change (₹5, ₹10 notes) for bus fares",
-                "College Street area gets very crowded after 4 PM",
+                "Keep small change (₹10, ₹20 notes) for bus fares",
                 "Carry water bottle - walking can be tiring",
-                "Download offline maps as network can be patchy"
+                "Good for photography enthusiasts",
+                "Perfect route for heritage lovers"
             ],
             "warnings": [
-                "Avoid travelling during peak hours (8-10 AM, 6-8 PM)",
+                "Avoid travelling during peak hours (6-8 PM)",
                 "Be careful with belongings in crowded areas",
-                "Some roads may be closed during peak festival days",
-                "Metro services may be disrupted during bandhs"
+                "Some roads may be closed during peak festival days"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"
@@ -517,16 +516,16 @@
             "totalWalkingDistance": 2200,
             "totalCost": 5,
             "tips": [
+                "Start early (9 AM) to avoid afternoon crowds",
                 "Perfect route for heritage and traditional puja lovers",
-                "Visit Kumartuli artisan workshops nearby",
                 "Great for photography of traditional decorations",
                 "Less crowded compared to ferry routes",
                 "Easy metro access makes it convenient"
             ],
             "warnings": [
-                "Some heritage areas have narrow lanes",
+                "Avoid travelling during peak hours (6-8 PM)",
+                "Be careful with belongings in crowded areas",
                 "Be respectful while photographing in heritage sites",
-                "Metro station can get crowded during peak hours",
                 "Carry small change for bus fare"
             ],
             "created_at": "2024-10-01T00:00:00Z",

@@ -3,7 +3,7 @@
         {
             "id": "cental_to_north_classic",
             "name": "Central Kolkata to North Kolkata",
-            "description": "Journey from Central Kolkata through North Kolkata's heritage pandals in historic neighborhoods like Kumartuli, Sovabazar, and Baghbazar",
+            "description": "Journey from Central Kolkata through North Kolkata's heritage pandals in historic neighborhoods",
             "areaId": "central_kolkata",
             "startingPoint": {
                 "id": "sealdah_junction",
@@ -244,14 +244,14 @@
             "totalWalkingDistance": 2000,
             "totalCost": 5,
             "tips": [
+                "Start early (9 AM) to avoid afternoon crowds",
                 "Perfect route for heritage lovers",
-                "Visit Jorasanko Thakur Bari (Tagore House) nearby",
-                "Good for photography enthusiasts",
-                "Less crowded than other routes"
+                "Good for photography enthusiasts"
             ],
             "warnings": [
-                "Some heritage buildings under renovation",
-                "Narrow lanes can get congested"
+                "Avoid travelling during peak hours (6-8 PM)",
+                "Be careful with belongings in crowded areas",
+                "College Street area gets very crowded after 4 PM"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"

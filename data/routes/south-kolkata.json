@@ -234,16 +234,12 @@
             "totalCost": 28,
             "tips": [
                 "Start early (9 AM) to avoid afternoon crowds",
-                "Keep small change (₹5, ₹10 notes) for bus fares",
-                "College Street area gets very crowded after 4 PM",
-                "Carry water bottle - walking can be tiring",
-                "Download offline maps as network can be patchy"
+                "Keep small change (₹10, ₹20 notes) for bus fares",
+                "Carry water bottle - walking can be tiring"
             ],
             "warnings": [
-                "Avoid travelling during peak hours (8-10 AM, 6-8 PM)",
-                "Be careful with belongings in crowded areas",
-                "Some roads may be closed during peak festival days",
-                "Metro services may be disrupted during bandhs"
+                "Avoid travelling during peak hours (6-8 PM)",
+                "Be careful with belongings in crowded areas"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"
