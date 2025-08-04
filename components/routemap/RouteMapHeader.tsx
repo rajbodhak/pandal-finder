@@ -12,17 +12,16 @@ const RouteMapHeader = () => {
     const { isMobile } = useResponsive();
     const {
         isSidebarOpen,
-        showMobileSearch,
         toggleSidebar,
         closeSidebar,
     } = useMobileState();
 
     // Debug logging
-    console.log('RouteMapHeader Debug:', {
-        isMobile,
-        isSidebarOpen,
-        showMobileSearch
-    });
+    // console.log('RouteMapHeader Debug:', {
+    //     isMobile,
+    //     isSidebarOpen,
+    //     showMobileSearch
+    // });
 
     // Dummy props for MobileHeader (since route page doesn't need search/view toggle)
     const dummyProps = {
@@ -73,7 +72,6 @@ const RouteMapHeader = () => {
                     </h1>
                 </div>
 
-                {/* Right side - Theme switcher */}
                 <ThemeSwitcher />
             </div>
         </header>

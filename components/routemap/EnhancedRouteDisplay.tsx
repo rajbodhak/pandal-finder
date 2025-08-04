@@ -94,8 +94,8 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
             {/* Scrollable Content */}
             <div className="pt-36 px-4 pb-6">
                 <div className="max-w-4xl mx-auto">
-                    {/* Route Stats */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 my-2">
+
+                    <div className="grid grid-cols-3 gap-2 my-2">
                         <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
                             <Clock className="h-3 w-3 text-orange-500 shrink-0" />
                             <div className="min-w-0">
@@ -103,6 +103,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 <p className="font-semibold text-xs text-gray-800 dark:text-white truncate">{route.estimatedTotalTime}</p>
                             </div>
                         </div>
+
                         <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
                             <MapPin className="h-3 w-3 text-orange-500 shrink-0" />
                             <div className="min-w-0">
@@ -110,18 +111,20 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                 <p className="font-semibold text-xs text-gray-800 dark:text-white">{route.pandalSequence.length}</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
-                            <DollarSign className="h-3 w-3 text-orange-500 shrink-0" />
-                            <div className="min-w-0">
-                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Total Cost</p>
-                                <p className="font-semibold text-xs text-gray-800 dark:text-white">₹{route.totalCost}</p>
-                            </div>
-                        </div>
+
                         <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
                             <Route className="h-3 w-3 text-orange-500 shrink-0" />
-                            <div className="min-w-0">
+                            <div className="min-w-0 flex-1">
                                 <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Progress</p>
-                                <p className="font-semibold text-xs text-gray-800 dark:text-white">{completedSteps.size}/{route.pandalSequence.length + 1}</p>
+                                <div className="flex items-center gap-1">
+                                    <p className="font-semibold text-xs text-gray-800 dark:text-white">{completedSteps.size}/{route.pandalSequence.length + 1}</p>
+                                    <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-orange-500 rounded-full transition-all duration-300"
+                                            style={{ width: `${(completedSteps.size / (route.pandalSequence.length + 1)) * 100}%` }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

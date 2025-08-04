@@ -16,18 +16,6 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 description: 'Main railway terminus - good connection to all North Kolkata areas'
             },
             {
-                id: 'sealdaho_station',
-                name: 'Sealdah Railway Station',
-                type: 'railway',
-                description: 'Major railway station in North Kolkata'
-            },
-            // {
-            //     id: 'girish_park_metro',
-            //     name: 'Girish Park Metro Station',
-            //     type: 'metro',
-            //     description: 'Metro station close to heritage pandals'
-            // },
-            {
                 id: 'shyambazar_metro',
                 name: 'Shyambazar Metro Station',
                 type: 'metro',
@@ -48,26 +36,21 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 type: "railway",
                 description: "Starting point for South Kolkata pandals"
             }
-            // {
-            //     id: 'jadavpur_station',
-            //     name: 'Jadavpur Railway Station',
-            //     type: 'railway',
-            //     description: 'Good for Jadavpur and nearby areas'
-            // }
+
         ]
     },
     {
         id: 'central_kolkata',
         name: 'central_kolkata',
         displayName: 'Central Kolkata',
-        description: 'Mix of traditional and modern pandals around Esplanade, Maidan area',
+        description: 'Mix of traditional and modern pandals around Central to North Kolkata',
         estimatedAreas: ['Esplanade', 'Maidan', 'Dharmatala', 'BBD Bagh'],
         startingPoints: [
             {
                 id: 'sealdah_junction',
                 name: 'Sealdah Railway Station',
                 type: 'railway',
-                description: 'Central hub for exploring central Kolkata'
+                description: 'Central to North Kolkata Pandals exploring'
             }
         ]
     }

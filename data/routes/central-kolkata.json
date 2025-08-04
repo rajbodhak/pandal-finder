@@ -48,53 +48,42 @@
                     "transportDetails": {
                         "walkingRoute": "via Bepin Behari Ganguly St"
                     },
-                    "cost": 8
+                    "cost": 0
                 }
             },
             "routeSegments": [
                 {
                     "fromPandalId": "pandal_santosh_mitra_square",
                     "toPandalId": "pandal_college_square",
-                    "distance": 1000,
-                    "estimatedTime": 12,
+                    "distance": 1200,
+                    "estimatedTime": 15,
                     "transportMode": "walk",
                     "transportDetails": {
-                        "walkingRoute": "Via Bagbazar Street → Kumartuli Street"
+                        "walkingRoute": "via Shreegopal Mullick Ln"
                     },
-                    "cost": 0,
-                    "notes": "Pleasant walk through traditional pottery makers' area"
+                    "cost": 0
                 },
                 {
                     "fromPandalId": "pandal_college_square",
                     "toPandalId": "pandal_md_ali_park",
-                    "distance": 1200,
+                    "distance": 700,
                     "estimatedTime": 8,
-                    "transportMode": "bus",
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "busNumber": "12, 30, 78",
-                        "busStops": [
-                            "Kumartuli",
-                            "Shyambazar 5-Point Crossing"
-                        ]
+                        "walkingRoute": "via Pyari Sarkar St"
                     },
-                    "cost": 5,
-                    "notes": "Frequent buses available"
+                    "cost": 0
                 },
                 {
                     "fromPandalId": "pandal_md_ali_park",
                     "toPandalId": "pandal_chorebagan_sarbojonin",
-                    "distance": 1500,
+                    "distance": 950,
                     "estimatedTime": 12,
-                    "transportMode": "metro",
+                    "transportMode": "walk",
                     "transportDetails": {
-                        "metroLine": "Blue Line",
-                        "busStops": [
-                            "Shyambazar Metro",
-                            "College Street Metro"
-                        ]
+                        "walkingRoute": "via Central Ave/Chittaranjan Ave"
                     },
-                    "cost": 15,
-                    "notes": "Metro is fastest and most comfortable"
+                    "cost": 0
                 },
                 {
                     "fromPandalId": "pandal_chorebagan_sarbojonin",
