@@ -31,8 +31,8 @@ interface UserProgress {
 export class BrowserStorageService {
     private static instance: BrowserStorageService;
     private readonly STORAGE_PREFIX = 'pandal_visit_';
-    private readonly DEFAULT_EXPIRY_DAYS = 30; // 1 month default
-    private readonly CLEANUP_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
+    private readonly DEFAULT_EXPIRY_DAYS = 30;
+    private readonly CLEANUP_INTERVAL = 24 * 60 * 60 * 1000;
     private cleanupTimer: NodeJS.Timeout | null = null;
 
     private constructor() {
