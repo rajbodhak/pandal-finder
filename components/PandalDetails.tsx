@@ -68,7 +68,7 @@ export const PandalDetails: React.FC<PandalDetailsProps> = ({
             onClick={onClose}
         >
             <div
-                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-700/20 max-w-lg sm:max-w-xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-hidden"
+                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-700/20 max-w-lg sm:max-w-xl w-full max-h-[90vh] sm:max-h-[85vh] overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -123,7 +123,7 @@ export const PandalDetails: React.FC<PandalDetailsProps> = ({
                 </div>
 
                 {/* Content */}
-                <div className="p-3 sm:p-4 max-h-64 sm:max-h-72 overflow-y-auto">
+                <div className="p-3 sm:p-4 max-h-80 sm:max-h-96 overflow-y-auto">
                     {/* Description */}
                     <div className="bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/30 dark:to-pink-950/30 rounded-lg p-3 border border-orange-200/50 dark:border-orange-800/50 mb-3">
                         <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{pandal.description}</p>
