@@ -13,6 +13,7 @@ interface GridListViewProps {
     loadMoreRef: React.RefObject<HTMLDivElement | null>;
     onGetDirections: (pandal: PandalWithDistance) => void;
     onViewDetails: (pandal: PandalWithDistance) => void;
+    onLoadMore?: () => void;
 }
 
 export const GridListView: React.FC<GridListViewProps> = ({
@@ -23,7 +24,8 @@ export const GridListView: React.FC<GridListViewProps> = ({
     hasMore,
     loadMoreRef,
     onGetDirections,
-    onViewDetails
+    onViewDetails,
+    onLoadMore
 }) => {
     return (
         <div className="container mx-auto px-4">
@@ -56,12 +58,20 @@ export const GridListView: React.FC<GridListViewProps> = ({
                     </div>
                 )}
 
-                {/* Load More Trigger - Only show if there are more items */}
+                {/* Load More Section - Updated to match mobile behavior */}
                 {hasMore && visibleCount < totalCount && (
-                    <div ref={loadMoreRef} className={`${viewMode === 'grid' ? 'col-span-full' : ''} py-8 text-center`}>
-                        <div className="inline-flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                            <div className="w-5 h-5 border-2 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
-                            <span className="text-sm">Loading more pandals...</span>
+                    <div className={`${viewMode === 'grid' ? 'col-span-full' : ''} py-8 text-center`}>
+                        {/* Invisible trigger element for intersection observer */}
+                        <div ref={loadMoreRef} className="h-1 w-full" />
+
+                        {/* Load More Button - same style as mobile */}
+                        <div className="mt-4">
+                            <button
+                                onClick={onLoadMore}
+                                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
+                            >
+                                Load More ({totalCount - visibleCount} remaining)
+                            </button>
                         </div>
                     </div>
                 )}

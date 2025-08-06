@@ -94,6 +94,7 @@ export default function PandalFinderPage() {
     visibleCount: desktopVisibleCount,
     loadMoreRef: desktopLoadMoreRef,
     hasMore: desktopHasMore,
+    loadMore: loadMoreDesktop,
   } = useInfiniteScroll({
     totalItems: filteredPandals.length,
     initialCount: 12,
@@ -386,6 +387,7 @@ export default function PandalFinderPage() {
                   loadMoreRef={desktopLoadMoreRef}
                   onGetDirections={handleGetDirections}
                   onViewDetails={handleViewDetails}
+                  onLoadMore={loadMoreDesktop}
                 />
               </div>
             </div>
