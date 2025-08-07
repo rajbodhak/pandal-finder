@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Menu, Home, Route, Sun, Moon } from 'lucide-react';
+import { Menu, Home, Route, Sun, Moon, Info } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
@@ -36,6 +36,12 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             label: 'Routemap',
             isActive: pathname === '/routemap'
         },
+        {
+            href: '/about',
+            icon: Info,
+            label: 'About',
+            isActive: pathname === 'about'
+        }
     ];
 
     return (
