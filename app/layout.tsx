@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import { AuthProvider } from '@/context/AuthContext';
 import Providers from '@/components/providers/ThemeProvider';
 import { Footer } from '@/components/Layout/Footer';
+import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +17,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// Google Analytics ID (optional - you can add this later)
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   title: "DuggaKhoj",
@@ -28,6 +33,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Google Analytics - Only loads if GA_TRACKING_ID exists */}
+        {GA_TRACKING_ID && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_TRACKING_ID}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors`}>
         <Providers>
           <AuthProvider>
@@ -39,6 +69,9 @@ export default function RootLayout({
             </div>
           </AuthProvider>
         </Providers>
+
+        {/* Vercel Analytics - Works automatically on Vercel */}
+        <Analytics />
       </body>
     </html>
   );
