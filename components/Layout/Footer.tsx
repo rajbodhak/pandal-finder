@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
                             © 2025 DuggaKhoj
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Made with ❤️ for the community by <span className="font-semibold text-orange-600 dark:text-orange-400">Raj</span>
+                            Made with ❤️ for the  <span className="font-semibold text-orange-600 dark:text-orange-400">Community</span>
                         </p>
                     </div>
                 ) : (
