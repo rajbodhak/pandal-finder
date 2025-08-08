@@ -43,14 +43,12 @@ export const AreaSelector: React.FC<{
 
                             <div className="relative z-10">
                                 {/* Area Icon */}
-                                <div className="w-8 h-8 bg-gradient-to-r from-orange-100 to-pink-100 dark:from-orange-900/50 dark:to-pink-900/50 rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+                                <div className="flex items-center gap-2 mb-2 group-hover:scale-102 transition-transform duration-300">
                                     <MapPin className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                                    <span className="text-base font-bold text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
+                                        {area.displayName}
+                                    </span>
                                 </div>
-
-                                {/* Area Title */}
-                                <h3 className="text-base font-bold text-gray-800 dark:text-white mb-1 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
-                                    {area.displayName}
-                                </h3>
 
                                 {/* Area Description */}
                                 <p className="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-3 leading-relaxed">
