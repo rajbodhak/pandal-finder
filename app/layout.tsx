@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Google Analytics ID (optional - you can add this later)
+// Google Analytics ID 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Analytics - Only loads if GA_TRACKING_ID exists */}
+        {/* Google Analytics */}
         {GA_TRACKING_ID && (
           <>
             <Script
@@ -62,6 +62,7 @@ export default function RootLayout({
         <Providers>
           <AuthProvider>
             <div className="min-h-screen flex flex-col">
+              {/* Main content area that grows to fill available space */}
               <main className="flex-1">
                 {children}
               </main>
@@ -70,7 +71,7 @@ export default function RootLayout({
           </AuthProvider>
         </Providers>
 
-        {/* Vercel Analytics - Works automatically on Vercel */}
+        {/* Vercel Analytics */}
         <Analytics />
       </body>
     </html>
