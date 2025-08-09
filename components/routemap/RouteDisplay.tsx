@@ -4,13 +4,13 @@ import { Clock, MapPin, Star, Route, Bus, Train, Car, Navigation, AlertTriangle,
 import { Pandal, ManualRoute } from '@/lib/types';
 import { useStorage } from '@/hooks/useStorage';
 
-interface EnhancedRouteDisplayProps {
+interface RouteDisplayProps {
     route: ManualRoute;
     pandals: Pandal[];
     onBack: () => void;
 }
 
-const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
+const RouteDisplay: React.FC<RouteDisplayProps> = ({
     route,
     pandals,
     onBack
@@ -204,8 +204,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
             case 'copy':
                 try {
                     await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
-                    // You might want to show a toast notification here
-                    alert('Route link copied to clipboard!');
+
                 } catch (err) {
                     console.error('Failed to copy:', err);
                 }
@@ -633,11 +632,15 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                     {/* Share Route */}
                     <div className="mt-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg p-3">
                         <h3 className="text-base font-bold text-gray-800 dark:text-white mb-2">Share This Route</h3>
-                        <div className="flex flex-col gap-2">
-                            <button className="px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-xs">
+                        <div className="grid grid-cols-2 gap-2">
+                            <button className="px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-xs"
+                                onClick={() => shareRoute('whatsapp')}
+                            >
                                 Share via WhatsApp
                             </button>
-                            <button className="px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all text-xs">
+                            <button className="px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all text-xs"
+                                onClick={() => shareRoute('copy')}
+                            >
                                 Copy Route Link
                             </button>
                         </div>
@@ -648,4 +651,4 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
     );
 };
 
-export default EnhancedRouteDisplay;
+export default RouteDisplay;

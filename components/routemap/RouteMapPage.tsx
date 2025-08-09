@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { AreaSelector } from './AreaSelector';
 import { StartingPointSelector } from './StartingPointSelector';
-import EnhancedRouteDisplay from './EnhancedRouteDisplay';
+import RouteDisplay from './RouteDisplay';
 import { ManualRouteService } from './ManualRouteService';
 import { KOLKATA_AREAS } from './AreaConfig';
 import { AreaConfig, StartingPoint, Pandal, ManualRoute } from '@/lib/types';
@@ -233,7 +233,7 @@ const RouteMapPage: React.FC = () => {
                         )}
 
                         {currentStep === 'route-display' && selectedRoute && (
-                            <EnhancedRouteDisplay
+                            <RouteDisplay
                                 route={selectedRoute}
                                 pandals={pandals}
                                 onBack={cameFromRoutes ? handleBackToRoutes : handleBackToStartingPoint}
