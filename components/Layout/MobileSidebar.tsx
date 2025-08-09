@@ -72,7 +72,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
 
                     <div className="flex-1 ml-4">
                         <Link
-                            className="text-lg font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent"
+                            className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-baloo2"
                             href={"/"}
                         >
                             DuggaKhoj

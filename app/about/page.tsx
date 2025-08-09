@@ -304,7 +304,7 @@ const Page = () => {
                                         className="w-6.5 h-6.5 rounded-sm"
                                     />
                                 </div>
-                                <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                                <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-baloo2">
                                     DuggaKhoj
                                 </h1>
                             </div>
