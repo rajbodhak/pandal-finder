@@ -10,7 +10,7 @@ import { useMobileState } from '@/hooks/useMobileState'
 import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { Instagram, Twitter, Github, Mail, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
+import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
 
 const Page = () => {
     const analytics = useAnalytics();
@@ -181,7 +181,7 @@ const Page = () => {
 
         // Use timeSpent to track engagement with content sections
         if (analytics && typeof analytics.timeSpent === 'function') {
-            analytics.timeSpent(`about-${section}`, 1); // 1 second engagement per click
+            analytics.timeSpent(`about-${section}`, 1);
         }
     };
 
@@ -368,7 +368,7 @@ const Page = () => {
                                 {/* Instagram */}
                                 <div
                                     className="group p-3 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-lg border border-purple-200/50 dark:border-purple-700/30 hover:shadow-lg cursor-pointer transition-all duration-300"
-                                    onClick={() => trackContentInteraction('instagram')}
+                                    onClick={() => window.open('https://instagram.com/duggakhoj.in', '_blank')}
                                 >
                                     <div className="flex flex-col items-center gap-1">
                                         <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
@@ -478,17 +478,21 @@ const Page = () => {
                                 {/* Social Icons */}
                                 <div className="flex gap-2">
                                     <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Twitter className="h-3 w-3 text-white" />
+                                        <Twitter className="h-3 w-3 text-white"
+                                            onClick={() => window.open('https://x.com/Rajidesu', '_blank')} />
+
                                     </div>
                                     <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Github className="h-3 w-3 text-white" />
+                                        <Github className="h-3 w-3 text-white"
+                                            onClick={() => window.open('https://github.com/rajbodhak', '_blank')}
+                                        />
                                     </div>
                                     <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Instagram className="h-3 w-3 text-white" />
+                                        <Instagram className="h-3 w-3 text-white"
+                                            onClick={() => window.open('https://instagram.com/rajidesu.in', '_blank')}
+                                        />
                                     </div>
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Mail className="h-3 w-3 text-white" />
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
