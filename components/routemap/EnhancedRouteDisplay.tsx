@@ -182,22 +182,6 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                     {buttonText}
                 </button>
 
-                {/* Small remove button for visited pandals */}
-                {/* {isActive && stepType === 'pandal' && (
-                    <button
-                        onClick={() => {
-                            const newCompleted = new Set(completedSteps);
-                            newCompleted.delete(stepId);
-                            setCompletedSteps(newCompleted);
-                            unmarkPandalVisited(stepId);
-
-                        }}
-                        className="w-6 h-6 rounded-full text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center justify-center"
-                        title="Remove from visited list"
-                    >
-                        ×
-                    </button>
-                )} */}
             </div>
         );
     };
@@ -236,11 +220,6 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
         }
     };
 
-    const downloadAsPDF = () => {
-        // This would require a PDF generation library
-        // For now, just show an alert
-        alert('PDF download feature coming soon!');
-    };
 
     const getAutoProgress = () => {
         const visitedInRoute = route.pandalSequence.filter(id =>
@@ -483,9 +462,9 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                                                             {pandal.name}
                                                         </h3>
                                                         {/* Small badge for previously visited */}
-                                                        {isPandalVisitedBefore && !completedSteps.has(pandalId) && (
+                                                        {/* {isPandalVisitedBefore && !completedSteps.has(pandalId) && (
                                                             <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" title="Previously visited"></span>
-                                                        )}
+                                                        )} */}
                                                     </div>
                                                     <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-1">
                                                         {pandal.address}

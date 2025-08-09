@@ -36,8 +36,12 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                     {/* Left side - Logo and info */}
                     <div className="flex items-center gap-4">
                         <Link href="/" className="flex items-center gap-4 group">
-                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-3 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
-                                <Heart className="w-6 h-6" />
+                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-2 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
+                                <img
+                                    src="/logo.svg"
+                                    alt="DuggaKhoj Logo"
+                                    className="w-7 h-7 rounded-sm"
+                                />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
@@ -62,31 +66,8 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
                     {/* Center - Navigation Links (Desktop and Tablet) */}
                     <div className="hidden md:flex items-center gap-2">
-                        {/* About Link */}
-                        <Link
-                            href="/about"
-                            className={`px-4 py-2 lg:px-6 lg:py-3 rounded-xl backdrop-blur-sm border border-white/20 dark:border-gray-700/20 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2 ${isAboutPage
-                                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-xl'
-                                : 'bg-white/80 dark:bg-gray-800/80 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-xl'
-                                }`}
-                        >
-                            <Info className="w-4 h-4" />
-                            <span className="hidden lg:inline font-medium">About</span>
-                        </Link>
 
-                        {/* Routemap Link */}
-                        <Link
-                            href="/routemap"
-                            className={`px-4 py-2 lg:px-6 lg:py-3 rounded-xl backdrop-blur-sm border border-white/20 dark:border-gray-700/20 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2 ${isRoutemapPage
-                                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-xl'
-                                : 'bg-white/80 dark:bg-gray-800/80 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-xl'
-                                }`}
-                        >
-                            <Route className="w-4 h-4" />
-                            <span className="hidden lg:inline font-medium">Route Map</span>
-                        </Link>
-
-                        {/* Home Link (only show when not on main page) */}
+                        {/* Home Link (show on all pages, never active) */}
                         {!isMainPage && (
                             <Link
                                 href="/"
@@ -96,6 +77,29 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                                 <span className="hidden lg:inline font-medium">Home</span>
                             </Link>
                         )}
+
+                        {/* Routemap Link (show on all pages, active only when not on routemap) */}
+                        {!isRoutemapPage && (
+                            <Link
+                                href="/routemap"
+                                className="px-4 py-2 lg:px-6 lg:py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
+                            >
+                                <Route className="w-4 h-4" />
+                                <span className="hidden lg:inline font-medium">Route Map</span>
+                            </Link>
+                        )}
+
+                        {/* About Link (show on all pages, active only when not on about) */}
+                        {!isAboutPage && (
+                            <Link
+                                href="/about"
+                                className="px-4 py-2 lg:px-6 lg:py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
+                            >
+                                <Info className="w-4 h-4" />
+                                <span className="hidden lg:inline font-medium">About</span>
+                            </Link>
+                        )}
+
                     </div>
 
                     {/* Right side - View controls and theme switcher */}
