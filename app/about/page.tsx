@@ -10,7 +10,7 @@ import { useMobileState } from '@/hooks/useMobileState'
 import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { Instagram, Twitter, Github, Mail, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map } from 'lucide-react';
+import { Instagram, Twitter, Github, Mail, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
 
 const Page = () => {
     const analytics = useAnalytics();
@@ -70,7 +70,7 @@ const Page = () => {
                 return { newTotalVisits, newSessionVisits };
             } catch (error) {
                 console.warn('Failed to initialize visit counter:', error);
-                // Set fallback values
+
                 setVisitCount(1);
                 setSessionVisits(1);
                 return { newTotalVisits: 1, newSessionVisits: 1 };
@@ -79,7 +79,7 @@ const Page = () => {
 
         // Run immediately
         initializeVisitCounter();
-    }, []); // Remove analytics dependency to run immediately
+    }, []);
 
     // Initialize app
     useEffect(() => {
@@ -199,7 +199,12 @@ const Page = () => {
             text: "High-quality pandal details (photo upload coming soon)",
             color: "from-pink-500 to-rose-500"
         },
-        { icon: Star, text: "Visit tracking & user analytics", color: "from-indigo-500 to-purple-500" }
+        { icon: Star, text: "Visit tracking & user analytics", color: "from-indigo-500 to-purple-500" },
+        {
+            icon: Route,
+            text: "More custom routes & pandals coming soon",
+            color: "from-teal-500 to-cyan-500"
+        }
     ];
 
     const howToSteps = [
@@ -320,14 +325,18 @@ const Page = () => {
             {/* Main Content */}
             <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'blur-sm brightness-75' : ''}`}>
                 <div className={`${isMobile ? 'mt-12 px-4 py-4 pb-20' : 'px-6 py-6'}`}>
-                    <div className={`${isMobile ? 'max-w-4xl' : 'max-w-6xl'} mx-auto space-y-4`}>
+                    <div className={`${isMobile ? 'max-w-4xl' : 'max-w-6xl'} mx-auto space-y-3`}>
 
                         {/* Compact Header Card - Site Name, Views & Instagram */}
                         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
                             {/* Site Name */}
                             <div className="flex items-center justify-center gap-2 mb-4">
-                                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
-                                    <Heart className="h-4 w-4 text-white" />
+                                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-sm flex items-center justify-center shadow-lg">
+                                    <img
+                                        src="/logo.svg"
+                                        alt="DuggaKhoj Logo"
+                                        className="w-6.5 h-6.5 rounded-sm"
+                                    />
                                 </div>
                                 <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
                                     DuggaKhoj

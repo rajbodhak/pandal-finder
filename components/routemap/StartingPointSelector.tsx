@@ -53,7 +53,7 @@ export const StartingPointSelector: React.FC<{
     };
 
     return (
-        <div className="mt-12 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 py-2 mb-14">
+        <div className="mt-14 h-auto bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 px-2 py-2 mb-14">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-3 mb-4">
