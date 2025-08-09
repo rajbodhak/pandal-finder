@@ -1,6 +1,10 @@
-import RouteMap from '@/components/routemap/RouteMapPage';
+import { Suspense } from 'react';
+import RouteMapContent from './RouteMapContent';
 
-
-export default function Roadmap() {
-    return <RouteMap />;
+export default function RouteMapPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <RouteMapContent />
+        </Suspense>
+    );
 }

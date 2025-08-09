@@ -12,7 +12,7 @@
                 "description": "Suburban railway station connecting South Kolkata"
             },
             "difficulty": "moderate",
-            "estimatedTotalTime": "5-6 hours",
+            "estimatedTotalTime": "3-4 hours",
             "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
                 "pandal_ekdalia_evergreen_club",
@@ -240,101 +240,6 @@
             "warnings": [
                 "Avoid travelling during peak hours (6-8 PM)",
                 "Be careful with belongings in crowded areas"
-            ],
-            "created_at": "2024-10-01T00:00:00Z",
-            "updated_at": "2024-10-01T00:00:00Z"
-        },
-        {
-            "id": "north_kolkata_sealdah_heritage",
-            "name": "North Kolkata Heritage Route from Sealdah",
-            "description": "Focus on heritage and traditional pandals starting from Sealdah Station",
-            "areaId": "north_kolkata",
-            "startingPoint": {
-                "id": "sealdah_station",
-                "name": "Sealdah Railway Station",
-                "type": "railway",
-                "latitude": 22.5699,
-                "longitude": 88.3697,
-                "description": "Major railway station in North Kolkata"
-            },
-            "difficulty": "easy",
-            "estimatedTotalTime": "4-5 hours",
-            "bestTimeToStart": "10:00 AM",
-            "pandalSequence": [
-                "pandal_girish_park",
-                "pandal_hatibagan",
-                "pandal_beadon_street",
-                "pandal_jorasanko"
-            ],
-            "startingConnection": {
-                "startingPointId": "sealdah_station",
-                "firstPandalId": "pandal_girish_park",
-                "connection": {
-                    "fromPandalId": "sealdah_station",
-                    "toPandalId": "pandal_girish_park",
-                    "distance": 500,
-                    "estimatedTime": 7,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "Exit from Sealdah Main Gate → Girish Avenue"
-                    },
-                    "cost": 0,
-                    "notes": "Short walk from station"
-                }
-            },
-            "routeSegments": [
-                {
-                    "fromPandalId": "pandal_girish_park",
-                    "toPandalId": "pandal_hatibagan",
-                    "distance": 900,
-                    "estimatedTime": 6,
-                    "transportMode": "bus",
-                    "transportDetails": {
-                        "busNumber": "35, 9A",
-                        "busStops": [
-                            "Girish Park",
-                            "Hatibagan"
-                        ]
-                    },
-                    "cost": 5,
-                    "notes": "Short bus ride"
-                },
-                {
-                    "fromPandalId": "pandal_hatibagan",
-                    "toPandalId": "pandal_beadon_street",
-                    "distance": 700,
-                    "estimatedTime": 10,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "Via Cornwallis Street → Beadon Street"
-                    },
-                    "cost": 0,
-                    "notes": "Walk through heritage area"
-                },
-                {
-                    "fromPandalId": "pandal_beadon_street",
-                    "toPandalId": "pandal_jorasanko",
-                    "distance": 800,
-                    "estimatedTime": 12,
-                    "transportMode": "walk",
-                    "transportDetails": {
-                        "walkingRoute": "Via Beadon Street → Jorasanko Thakur Bari area"
-                    },
-                    "cost": 0,
-                    "notes": "Visit Tagore House area while walking"
-                }
-            ],
-            "totalWalkingDistance": 2000,
-            "totalCost": 5,
-            "tips": [
-                "Perfect route for heritage lovers",
-                "Visit Jorasanko Thakur Bari (Tagore House) nearby",
-                "Good for photography enthusiasts",
-                "Less crowded than other routes"
-            ],
-            "warnings": [
-                "Some heritage buildings under renovation",
-                "Narrow lanes can get congested"
             ],
             "created_at": "2024-10-01T00:00:00Z",
             "updated_at": "2024-10-01T00:00:00Z"

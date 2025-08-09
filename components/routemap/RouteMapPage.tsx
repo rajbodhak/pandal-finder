@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AreaSelector } from './AreaSelector';
 import { StartingPointSelector } from './StartingPointSelector';
 import RouteDisplay from './RouteDisplay';
@@ -26,8 +26,13 @@ const ALL_LOCAL_PANDALS: Pandal[] = [
     }))
 ];
 
+interface RouteMapPageProps {
+    initialRouteId?: string | null;
+}
+
 // Main Roadmap Page Component
-const RouteMapPage: React.FC = () => {
+const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
+
     const [currentStep, setCurrentStep] = useState<'area' | 'starting-point' | 'routes' | 'route-display'>('area');
     const [selectedArea, setSelectedArea] = useState<AreaConfig | null>(null);
     const [selectedStartingPoint, setSelectedStartingPoint] = useState<StartingPoint | null>(null);
@@ -39,9 +44,10 @@ const RouteMapPage: React.FC = () => {
     const [initialLoading, setInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [cameFromRoutes, setCameFromRoutes] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     // Initialize route service
-    React.useEffect(() => {
+    useEffect(() => {
         const initializeApp = async () => {
             try {
                 setInitialLoading(true);
@@ -52,11 +58,70 @@ const RouteMapPage: React.FC = () => {
                 setError('Failed to initialize the application. Please refresh the page.');
             } finally {
                 setInitialLoading(false);
+                setIsInitialized(true);
             }
         };
 
         initializeApp();
     }, []);
+
+    useEffect(() => {
+        const handleDirectRouteAccess = async () => {
+            if (!initialRouteId || !isInitialized) return;
+
+            try {
+                setLoading(true);
+                setError(null);
+
+                // Find the route by ID across all areas
+                let foundRoute: ManualRoute | null = null;
+                let foundArea: AreaConfig | null = null;
+
+                for (const area of KOLKATA_AREAS) {
+                    const routes = ManualRouteService.getRoutesByArea(area.id);
+                    const route = routes.find(r => r.id === initialRouteId);
+                    if (route) {
+                        foundRoute = route;
+                        foundArea = area;
+                        break;
+                    }
+                }
+
+                if (foundRoute && foundArea) {
+                    // Set up the route directly
+                    setSelectedArea(foundArea);
+                    setSelectedStartingPoint(foundRoute.startingPoint);
+                    setSelectedRoute(foundRoute);
+
+                    // Fetch pandals for this area
+                    const areaPandals = await fetchPandalsForArea(foundArea.id);
+                    setPandals(areaPandals);
+
+                    // Set area routes
+                    const routes = ManualRouteService.getRoutesByArea(foundArea.id);
+                    setAreaRoutes(routes);
+                    setAvailableRoutes(routes);
+
+                    // Skip directly to route display
+                    setCurrentStep('route-display');
+                    setCameFromRoutes(false);
+                } else {
+                    setError(`Route "${initialRouteId}" not found. Please select from available routes.`);
+                    setCurrentStep('area');
+                }
+            } catch (error) {
+                console.error('Error loading direct route:', error);
+                setError('Failed to load the requested route. Please try again.');
+                setCurrentStep('area');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (isInitialized) {
+            handleDirectRouteAccess();
+        }
+    }, [initialRouteId, isInitialized]);
 
     // Get pandals for area - using local data first, fallback to database
     const fetchPandalsForArea = async (areaId: string): Promise<Pandal[]> => {

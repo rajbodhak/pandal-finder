@@ -195,7 +195,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     // Share functionality
     const shareRoute = async (method: 'whatsapp' | 'copy' | 'generic') => {
         const shareText = `Check out this Durga Puja route: ${route.name}\n${route.description}\nVisit ${route.pandalSequence.length} pandals in ${route.estimatedTotalTime}!`;
-        const shareUrl = `${window.location.origin}${window.location.pathname}?route=${route.id}`;
+        const shareUrl = `${window.location.origin}/routemap?route=${route.id}`;
 
         switch (method) {
             case 'whatsapp':
@@ -204,7 +204,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
             case 'copy':
                 try {
                     await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
-
+                    // You can add a toast notification here if you have one
                 } catch (err) {
                     console.error('Failed to copy:', err);
                 }
