@@ -10,6 +10,7 @@ import { useMobileState } from '@/hooks/useMobileState'
 import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { usePageViews } from '@/hooks/usePageViews';
 import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
 
 const Page = () => {
@@ -18,8 +19,6 @@ const Page = () => {
     // State management
     const [initialLoading, setInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [visitCount, setVisitCount] = useState<number>(0);
-    const [sessionVisits, setSessionVisits] = useState<number>(0);
     const [startTime, setStartTime] = useState<number>(Date.now());
 
     const { isMobile } = useResponsive();
@@ -29,57 +28,17 @@ const Page = () => {
         closeSidebar,
     } = useMobileState();
 
-    // Initialize visit counter
-    useEffect(() => {
-        const initializeVisitCounter = () => {
-            try {
-                console.log('Initializing visit counter...');
-
-                // Get total visits from localStorage (persistent across sessions)
-                const totalVisits = localStorage.getItem('duggakhoj_about_visits');
-                const currentVisits = totalVisits ? parseInt(totalVisits, 10) : 0;
-
-                // Get session visits (resets when browser is closed)
-                const sessionVisitsKey = 'duggakhoj_about_session_visits';
-                const currentSessionVisits = sessionStorage.getItem(sessionVisitsKey);
-                const sessionCount = currentSessionVisits ? parseInt(currentSessionVisits, 10) : 0;
-
-                // Increment both counters
-                const newTotalVisits = currentVisits + 1;
-                const newSessionVisits = sessionCount + 1;
-
-                console.log('Visit counts:', {
-                    previous: currentVisits,
-                    new: newTotalVisits,
-                    session: newSessionVisits
-                });
-
-                // Store updated values
-                localStorage.setItem('duggakhoj_about_visits', newTotalVisits.toString());
-                sessionStorage.setItem(sessionVisitsKey, newSessionVisits.toString());
-
-                // Update state immediately
-                setVisitCount(newTotalVisits);
-                setSessionVisits(newSessionVisits);
-
-                // Track visit in analytics using timeSpent method
-                if (analytics && typeof analytics.timeSpent === 'function') {
-                    analytics.timeSpent('about', 0); // Initial page load
-                }
-
-                return { newTotalVisits, newSessionVisits };
-            } catch (error) {
-                console.warn('Failed to initialize visit counter:', error);
-
-                setVisitCount(1);
-                setSessionVisits(1);
-                return { newTotalVisits: 1, newSessionVisits: 1 };
-            }
-        };
-
-        // Run immediately
-        initializeVisitCounter();
-    }, []);
+    // Use the new Appwrite-based page view tracking
+    const {
+        stats: pageViewStats,
+        loading: viewsLoading,
+        trackView,
+        refreshStats
+    } = usePageViews('about', {
+        trackOnMount: true,
+        trackOnVisibilityChange: true,
+        debounceMs: 2000
+    });
 
     // Initialize app
     useEffect(() => {
@@ -96,8 +55,6 @@ const Page = () => {
             } catch (error) {
                 console.error('Failed to initialize app:', error);
                 setError('Failed to initialize the application. Please refresh the page.');
-
-                // Track initialization error using timeSpent (for error tracking)
                 console.error('Analytics tracking - initialization error:', error);
             } finally {
                 setInitialLoading(false);
@@ -129,7 +86,6 @@ const Page = () => {
                 if (analytics && typeof analytics.timeSpent === 'function' && timeSpentSeconds > 0) {
                     analytics.timeSpent('about', timeSpentSeconds);
                 }
-                // Reset start time when page becomes visible again
             } else {
                 setStartTime(Date.now());
             }
@@ -150,7 +106,7 @@ const Page = () => {
         };
     }, [analytics, startTime]);
 
-    // Track user interactions - simplified without custom analytics
+    // Track user interactions
     const handleSidebarToggle = () => {
         console.log('Sidebar toggle:', isSidebarOpen ? 'close' : 'open');
         toggleSidebar();
@@ -164,6 +120,16 @@ const Page = () => {
     const handleRefreshClick = () => {
         console.log('Page refresh due to initialization error');
         window.location.reload();
+    };
+
+    // Manual view tracking (for special events)
+    const handleManualTrack = async () => {
+        await trackView();
+    };
+
+    // Refresh page stats
+    const handleRefreshStats = async () => {
+        await refreshStats();
     };
 
     const dummyProps = {
@@ -348,20 +314,32 @@ const Page = () => {
                                 {/* Total Views */}
                                 <div className="p-3 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-lg border border-orange-200/50 dark:border-orange-700/30">
                                     <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                                        {visitCount > 0 ? (visitCount > 1000 ? `${Math.floor(visitCount / 1000)}k` : visitCount.toLocaleString()) : '1'}
+                                        {viewsLoading ? (
+                                            <div className="animate-pulse">...</div>
+                                        ) : pageViewStats ? (
+                                            pageViewStats.totalViews > 1000
+                                                ? `${Math.floor(pageViewStats.totalViews / 1000)}k`
+                                                : pageViewStats.totalViews.toLocaleString()
+                                        ) : '0'}
                                     </div>
                                     <div className="text-xs text-orange-700 dark:text-orange-300 font-medium">
-                                        Views
+                                        Total Views
                                     </div>
                                 </div>
 
-                                {/* Session Views */}
-                                <div className="p-3 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-lg border border-pink-200/50 dark:border-pink-700/30">
-                                    <div className="text-lg font-bold text-pink-600 dark:text-pink-400">
-                                        {sessionVisits > 0 ? sessionVisits.toLocaleString() : '1'}
+                                {/* Month Views */}
+                                <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg border border-blue-200/50 dark:border-blue-700/30">
+                                    <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                                        {viewsLoading ? (
+                                            <div className="animate-pulse">...</div>
+                                        ) : pageViewStats ? (
+                                            pageViewStats.monthViews > 1000
+                                                ? `${Math.floor(pageViewStats.monthViews / 1000)}k`
+                                                : pageViewStats.monthViews.toLocaleString()
+                                        ) : '0'}
                                     </div>
-                                    <div className="text-xs text-pink-700 dark:text-pink-300 font-medium">
-                                        Session
+                                    <div className="text-xs text-blue-700 dark:text-blue-300 font-medium">
+                                        Monthly Views
                                     </div>
                                 </div>
 
