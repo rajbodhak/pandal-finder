@@ -29,6 +29,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     const [showAlternatives, setShowAlternatives] = useState<Set<string>>(new Set());
     const [isRouteComplete, setIsRouteComplete] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [copyButtonText, setCopyButtonText] = useState('Copy Route Link');
 
     // Use ref to track if we're updating from storage to prevent loops
     const isUpdatingFromStorage = useRef(false);
@@ -203,10 +204,24 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                 break;
             case 'copy':
                 try {
-                    await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
-                    // You can add a toast notification here if you have one
+                    await navigator.clipboard.writeText(shareUrl);
+                    // Update button text to show success
+                    setCopyButtonText('Copied!');
+
+                    // Reset button text after 2 seconds
+                    setTimeout(() => {
+                        setCopyButtonText('Copy Route Link');
+                    }, 2000);
+
                 } catch (err) {
                     console.error('Failed to copy:', err);
+                    // Update button text to show error
+                    setCopyButtonText('Failed to copy');
+
+                    // Reset button text after 2 seconds
+                    setTimeout(() => {
+                        setCopyButtonText('Copy Route Link');
+                    }, 2000);
                 }
                 break;
             case 'generic':
@@ -224,6 +239,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                 break;
         }
     };
+
 
 
     const getAutoProgress = () => {
@@ -633,15 +649,23 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                     <div className="mt-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg p-3">
                         <h3 className="text-base font-bold text-gray-800 dark:text-white mb-2">Share This Route</h3>
                         <div className="grid grid-cols-2 gap-2">
-                            <button className="px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-xs"
+                            <button
+                                className="px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-xs"
                                 onClick={() => shareRoute('whatsapp')}
                             >
                                 Share via WhatsApp
                             </button>
-                            <button className="px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all text-xs"
+                            <button
+                                className={`px-3 py-2 rounded-lg transition-all text-xs ${copyButtonText === 'Copied!'
+                                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                                    : copyButtonText === 'Failed to copy'
+                                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                                        : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700'
+                                    }`}
                                 onClick={() => shareRoute('copy')}
+                                disabled={copyButtonText !== 'Copy Route Link'}
                             >
-                                Copy Route Link
+                                {copyButtonText}
                             </button>
                         </div>
                     </div>
