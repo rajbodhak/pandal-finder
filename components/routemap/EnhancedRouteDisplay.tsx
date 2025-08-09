@@ -90,26 +90,32 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
         }
     };
 
+
     const toggleStepComplete = (stepId: string) => {
         const newCompleted = new Set(completedSteps);
+        const isCurrentlyInCompletedSteps = newCompleted.has(stepId);
 
-        if (newCompleted.has(stepId)) {
+        // Check if this is a pandal (not start/end) and if it's visited in storage
+        const isPandalStep = stepId !== 'start' && stepId !== 'end';
+        const isCurrentlyVisitedInStorage = isPandalStep ? isPandalVisited(stepId) : false;
+
+        // Determine if we're marking or unmarking
+        const shouldUnmark = isCurrentlyInCompletedSteps || isCurrentlyVisitedInStorage;
+
+        if (shouldUnmark) {
             // Removing step - handle unvisiting
             newCompleted.delete(stepId);
 
-            // If it's a pandal step and it was marked as visited, ask for confirmation
-            if (stepId !== 'start' && stepId !== 'end') {
-                const pandal = getPandalById(stepId);
-                if (pandal && isPandalVisited(stepId)) {
-                    unmarkPandalVisited(stepId)
-                }
+            // If it's a pandal step, unmark it from storage
+            if (isPandalStep) {
+                unmarkPandalVisited(stepId);
             }
         } else {
             // Adding step - handle visiting
             newCompleted.add(stepId);
 
             // If it's a pandal step, mark it as visited in storage
-            if (stepId !== 'start' && stepId !== 'end') {
+            if (isPandalStep) {
                 const pandal = getPandalById(stepId);
                 if (pandal) {
                     markPandalVisited(stepId, pandal.area);
@@ -117,6 +123,7 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
             }
         }
 
+        // Update state after storage operations
         setCompletedSteps(newCompleted);
 
         // Check if route is completed (all pandals + start + end)
@@ -146,25 +153,25 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
     };
 
     const renderStepButton = (stepId: string, stepType: 'start' | 'pandal' | 'end', pandalName?: string) => {
-        const isCompleted = completedSteps.has(stepId);
+        const isCompletedInSession = completedSteps.has(stepId);
         const isPandalVisitedBefore = stepType === 'pandal' ? isPandalVisited(stepId) : false;
-        const isActive = isCompleted || isPandalVisitedBefore;
+
+        // For pandals: show as active if either completed in session OR visited before
+        // For start/end: only show as active if completed in session
+        const isActive = stepType === 'pandal'
+            ? (isCompletedInSession || isPandalVisitedBefore)
+            : isCompletedInSession;
 
         let buttonText = '';
         let buttonClass = '';
 
         if (stepType === 'start') {
-            buttonText = isCompleted ? '✓' : 'Start';
+            buttonText = isCompletedInSession ? '✓' : 'Start';
         } else if (stepType === 'end') {
-            buttonText = isCompleted ? '✓' : 'Done';
+            buttonText = isCompletedInSession ? '✓' : 'Done';
         } else {
-            if (isCompleted) {
-                buttonText = '✓';
-            } else if (isPandalVisitedBefore) {
-                buttonText = '✓';
-            } else {
-                buttonText = 'Visit';
-            }
+            // For pandals: show checkmark if active (either completed in session OR visited before)
+            buttonText = isActive ? '✓' : 'Visit';
         }
 
         if (isActive) {
@@ -181,7 +188,6 @@ const EnhancedRouteDisplay: React.FC<EnhancedRouteDisplayProps> = ({
                 >
                     {buttonText}
                 </button>
-
             </div>
         );
     };
