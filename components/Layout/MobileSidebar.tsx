@@ -40,7 +40,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             href: '/about',
             icon: Info,
             label: 'About',
-            isActive: pathname === 'about'
+            isActive: pathname === '/about'
         }
     ];
 
