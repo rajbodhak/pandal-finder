@@ -1,5 +1,5 @@
 "use client"
-
+import { Metadata } from 'next'
 import { MobileHeader } from '@/components/Layout/MobileHeader'
 import { DesktopHeader } from '@/components/Layout/DesktopHeader'
 import { MobileSidebar } from '@/components/Layout/MobileSidebar'
@@ -12,6 +12,24 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { usePageViews } from '@/hooks/usePageViews';
 import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+    title: 'About DuggaKhoj - Your Pandal Hopping Companion',
+    description: 'Learn about DuggaKhoj, the ultimate guide for Durga Puja pandal hopping in Kolkata. Discover our mission to make your festival experience unforgettable.',
+    keywords: [
+        'about duggakhoj',
+        'durga puja guide',
+        'pandal hopping app',
+        'kolkata festival guide',
+        'duggakhoj team',
+        'pandal finder story'
+    ],
+    openGraph: {
+        title: 'About DuggaKhoj - Making Pandal Hopping Easy',
+        description: 'Discover how DuggaKhoj helps thousands of devotees and tourists explore the best of Kolkata Durga Puja.',
+        url: 'https://duggakhoj.site/about',
+    },
+}
 
 const Page = () => {
     // State management
