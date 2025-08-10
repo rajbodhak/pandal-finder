@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Clock, MapPin, Star, Route, Bus, Train, Car, Navigation, AlertTriangle, ArrowLeft, } from 'lucide-react';
+import { Clock, MapPin, Star, Route, Bus, Train, Car, Navigation, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { Pandal, ManualRoute } from '@/lib/types';
 import { useStorage } from '@/hooks/useStorage';
 
@@ -91,7 +91,6 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         }
     };
 
-
     const toggleStepComplete = (stepId: string) => {
         const newCompleted = new Set(completedSteps);
         const isCurrentlyInCompletedSteps = newCompleted.has(stepId);
@@ -153,7 +152,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         return pandals.find(p => p.$id === pandalId);
     };
 
-    const renderStepButton = (stepId: string, stepType: 'start' | 'pandal' | 'end', pandalName?: string) => {
+    const renderStepButton = (stepId: string, stepType: 'start' | 'pandal' | 'end') => {
         const isCompletedInSession = completedSteps.has(stepId);
         const isPandalVisitedBefore = stepType === 'pandal' ? isPandalVisited(stepId) : false;
 
@@ -194,7 +193,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     };
 
     // Share functionality
-    const shareRoute = async (method: 'whatsapp' | 'copy' | 'generic') => {
+    const shareRoute = async (method: 'whatsapp' | 'copy') => {
         const shareText = `Check out this Durga Puja route: ${route.name}\n${route.description}\nVisit ${route.pandalSequence.length} pandals in ${route.estimatedTotalTime}!`;
         const shareUrl = `${window.location.origin}/routemap?route=${route.id}`;
 
@@ -205,42 +204,20 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
             case 'copy':
                 try {
                     await navigator.clipboard.writeText(shareUrl);
-                    // Update button text to show success
                     setCopyButtonText('Copied!');
-
-                    // Reset button text after 2 seconds
                     setTimeout(() => {
                         setCopyButtonText('Copy Route Link');
                     }, 2000);
-
                 } catch (err) {
                     console.error('Failed to copy:', err);
-                    // Update button text to show error
                     setCopyButtonText('Failed to copy');
-
-                    // Reset button text after 2 seconds
                     setTimeout(() => {
                         setCopyButtonText('Copy Route Link');
                     }, 2000);
-                }
-                break;
-            case 'generic':
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: route.name,
-                            text: shareText,
-                            url: shareUrl
-                        });
-                    } catch (err) {
-                        console.error('Error sharing:', err);
-                    }
                 }
                 break;
         }
     };
-
-
 
     const getAutoProgress = () => {
         const visitedInRoute = route.pandalSequence.filter(id =>
@@ -272,7 +249,6 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         if (autoEnd) {
             actualCompletedSteps += 1;
         }
-
 
         return actualCompletedSteps;
     };
@@ -310,14 +286,12 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
 
                     {/* Description */}
                     <p className="text-gray-600 dark:text-gray-300 text-xs md:sm line-clamp-2">{route.description}</p>
-
                 </div>
             </div>
 
             {/* Scrollable Content */}
             <div className="pt-36 px-4 pb-6">
                 <div className="max-w-4xl mx-auto">
-
                     <div className="grid grid-cols-3 gap-2 my-2">
                         <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
                             <Clock className="h-3 w-3 text-orange-500 shrink-0" />
@@ -409,7 +383,6 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                 </div>
                             </div>
 
-
                             {/* Starting Connection */}
                             {route.startingConnection && (
                                 <>
@@ -482,17 +455,13 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                                         <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">
                                                             {pandal.name}
                                                         </h3>
-                                                        {/* Small badge for previously visited */}
-                                                        {/* {isPandalVisitedBefore && !completedSteps.has(pandalId) && (
-                                                            <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" title="Previously visited"></span>
-                                                        )} */}
                                                     </div>
                                                     <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-1">
                                                         {pandal.address}
                                                     </p>
                                                 </div>
                                             </div>
-                                            {renderStepButton(pandalId, 'pandal', pandal.name)}
+                                            {renderStepButton(pandalId, 'pandal')}
                                         </div>
 
                                         {/* Compact pandal stats */}
@@ -603,7 +572,6 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                     )}
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

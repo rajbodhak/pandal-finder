@@ -85,7 +85,6 @@ export class BrowserStorageService {
     /**
     * Migrate any existing data to new format
     */
-
     private migrateOldData(): void {
         // Skip migration if we're not in a browser environment
         if (typeof window === 'undefined' || !this.isStorageAvailable()) {
@@ -108,7 +107,6 @@ export class BrowserStorageService {
     /**
      * Set item with automatic expiration
      */
-
     private setItem<T>(key: string, data: T, expiryDays: number = this.DEFAULT_EXPIRY_DAYS): boolean {
         if (!this.isStorageAvailable()) return false;
 
@@ -335,14 +333,10 @@ export class BrowserStorageService {
             progress.visitedPandals.delete(pandalId);
             progress.stats.totalPandalsVisited = Math.max(0, progress.stats.totalPandalsVisited - 1);
 
-            // Update last visit date if this was the most recent visit
-            // Note: This is a simplified approach. For a more accurate solution,
-            // you'd need to track visit timestamps for each pandal
-
             return this.setItem('userProgress', progress);
         }
 
-        return true; // Already not visited
+        return true;
     }
 
     /**
@@ -378,65 +372,6 @@ export class BrowserStorageService {
         }
 
         return this.setItem('userProgress', progress);
-    }
-
-
-    /**
-     * Get storage statistics
-     */
-    public getStorageStats(): {
-        isAvailable: boolean;
-        usedSpace: number;
-        estimatedSize: string;
-        itemCount: number;
-        expiryDate: string;
-    } {
-        const stats = {
-            isAvailable: this.isStorageAvailable(),
-            usedSpace: 0,
-            estimatedSize: '0 KB',
-            itemCount: 0,
-            expiryDate: 'Unknown'
-        };
-
-        if (!stats.isAvailable) return stats;
-
-        try {
-            let totalSize = 0;
-            let itemCount = 0;
-            let oldestExpiry = Infinity;
-
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith(this.STORAGE_PREFIX)) {
-                    const item = localStorage.getItem(key);
-                    if (item) {
-                        totalSize += item.length;
-                        itemCount++;
-
-                        try {
-                            const storageItem = JSON.parse(item);
-                            oldestExpiry = Math.min(oldestExpiry, storageItem.expiresAt);
-                        } catch {
-                            // Ignore parsing errors for size calculation
-                        }
-                    }
-                }
-            }
-
-            stats.usedSpace = totalSize;
-            stats.estimatedSize = `${Math.round(totalSize / 1024)} KB`;
-            stats.itemCount = itemCount;
-
-            if (oldestExpiry !== Infinity) {
-                stats.expiryDate = new Date(oldestExpiry).toLocaleDateString();
-            }
-
-        } catch (error) {
-            console.error('Failed to calculate storage stats:', error);
-        }
-
-        return stats;
     }
 
     /**
@@ -490,38 +425,6 @@ export class BrowserStorageService {
     }
 
     /**
-     * Extend expiry time for all data
-     */
-    public extendExpiry(additionalDays: number = 30): boolean {
-        if (!this.isStorageAvailable()) return false;
-
-        try {
-            const now = Date.now();
-            const extension = additionalDays * 24 * 60 * 60 * 1000;
-
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith(this.STORAGE_PREFIX)) {
-                    const item = localStorage.getItem(key);
-                    if (item) {
-                        try {
-                            const storageItem = JSON.parse(item, this.reviver);
-                            storageItem.expiresAt = now + extension;
-                            localStorage.setItem(key, JSON.stringify(storageItem, this.replacer));
-                        } catch {
-                            // Skip corrupted items
-                        }
-                    }
-                }
-            }
-            return true;
-        } catch (error) {
-            console.error('Failed to extend expiry:', error);
-            return false;
-        }
-    }
-
-    /**
      * Cleanup on destroy
      */
     public destroy(): void {
@@ -533,9 +436,6 @@ export class BrowserStorageService {
 }
 
 // Export singleton instance
-// export const storageService = BrowserStorageService.getInstance();
-
-// Cleanup on page unload
 let storageService: BrowserStorageService;
 
 if (typeof window !== 'undefined') {

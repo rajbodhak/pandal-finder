@@ -25,25 +25,15 @@ interface UserProgress {
     };
 }
 
-interface StorageStats {
-    isAvailable: boolean;
-    usedSpace: number;
-    estimatedSize: string;
-    itemCount: number;
-    expiryDate: string;
-}
-
 export const useStorage = () => {
     const [userProgress, setUserProgress] = useState<UserProgress | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [storageStats, setStorageStats] = useState<StorageStats | null>(null);
 
     // Initialize and load user progress
     useEffect(() => {
         try {
             const progress = storageService.getUserProgress();
             setUserProgress(progress);
-            setStorageStats(storageService.getStorageStats());
         } catch (error) {
             console.error('Failed to load user progress:', error);
         } finally {
@@ -57,7 +47,6 @@ export const useStorage = () => {
         if (success) {
             const updatedProgress = storageService.getUserProgress();
             setUserProgress(updatedProgress);
-            setStorageStats(storageService.getStorageStats());
         }
         return success;
     }, []);
@@ -68,7 +57,6 @@ export const useStorage = () => {
         if (success) {
             const updatedProgress = storageService.getUserProgress();
             setUserProgress(updatedProgress);
-            setStorageStats(storageService.getStorageStats());
         }
         return success;
     }, []);
@@ -89,7 +77,6 @@ export const useStorage = () => {
         if (success) {
             const updatedProgress = storageService.getUserProgress();
             setUserProgress(updatedProgress);
-            setStorageStats(storageService.getStorageStats());
         }
         return success;
     }, []);
@@ -137,7 +124,6 @@ export const useStorage = () => {
         if (success) {
             const freshProgress = storageService.getUserProgress();
             setUserProgress(freshProgress);
-            setStorageStats(storageService.getStorageStats());
         }
         return success;
     }, []);
@@ -153,64 +139,23 @@ export const useStorage = () => {
         if (success) {
             const updatedProgress = storageService.getUserProgress();
             setUserProgress(updatedProgress);
-            setStorageStats(storageService.getStorageStats());
         }
         return success;
     }, []);
-
-    // Extend expiry
-    const extendExpiry = useCallback((additionalDays: number = 30) => {
-        const success = storageService.extendExpiry(additionalDays);
-        if (success) {
-            setStorageStats(storageService.getStorageStats());
-        }
-        return success;
-    }, []);
-
-    // Get visit streak info
-    const getStreakInfo = useCallback(() => {
-        if (!userProgress) return { current: 0, longest: 0, lastVisit: null };
-
-        return {
-            current: userProgress.stats.currentStreak,
-            longest: userProgress.stats.longestStreak,
-            lastVisit: userProgress.stats.lastVisitDate ? new Date(userProgress.stats.lastVisitDate) : null
-        };
-    }, [userProgress]);
-
-    // Get favorite area
-    const getFavoriteArea = useCallback(() => {
-        return userProgress?.stats.favoriteArea ?? null;
-    }, [userProgress]);
-
-    // Get visiting stats
-    const getVisitingStats = useCallback(() => {
-        if (!userProgress) return null;
-
-        return {
-            totalPandalsVisited: userProgress.stats.totalPandalsVisited,
-            totalRoutesCompleted: userProgress.stats.totalRoutesCompleted,
-            favoriteArea: userProgress.stats.favoriteArea,
-            currentStreak: userProgress.stats.currentStreak,
-            longestStreak: userProgress.stats.longestStreak,
-            lastVisitDate: userProgress.stats.lastVisitDate ? new Date(userProgress.stats.lastVisitDate) : null
-        };
-    }, [userProgress]);
 
     return {
         // Data
         userProgress,
-        storageStats,
         isLoading,
 
         // Pandal methods
         markPandalVisited,
+        unmarkPandalVisited,
         isPandalVisited,
 
         // Route methods
         updateRouteProgress,
         markRouteCompleted,
-        unmarkPandalVisited,
         isRouteCompleted,
         getRouteProgress,
         getRouteCompletionPercentage,
@@ -218,15 +163,9 @@ export const useStorage = () => {
         // Preferences
         updatePreferences,
 
-        // Stats and info
-        getStreakInfo,
-        getFavoriteArea,
-        getVisitingStats,
-
         // Data management
         clearAllData,
         exportData,
-        importData,
-        extendExpiry
+        importData
     };
 };
