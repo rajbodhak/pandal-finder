@@ -99,6 +99,24 @@ const Page = () => {
         "Check Route Map for journey"
     ];
 
+    const QuickDebug = () => {
+        const envCheck = {
+            endpoint: !!process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
+            project: !!process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
+            database: !!process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+            collection: !!process.env.NEXT_PUBLIC_APPWRITE_VIEWS_COLLECTION_ID
+        };
+
+        return (
+            <div className="fixed top-4 left-4 bg-red-100 p-2 rounded text-xs z-50">
+                Env: {JSON.stringify(envCheck)}
+            </div>
+        );
+    };
+
+    // Then add this in your JSX (temporarily):
+    { process.env.NODE_ENV === 'production' && <QuickDebug /> }
+
     if (initialLoading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col">
