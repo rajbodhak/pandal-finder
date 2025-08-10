@@ -3,29 +3,21 @@ import { Query } from 'appwrite';
 import type {
     PageViewDocument,
     PageViewStats,
-    ViewTrackingResponse,
-    ViewTrackingConfig
+    ViewTrackingResponse
 } from '@/lib/pageViews';
 
 export class AppwritePageViewService {
     private static instance: AppwritePageViewService;
     private readonly DATABASE_ID: string;
     private readonly COLLECTION_ID: string;
-    private readonly config: ViewTrackingConfig;
 
     private constructor() {
         this.DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || '';
         this.COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_VIEWS_COLLECTION_ID || '';
 
         if (!this.DATABASE_ID || !this.COLLECTION_ID) {
-            console.error('Appwrite database or collection ID not configured for page views');
+            console.warn('Appwrite database or collection ID not configured for page views');
         }
-
-        this.config = {
-            maxDailyViewsHistory: 365, // Keep 1 year of daily data
-            enableRealTimeUpdates: true,
-            trackUniqueViewsOnly: false
-        };
     }
 
     public static getInstance(): AppwritePageViewService {
@@ -35,19 +27,17 @@ export class AppwritePageViewService {
         return AppwritePageViewService.instance;
     }
 
-    //   Get today's date in YYYY-MM-DD format
+    // Get today's date in YYYY-MM-DD format
     private getTodayString(): string {
         return new Date().toISOString().split('T')[0];
     }
 
-
-    //  Parse daily views string array into structured data
+    // Parse daily views string array into structured data
     private parseDailyViews(dailyViews: string[]): Map<string, number> {
         const viewMap = new Map<string, number>();
 
         dailyViews.forEach(entry => {
             try {
-                // Expecting format: "2024-01-15:5" (date:count)
                 const [date, countStr] = entry.split(':');
                 const count = parseInt(countStr, 10);
                 if (!isNaN(count)) {
@@ -65,7 +55,7 @@ export class AppwritePageViewService {
     private serializeDailyViews(viewMap: Map<string, number>): string[] {
         return Array.from(viewMap.entries())
             .map(([date, count]) => `${date}:${count}`)
-            .slice(-this.config.maxDailyViewsHistory); // Keep only recent entries
+            .slice(-365); // Keep last 365 days
     }
 
     // Calculate stats from daily views
@@ -120,7 +110,7 @@ export class AppwritePageViewService {
             const today = this.getTodayString();
             const now = new Date().toISOString();
 
-            // First, try to get existing document
+            // Try to get existing document
             let document: PageViewDocument | null = null;
 
             try {
@@ -133,7 +123,7 @@ export class AppwritePageViewService {
             } catch (error: any) {
                 // Document doesn't exist, we'll create it
                 if (error.code !== 404) {
-                    throw error; // Re-throw if it's not a "not found" error
+                    throw error;
                 }
             }
 
@@ -200,7 +190,6 @@ export class AppwritePageViewService {
         }
     }
 
-
     // Get page view stats without incrementing
     public async getPageViewStats(pageId: string): Promise<ViewTrackingResponse> {
         try {
@@ -249,7 +238,6 @@ export class AppwritePageViewService {
         }
     }
 
-
     // Get stats for multiple pages
     public async getMultiplePageStats(pageIds: string[]): Promise<Record<string, PageViewStats>> {
         try {
@@ -258,12 +246,10 @@ export class AppwritePageViewService {
                 return {};
             }
 
-            const queries = pageIds.map(pageId => Query.equal('pageId', pageId));
-
             const response = await databases.listDocuments(
                 this.DATABASE_ID,
                 this.COLLECTION_ID,
-                queries
+                [Query.equal('pageId', pageIds)]
             );
 
             const results: Record<string, PageViewStats> = {};
@@ -297,7 +283,6 @@ export class AppwritePageViewService {
         }
     }
 
-
     // Get top viewed pages
     public async getTopViewedPages(limit: number = 10): Promise<PageViewDocument[]> {
         try {
@@ -319,59 +304,6 @@ export class AppwritePageViewService {
         } catch (error) {
             console.error('Failed to get top viewed pages:', error);
             return [];
-        }
-    }
-
-    // Clean up old daily view data (optional maintenance function)
-    public async cleanupOldData(): Promise<{ success: boolean; cleanedCount: number }> {
-        try {
-            if (!this.DATABASE_ID || !this.COLLECTION_ID) {
-                return { success: false, cleanedCount: 0 };
-            }
-
-            const response = await databases.listDocuments(
-                this.DATABASE_ID,
-                this.COLLECTION_ID,
-                [Query.limit(100)] // Process in batches
-            );
-
-            let cleanedCount = 0;
-            const cutoffDate = new Date();
-            cutoffDate.setDate(cutoffDate.getDate() - this.config.maxDailyViewsHistory);
-
-            for (const doc of response.documents) {
-                const document = doc as unknown as PageViewDocument;
-                const viewMap = this.parseDailyViews(document.dailyViews);
-                const originalSize = viewMap.size;
-
-                // Remove old entries
-                viewMap.forEach((_, dateStr) => {
-                    const date = new Date(dateStr);
-                    if (date < cutoffDate) {
-                        viewMap.delete(dateStr);
-                    }
-                });
-
-                // Update if we removed any entries
-                if (viewMap.size < originalSize) {
-                    await databases.updateDocument(
-                        this.DATABASE_ID,
-                        this.COLLECTION_ID,
-                        document.$id!,
-                        {
-                            dailyViews: this.serializeDailyViews(viewMap),
-                            updatedAt: new Date().toISOString()
-                        }
-                    );
-                    cleanedCount++;
-                }
-            }
-
-            return { success: true, cleanedCount };
-
-        } catch (error) {
-            console.error('Failed to cleanup old data:', error);
-            return { success: false, cleanedCount: 0 };
         }
     }
 }

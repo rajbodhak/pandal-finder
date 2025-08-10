@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { hybridPageViewService } from '@/lib/services/hybridPageViewService';
+import { pageViewService } from '@/lib/services/appwritePageViewService';
 import type { PageViewStats } from '@/lib/pageViews';
 
 interface UsePageViewsOptions {
     trackOnMount?: boolean;
-    trackOnVisibilityChange?: boolean;
     debounceMs?: number;
 }
 
@@ -22,51 +21,24 @@ export function usePageViews(
 ): UsePageViewsReturn {
     const {
         trackOnMount = true,
-        trackOnVisibilityChange = true,
-        debounceMs = 1000
+        debounceMs = 2000
     } = options;
 
     const [stats, setStats] = useState<PageViewStats | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [lastTrackTime, setLastTrackTime] = useState(0);
-
-    // Track a view
-    const trackView = useCallback(async () => {
-        // Debounce tracking to prevent too many requests
-        const now = Date.now();
-        if (now - lastTrackTime < debounceMs) {
-            return;
-        }
-
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await hybridPageViewService.trackPageView(pageId);
-
-            if (response.success && response.stats) {
-                setStats(response.stats);
-                setLastTrackTime(now);
-            } else {
-                setError(response.error || 'Failed to track page view');
-            }
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-            setError(errorMessage);
-            console.error('Error tracking page view:', err);
-        } finally {
-            setLoading(false);
-        }
-    }, [pageId, lastTrackTime, debounceMs]);
+    const [hasTrackedInitial, setHasTrackedInitial] = useState(false);
 
     // Get stats without tracking
     const refreshStats = useCallback(async () => {
+        if (!pageId) return;
+
         try {
             setLoading(true);
             setError(null);
 
-            const response = await hybridPageViewService.getPageViewStats(pageId);
+            const response = await pageViewService.getPageViewStats(pageId);
 
             if (response.success && response.stats) {
                 setStats(response.stats);
@@ -82,30 +54,61 @@ export function usePageViews(
         }
     }, [pageId]);
 
-    // Track on mount
-    useEffect(() => {
-        if (trackOnMount && pageId) {
-            trackView();
-        }
-    }, [pageId, trackOnMount]); // Note: not including trackView to avoid infinite loops
+    // Track a view
+    const trackView = useCallback(async () => {
+        if (!pageId) return;
 
-    // Track on visibility change (when user returns to tab)
-    useEffect(() => {
-        if (!trackOnVisibilityChange || typeof document === 'undefined') {
+        // Debounce tracking to prevent too many requests
+        const now = Date.now();
+        if (now - lastTrackTime < debounceMs) {
             return;
         }
 
-        const handleVisibilityChange = () => {
-            if (!document.hidden && pageId) {
-                trackView();
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await pageViewService.trackPageView(pageId);
+
+            if (response.success && response.stats) {
+                setStats(response.stats);
+                setLastTrackTime(now);
+            } else {
+                setError(response.error || 'Failed to track page view');
+                // Still try to get stats even if tracking failed
+                await refreshStats();
+            }
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+            setError(errorMessage);
+            console.error('Error tracking page view:', err);
+            // Fallback to just getting stats
+            await refreshStats();
+        } finally {
+            setLoading(false);
+        }
+    }, [pageId, lastTrackTime, debounceMs, refreshStats]);
+
+    // Initial load - get stats first, then track if needed
+    useEffect(() => {
+        if (!pageId) return;
+
+        const initializePageViews = async () => {
+            // First, always get current stats
+            await refreshStats();
+
+            // Then track a view if needed (only once per session)
+            if (trackOnMount && !hasTrackedInitial) {
+                setHasTrackedInitial(true);
+                // Small delay to ensure stats are loaded first
+                setTimeout(() => {
+                    trackView();
+                }, 100);
             }
         };
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, [pageId, trackOnVisibilityChange, trackView]);
+        initializePageViews();
+    }, [pageId]); // Only depend on pageId to avoid infinite loops
 
     return {
         stats,
@@ -113,62 +116,5 @@ export function usePageViews(
         error,
         trackView,
         refreshStats
-    };
-}
-
-// Hook for multiple pages
-export function useMultiplePageViews(pageIds: string[]) {
-    const [stats, setStats] = useState<Record<string, PageViewStats>>({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchStats = useCallback(async () => {
-        if (pageIds.length === 0) return;
-
-        try {
-            setLoading(true);
-            setError(null);
-
-            // For multiple pages, we'll call individual stats since hybrid service
-            // doesn't have getMultiplePageStats yet
-            const results: Record<string, PageViewStats> = {};
-
-            await Promise.all(
-                pageIds.map(async (pageId) => {
-                    const response = await hybridPageViewService.getPageViewStats(pageId);
-                    if (response.success && response.stats) {
-                        results[pageId] = response.stats;
-                    } else {
-                        // Fallback to zero stats
-                        results[pageId] = {
-                            totalViews: 0,
-                            todayViews: 0,
-                            weekViews: 0,
-                            monthViews: 0,
-                            lastViewAt: null
-                        };
-                    }
-                })
-            );
-
-            setStats(results);
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-            setError(errorMessage);
-            console.error('Error fetching multiple page stats:', err);
-        } finally {
-            setLoading(false);
-        }
-    }, [pageIds]);
-
-    useEffect(() => {
-        fetchStats();
-    }, [fetchStats]);
-
-    return {
-        stats,
-        loading,
-        error,
-        refetch: fetchStats
     };
 }

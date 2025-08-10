@@ -9,17 +9,13 @@ import { ManualRouteService } from '@/components/routemap/ManualRouteService';
 import { useMobileState } from '@/hooks/useMobileState'
 import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { useAnalytics } from '@/hooks/useAnalytics';
 import { usePageViews } from '@/hooks/usePageViews';
 import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
 
 const Page = () => {
-    const analytics = useAnalytics();
-
     // State management
     const [initialLoading, setInitialLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<number>(Date.now());
 
     const { isMobile } = useResponsive();
     const {
@@ -28,16 +24,14 @@ const Page = () => {
         closeSidebar,
     } = useMobileState();
 
-    // Use the new Appwrite-based page view tracking
+    // Simplified page view tracking
     const {
         stats: pageViewStats,
         loading: viewsLoading,
-        trackView,
-        refreshStats
+        error: viewsError
     } = usePageViews('about', {
         trackOnMount: true,
-        trackOnVisibilityChange: true,
-        debounceMs: 2000
+        debounceMs: 3000
     });
 
     // Initialize app
@@ -46,23 +40,17 @@ const Page = () => {
             try {
                 setInitialLoading(true);
                 await ManualRouteService.loadRoutes();
-                await new Promise(resolve => setTimeout(resolve, 500));
-
-                // Track successful initialization using timeSpent
-                if (analytics && typeof analytics.timeSpent === 'function') {
-                    analytics.timeSpent('about', 1); // 1 second for initialization
-                }
+                await new Promise(resolve => setTimeout(resolve, 300));
             } catch (error) {
                 console.error('Failed to initialize app:', error);
                 setError('Failed to initialize the application. Please refresh the page.');
-                console.error('Analytics tracking - initialization error:', error);
             } finally {
                 setInitialLoading(false);
             }
         };
 
         initializeApp();
-    }, [analytics]);
+    }, []);
 
     // Close sidebar when switching to desktop
     useEffect(() => {
@@ -71,65 +59,17 @@ const Page = () => {
         }
     }, [isMobile, closeSidebar]);
 
-    // Track time spent on page when component unmounts or user leaves
-    useEffect(() => {
-        const handleBeforeUnload = () => {
-            const timeSpentSeconds = Math.floor((Date.now() - startTime) / 1000);
-            if (analytics && typeof analytics.timeSpent === 'function' && timeSpentSeconds > 0) {
-                analytics.timeSpent('about', timeSpentSeconds);
-            }
-        };
-
-        const handleVisibilityChange = () => {
-            if (document.hidden) {
-                const timeSpentSeconds = Math.floor((Date.now() - startTime) / 1000);
-                if (analytics && typeof analytics.timeSpent === 'function' && timeSpentSeconds > 0) {
-                    analytics.timeSpent('about', timeSpentSeconds);
-                }
-            } else {
-                setStartTime(Date.now());
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-            // Track final time spent when component unmounts
-            const timeSpentSeconds = Math.floor((Date.now() - startTime) / 1000);
-            if (analytics && typeof analytics.timeSpent === 'function' && timeSpentSeconds > 0) {
-                analytics.timeSpent('about', timeSpentSeconds);
-            }
-
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, [analytics, startTime]);
-
-    // Track user interactions
+    // Event handlers
     const handleSidebarToggle = () => {
-        console.log('Sidebar toggle:', isSidebarOpen ? 'close' : 'open');
         toggleSidebar();
     };
 
     const handleSidebarClose = () => {
-        console.log('Sidebar close via backdrop click');
         closeSidebar();
     };
 
     const handleRefreshClick = () => {
-        console.log('Page refresh due to initialization error');
         window.location.reload();
-    };
-
-    // Manual view tracking (for special events)
-    const handleManualTrack = async () => {
-        await trackView();
-    };
-
-    // Refresh page stats
-    const handleRefreshStats = async () => {
-        await refreshStats();
     };
 
     const dummyProps = {
@@ -141,36 +81,14 @@ const Page = () => {
         onViewModeChange: () => { }
     };
 
-    // Track content engagement using timeSpent
-    const trackContentInteraction = (section: string) => {
-        console.log(`Content interaction: ${section} on ${isMobile ? 'mobile' : 'desktop'}`);
-
-        // Use timeSpent to track engagement with content sections
-        if (analytics && typeof analytics.timeSpent === 'function') {
-            analytics.timeSpent(`about-${section}`, 1);
-        }
-    };
-
     const features = [
         { icon: MapPin, text: "Interactive map with pandal locations", color: "from-blue-500 to-cyan-500" },
         { icon: Search, text: "Smart search and filter functionality", color: "from-purple-500 to-violet-500" },
-        {
-            icon: Map,
-            text: "Custom route map by starting point",
-            color: "from-orange-500 to-amber-500"
-        },
+        { icon: Map, text: "Custom route map by starting point", color: "from-orange-500 to-amber-500" },
         { icon: Navigation, text: "Distance calculation & GPS navigation", color: "from-green-500 to-emerald-500" },
-        {
-            icon: Camera,
-            text: "High-quality pandal details (photo upload coming soon)",
-            color: "from-pink-500 to-rose-500"
-        },
+        { icon: Camera, text: "High-quality pandal details (photo upload coming soon)", color: "from-pink-500 to-rose-500" },
         { icon: Star, text: "Visit tracking & user analytics", color: "from-indigo-500 to-purple-500" },
-        {
-            icon: Route,
-            text: "More custom routes & pandals coming soon",
-            color: "from-teal-500 to-cyan-500"
-        }
+        { icon: Route, text: "More custom routes & pandals coming soon", color: "from-teal-500 to-cyan-500" }
     ];
 
     const howToSteps = [
@@ -184,7 +102,6 @@ const Page = () => {
     if (initialLoading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col">
-                {/* Header */}
                 {isMobile ? (
                     <MobileHeader
                         onToggleSidebar={handleSidebarToggle}
@@ -199,7 +116,6 @@ const Page = () => {
                     />
                 )}
 
-                {/* Mobile Sidebar */}
                 {isMobile && (
                     <MobileSidebar
                         isOpen={isSidebarOpen}
@@ -207,7 +123,6 @@ const Page = () => {
                     />
                 )}
 
-                {/* Main Content */}
                 <div className={`flex-1 ${isMobile ? 'pt-20 px-2 py-2 pb-20' : 'pt-6 px-6 pb-6'}`}>
                     <div className="max-w-6xl mx-auto">
                         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20">
@@ -222,7 +137,6 @@ const Page = () => {
     if (error) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col">
-                {/* Header */}
                 {isMobile ? (
                     <MobileHeader
                         onToggleSidebar={handleSidebarToggle}
@@ -237,7 +151,6 @@ const Page = () => {
                     />
                 )}
 
-                {/* Mobile Sidebar */}
                 {isMobile && (
                     <MobileSidebar
                         isOpen={isSidebarOpen}
@@ -245,7 +158,6 @@ const Page = () => {
                     />
                 )}
 
-                {/* Main Content */}
                 <div className={`flex-1 ${isMobile ? 'pt-20 px-2 py-2 pb-20' : 'pt-6 px-6 pb-6'}`}>
                     <div className="max-w-6xl mx-auto">
                         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
@@ -265,7 +177,6 @@ const Page = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col relative">
-            {/* Header */}
             {isMobile ? (
                 <MobileHeader
                     onToggleSidebar={handleSidebarToggle}
@@ -280,7 +191,6 @@ const Page = () => {
                 />
             )}
 
-            {/* Mobile Sidebar */}
             {isMobile && (
                 <MobileSidebar
                     isOpen={isSidebarOpen}
@@ -288,12 +198,11 @@ const Page = () => {
                 />
             )}
 
-            {/* Main Content */}
             <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'blur-sm brightness-75' : ''}`}>
                 <div className={`${isMobile ? 'mt-12 px-4 py-4 pb-20' : 'px-6 py-6'}`}>
                     <div className={`${isMobile ? 'max-w-4xl' : 'max-w-6xl'} mx-auto space-y-3`}>
 
-                        {/* Compact Header Card - Site Name, Views & Instagram */}
+                        {/* Header Card - Site Name, Views & Instagram */}
                         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
                             {/* Site Name */}
                             <div className="flex items-center justify-center gap-2 mb-4">
@@ -309,13 +218,15 @@ const Page = () => {
                                 </h1>
                             </div>
 
-                            {/* Compact Views & Instagram */}
+                            {/* Views & Instagram */}
                             <div className="grid grid-cols-2 gap-3 text-center">
                                 {/* Total Views */}
                                 <div className="p-3 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-lg border border-orange-200/50 dark:border-orange-700/30">
                                     <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
                                         {viewsLoading ? (
                                             <div className="animate-pulse">...</div>
+                                        ) : viewsError ? (
+                                            <div className="text-xs text-red-500">Error</div>
                                         ) : pageViewStats ? (
                                             pageViewStats.totalViews > 1000
                                                 ? `${Math.floor(pageViewStats.totalViews / 1000)}k`
@@ -326,22 +237,6 @@ const Page = () => {
                                         Views
                                     </div>
                                 </div>
-
-                                {/* Month Views */}
-                                {/* <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg border border-blue-200/50 dark:border-blue-700/30">
-                                    <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                                        {viewsLoading ? (
-                                            <div className="animate-pulse">...</div>
-                                        ) : pageViewStats ? (
-                                            pageViewStats.monthViews > 1000
-                                                ? `${Math.floor(pageViewStats.monthViews / 1000)}k`
-                                                : pageViewStats.monthViews.toLocaleString()
-                                        ) : '0'}
-                                    </div>
-                                    <div className="text-xs text-blue-700 dark:text-blue-300 font-medium">
-                                        Monthly Views
-                                    </div>
-                                </div> */}
 
                                 {/* Instagram */}
                                 <div
@@ -361,11 +256,8 @@ const Page = () => {
                         </div>
 
                         {/* About Section */}
-                        <div
-                            className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 hover:shadow-xl cursor-pointer transition-all duration-300"
-                            onClick={() => trackContentInteraction('about')}
-                        >
-                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors flex items-center gap-3">
+                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
+                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-3">
                                 <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
                                     <Heart className="h-3 w-3 text-white" />
                                 </div>
@@ -379,22 +271,19 @@ const Page = () => {
                         {/* Features & How to Use Grid */}
                         <div className={`grid ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'} gap-4`}>
                             {/* Features Card */}
-                            <div
-                                className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 hover:shadow-xl cursor-pointer transition-all duration-300"
-                                onClick={() => trackContentInteraction('features')}
-                            >
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
                                         <Sparkles className="h-3 w-3 text-white" />
                                     </div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">
                                         Features
                                     </h2>
                                 </div>
                                 <div className="space-y-2">
                                     {features.map((feature, index) => (
                                         <div key={index} className="flex items-center gap-3">
-                                            <div className={`w-5 h-5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center`}>
+                                            <div className="w-5 h-5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
                                                 <feature.icon className="h-2.5 w-2.5 text-white" />
                                             </div>
                                             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -406,15 +295,12 @@ const Page = () => {
                             </div>
 
                             {/* How to Use Card */}
-                            <div
-                                className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 hover:shadow-xl cursor-pointer transition-all duration-300"
-                                onClick={() => trackContentInteraction('how_to_use')}
-                            >
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
                                         <Smartphone className="h-3 w-3 text-white" />
                                     </div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">
                                         How to Use
                                     </h2>
                                 </div>
@@ -434,43 +320,41 @@ const Page = () => {
                         </div>
 
                         {/* About the Creator Card */}
-                        <div
-                            className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4 hover:shadow-xl cursor-pointer transition-all duration-300"
-                            onClick={() => trackContentInteraction('creator')}
-                        >
+                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
                                     <User className="h-3 w-3 text-white" />
                                 </div>
-                                <h2 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                <h2 className="text-lg font-bold text-gray-800 dark:text-white">
                                     About the Creator
                                 </h2>
                             </div>
 
                             <div className="space-y-3">
                                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {/* <span className="font-semibold text-orange-600 dark:text-orange-400">Raj Bodhak</span> -  */}
                                     Passionate developer and Durga Puja enthusiast dedicated to preserving and sharing Bengali cultural heritage through technology.
                                 </p>
 
                                 {/* Social Icons */}
                                 <div className="flex gap-2">
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Twitter className="h-3 w-3 text-white"
-                                            onClick={() => window.open('https://x.com/Rajidesu', '_blank')} />
-
+                                    <div
+                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
+                                        onClick={() => window.open('https://x.com/Rajidesu', '_blank')}
+                                    >
+                                        <Twitter className="h-3 w-3 text-white" />
                                     </div>
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Github className="h-3 w-3 text-white"
-                                            onClick={() => window.open('https://github.com/rajbodhak', '_blank')}
-                                        />
+                                    <div
+                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
+                                        onClick={() => window.open('https://github.com/rajbodhak', '_blank')}
+                                    >
+                                        <Github className="h-3 w-3 text-white" />
                                     </div>
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg">
-                                        <Instagram className="h-3 w-3 text-white"
-                                            onClick={() => window.open('https://instagram.com/rajidesu.in', '_blank')}
-                                        />
+                                    <div
+                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
+                                        onClick={() => window.open('https://instagram.com/rajidesu.in', '_blank')}
+                                    >
+                                        <Instagram className="h-3 w-3 text-white" />
                                     </div>
-
                                 </div>
                             </div>
                         </div>
