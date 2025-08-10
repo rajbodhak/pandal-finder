@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MapPin, Heart, Info, Route } from 'lucide-react';
+import { MapPin, Info } from 'lucide-react';
 import Link from 'next/link';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { useResponsive } from '@/hooks/useResponsive';
@@ -8,6 +8,7 @@ import { useMobileState } from '@/hooks/useMobileState';
 import { MobileHeader } from '../Layout/MobileHeader';
 import { MobileSidebar } from '../Layout/MobileSidebar';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const RouteMapHeader = () => {
     const { isMobile } = useResponsive();
@@ -20,7 +21,6 @@ const RouteMapHeader = () => {
     const pathname = usePathname();
     const isMainPage = pathname === '/';
     const isAboutPage = pathname === '/about';
-    const isRoutemapPage = pathname === '/routemap';
 
     // Dummy props for MobileHeader (since route page doesn't need search/view toggle)
     const dummyProps = {
@@ -59,11 +59,13 @@ const RouteMapHeader = () => {
                     {/* Left side - Logo and info */}
                     <div className="flex items-center gap-4">
                         <Link href="/" className="flex items-center gap-4 group">
-                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-2 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
-                                <img
+                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-1.5 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
+                                <Image
                                     src="/logo.svg"
                                     alt="DuggaKhoj Logo"
-                                    className="w-7 h-7 rounded-sm"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-sm"
                                 />
                             </div>
                             <div>

@@ -4,6 +4,7 @@ import { MapPin, Grid, List, Route, Info, User, Heart } from 'lucide-react';
 import Link from 'next/link';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 interface DesktopHeaderProps {
     // For main page
@@ -36,11 +37,13 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                     {/* Left side - Logo and info */}
                     <div className="flex items-center gap-4">
                         <Link href="/" className="flex items-center gap-4 group">
-                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-2 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
-                                <img
+                            <div className="bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500 text-white p-1.5 rounded-xl shadow-xl backdrop-blur-sm transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-2xl">
+                                <Image
                                     src="/logo.svg"
                                     alt="DuggaKhoj Logo"
-                                    className="w-7 h-7 rounded-sm"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-md"
                                 />
                             </div>
                             <div>

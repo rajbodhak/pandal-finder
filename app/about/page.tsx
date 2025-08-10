@@ -11,6 +11,7 @@ import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { usePageViews } from '@/hooks/usePageViews';
 import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
+import Image from 'next/image'
 
 const Page = () => {
     // State management
@@ -207,10 +208,12 @@ const Page = () => {
                             {/* Site Name */}
                             <div className="flex items-center justify-center gap-2 mb-4">
                                 <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-sm flex items-center justify-center shadow-lg">
-                                    <img
+                                    <Image
                                         src="/logo.svg"
                                         alt="DuggaKhoj Logo"
-                                        className="w-6.5 h-6.5 rounded-sm"
+                                        width={24}
+                                        height={24}
+                                        className="rounded-sm"
                                     />
                                 </div>
                                 <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-baloo2">
