@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/admin/', '/api/private/'],
+                disallow: ['/admin/', '/api/private/', '/signup', '/login'],
             },
         ],
         sitemap: 'https://duggakhoj.site/sitemap.xml',
