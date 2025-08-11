@@ -46,7 +46,6 @@ export class DatabaseService {
             );
             return this.formatPandal(response);
         } catch (error) {
-            console.log("Error", error);
             throw error
         }
     }
@@ -63,7 +62,6 @@ export class DatabaseService {
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("error", error);
             throw error;
         }
     }
@@ -78,7 +76,6 @@ export class DatabaseService {
             )
             return this.formatPandal(response);
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -104,7 +101,6 @@ export class DatabaseService {
 
             return this.formatPandal(response);
         } catch (error) {
-            console.log("Error updating pandal:", error);
             throw error;
         }
     }
@@ -118,7 +114,7 @@ export class DatabaseService {
                 id
             )
         } catch (error) {
-            console.log("Error", error);
+
             throw error;
         }
     }
@@ -139,7 +135,6 @@ export class DatabaseService {
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("searchPandal error", error);
             throw error
         }
     }
@@ -152,13 +147,13 @@ export class DatabaseService {
                 COLLECTION_ID,
                 [
                     Query.equal('area', area),
-                    Query.orderDesc('rating'), // Get highest rated first for better routes
-                    Query.limit(25) // Reasonable limit for route optimization
+                    Query.orderDesc('rating'),
+                    Query.limit(25)
                 ]
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("Error fetching pandals by area:", error);
+
             throw error;
         }
     }
@@ -177,7 +172,6 @@ export class DatabaseService {
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("Error fetching pandals by areas:", error);
             throw error;
         }
     }
@@ -197,7 +191,6 @@ export class DatabaseService {
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("Error fetching top pandals:", error);
             throw error;
         }
     }
@@ -217,7 +210,6 @@ export class DatabaseService {
             );
             return response.documents.map(doc => this.formatPandal(doc));
         } catch (error) {
-            console.log("Error fetching pandals by crowd level:", error);
             throw error;
         }
     }

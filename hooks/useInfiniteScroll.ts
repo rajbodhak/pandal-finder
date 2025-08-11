@@ -52,14 +52,13 @@ export const useInfiniteScroll = ({
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting && !isLoadingRef.current) {
-                        console.log('Intersection detected, loading more...');
+
                         isLoadingRef.current = true;
 
                         // Use functional update to avoid stale closure
                         setVisibleCount(currentCount => {
                             if (currentCount < totalItems) {
                                 const newCount = Math.min(currentCount + increment, totalItems);
-                                console.log(`Loading more: ${currentCount} -> ${newCount} of ${totalItems}`);
 
                                 // Reset loading flag after a short delay
                                 requestAnimationFrame(() => {
@@ -86,7 +85,6 @@ export const useInfiniteScroll = ({
 
         if (loadMoreRef.current) {
             observerRef.current.observe(loadMoreRef.current);
-            console.log('Observer attached to element');
 
             // Check if element is already in view on initial load
             setTimeout(() => {
@@ -96,7 +94,6 @@ export const useInfiniteScroll = ({
 
                     // Check if element is already visible
                     if (rect.top <= windowHeight + 100 && rect.bottom >= -100) {
-                        console.log('Element already in view on initial load, triggering load');
                         if (!isLoadingRef.current && visibleCount < totalItems) {
                             loadMore();
                         }

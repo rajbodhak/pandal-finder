@@ -220,7 +220,6 @@ export class BrowserStorageService {
             keysToRemove.forEach(key => localStorage.removeItem(key));
 
             if (keysToRemove.length > 0) {
-                console.log(`Cleaned up ${keysToRemove.length} expired storage items`);
             }
         } catch (error) {
             console.error('Failed to cleanup expired data:', error);
