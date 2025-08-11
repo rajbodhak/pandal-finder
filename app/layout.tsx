@@ -68,12 +68,12 @@ export const metadata: Metadata = {
   // Open Graph (Facebook, WhatsApp, etc.)
   openGraph: {
     title: 'DuggaKhoj - Your Ultimate Durga Puja Pandal Guide',
-    description: 'Plan your perfect pandal hopping route in Kolkata. Get directions, timings, and live updates for the best Durga Puja pandals.',
+    description: 'Discover and navigate top Durga Puja pandals of Kolkata with GPS routing, live tracking, custom filters and interactive map integration',
     url: 'https://duggakhoj.site',
     siteName: 'DuggaKhoj',
     images: [
       {
-        url: '/og-image.jpg', // You'll need to add this image to /public/
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'DuggaKhoj - Durga Puja Pandal Guide Kolkata',
