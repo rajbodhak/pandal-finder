@@ -262,7 +262,7 @@ const AboutClient = () => {
                                 {/* Instagram */}
                                 <div
                                     className="group p-3 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-lg border border-purple-200/50 dark:border-purple-700/30 hover:shadow-lg cursor-pointer transition-all duration-300"
-                                    onClick={() => window.open('https://instagram.com/duggakhoj.in', '_blank')}
+                                    onClick={() => window.open('https://instagram.com/duggakhoj', '_blank')}
                                 >
                                     <div className="flex flex-col items-center gap-1">
                                         <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
