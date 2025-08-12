@@ -65,6 +65,13 @@ export const metadata: Metadata = {
     canonical: 'https://duggakhoj.site',
   },
 
+  // Icons - ADDED FOR LOGO SUPPORT
+  icons: {
+    icon: '/logo-512.png',
+    apple: '/logo-512.png',
+    shortcut: '/logo-512.png'
+  },
+
   // Open Graph (Facebook, WhatsApp, etc.)
   openGraph: {
     title: 'DuggaKhoj - Your Ultimate Durga Puja Pandal Guide',
@@ -116,12 +123,35 @@ export const metadata: Metadata = {
   // },
 };
 
-// Structured Data for better SEO
+// UPDATED Structured Data for better SEO with Logo
 const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization', // CHANGED from 'WebSite' to 'Organization'
+  name: 'DuggaKhoj',
+  alternateName: 'Dugga Khoj',
+  description: 'Durga Puja Pandal Guide and Route Planner for Kolkata',
+  url: 'https://duggakhoj.site',
+  // ADDED LOGO FOR GOOGLE SEARCH RESULTS
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://duggakhoj.site/logo-512.png',
+    width: 512,
+    height: 512
+  },
+  // ADDED WEBSITE AS A SEPARATE ENTITY
+  sameAs: [
+    // Add your social media URLs when you create them
+    // 'https://www.facebook.com/duggakhoj',
+    // 'https://twitter.com/duggakhoj',
+    'https://www.instagram.com/duggakhoj'
+  ]
+};
+
+// ADDITIONAL Structured Data for Website functionality
+const websiteStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'DuggaKhoj',
-  description: 'Durga Puja Pandal Guide and Route Planner for Kolkata',
   url: 'https://duggakhoj.site',
   potentialAction: {
     '@type': 'SearchAction',
@@ -129,9 +159,7 @@ const structuredData = {
     'query-input': 'required name=search_term_string'
   },
   publisher: {
-    '@type': 'Organization',
-    name: 'DuggaKhoj',
-    url: 'https://duggakhoj.site'
+    '@id': 'https://duggakhoj.site/#organization'
   }
 };
 
@@ -143,14 +171,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* */}
+        {/* Google Site Verification */}
         <meta name="google-site-verification" content="tA0gNJuJuMRRAgGliGsC_jSo4GvcB7XrNlY7wybl_9I" />
-        {/* Structured Data for SEO */}
+
+        {/* Organization Structured Data for Logo */}
         <Script
-          id="structured-data"
+          id="organization-structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
+          }}
+        />
+
+        {/* Website Structured Data for Search Functionality */}
+        <Script
+          id="website-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteStructuredData),
           }}
         />
 
@@ -178,7 +216,7 @@ export default function RootLayout({
           </>
         )}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${baloo2.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${baloo2.variable} antialiased bg-white dark:bg-gray-900 text-gray-100 transition-colors`}>
         <Providers>
           <AuthProvider>
             <div className="min-h-screen flex flex-col">
