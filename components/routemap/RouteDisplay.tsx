@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Clock, MapPin, Star, Route, Bus, Train, Car, Navigation, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { Pandal, ManualRoute } from '@/lib/types';
 import { useStorage } from '@/hooks/useStorage';
+import { useGeolocation } from '@/hooks/useGeoLocation';
 
 interface RouteDisplayProps {
     route: ManualRoute;
@@ -24,6 +25,8 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         getRouteProgress,
         unmarkPandalVisited
     } = useStorage();
+
+    const { location: userLocation, loading: locationLoading, error: locationError } = useGeolocation();
 
     const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
     const [showAlternatives, setShowAlternatives] = useState<Set<string>>(new Set());
@@ -152,6 +155,18 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         return pandals.find(p => p.$id === pandalId);
     };
 
+    // Function to get directions to pandal
+    const getDirections = (pandal: Pandal) => {
+        if (pandal && userLocation) {
+            const url = `https://www.google.com/maps/dir/${userLocation.latitude},${userLocation.longitude}/${pandal.latitude},${pandal.longitude}`;
+            window.open(url, '_blank');
+        } else if (!userLocation) {
+            // Fallback: Open Google Maps with just the destination
+            const url = `https://www.google.com/maps/search/?api=1&query=${pandal.latitude},${pandal.longitude}`;
+            window.open(url, '_blank');
+        }
+    };
+
     const renderStepButton = (stepId: string, stepType: 'start' | 'pandal' | 'end') => {
         const isCompletedInSession = completedSteps.has(stepId);
         const isPandalVisitedBefore = stepType === 'pandal' ? isPandalVisited(stepId) : false;
@@ -181,14 +196,47 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
         }
 
         return (
-            <div className="flex items-center gap-1">
-                <button
-                    onClick={() => toggleStepComplete(stepId)}
-                    className={`px-2 py-1 rounded-md transition-colors text-xs font-medium min-w-[45px] ${buttonClass}`}
-                >
-                    {buttonText}
-                </button>
-            </div>
+            <button
+                onClick={() => toggleStepComplete(stepId)}
+                className={`px-2 py-1 rounded-md transition-colors text-xs font-medium min-w-[45px] ${buttonClass}`}
+            >
+                {buttonText}
+            </button>
+        );
+    };
+
+    // Render directions button for pandals
+    const renderDirectionsButton = (pandal: Pandal) => {
+        const isLocationAvailable = userLocation && !locationLoading;
+        const hasValidCoordinates = pandal.latitude && pandal.longitude;
+
+        if (!hasValidCoordinates) {
+            return null;
+        }
+
+        return (
+            <button
+                onClick={() => getDirections(pandal)}
+                disabled={locationLoading}
+                className={`flex items-center justify-center gap-1 px-2 py-1 rounded-md transition-colors text-xs font-medium min-w-[45px] ${locationLoading
+                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
+                    : isLocationAvailable
+                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
+                        : 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 hover:bg-orange-200 dark:hover:bg-orange-800'
+                    }`}
+                title={
+                    locationLoading
+                        ? 'Getting location...'
+                        : isLocationAvailable
+                            ? 'Get directions from your location'
+                            : 'Open in Google Maps'
+                }
+            >
+                <Navigation className="h-3 w-3" />
+                <span className="hidden sm:inline">
+                    {locationLoading ? 'Loading...' : isLocationAvailable ? 'Directions' : 'Map'}
+                </span>
+            </button>
         );
     };
 
@@ -444,8 +492,9 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                         ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                         : 'border-gray-200 dark:border-gray-700'
                                         }`}>
+
                                         {/* Pandal header */}
-                                        <div className="flex items-center justify-between gap-2 mb-2">
+                                        <div className="flex items-center justify-between gap-2 mb-1">
                                             <div className="flex items-center gap-2 flex-1 min-w-0">
                                                 <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
                                                     {index + 1}
@@ -461,24 +510,35 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                                     </p>
                                                 </div>
                                             </div>
-                                            {renderStepButton(pandalId, 'pandal')}
+                                            {/* Visit button only */}
+                                            <div className="shrink-0">
+                                                {renderStepButton(pandalId, 'pandal')}
+                                            </div>
                                         </div>
 
-                                        {/* Compact pandal stats */}
-                                        <div className="flex items-center gap-3 text-xs">
-                                            {pandal.rating && (
+                                        {/* Bottom row with stats and directions */}
+                                        <div className="flex items-center justify-between">
+                                            {/* Left: Stats */}
+                                            <div className="flex items-center gap-3 text-xs">
+                                                {pandal.rating && (
+                                                    <div className="flex items-center gap-1">
+                                                        <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                                                        <span className="text-gray-700 dark:text-gray-300">{pandal.rating}</span>
+                                                    </div>
+                                                )}
                                                 <div className="flex items-center gap-1">
-                                                    <Star className="h-3 w-3 text-yellow-500 fill-current" />
-                                                    <span className="text-gray-700 dark:text-gray-300">{pandal.rating}</span>
+                                                    <div className={`w-2 h-2 rounded-full ${pandal.crowd_level === 'high' ? 'bg-red-500' :
+                                                        pandal.crowd_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                                                        }`}></div>
+                                                    <span className="capitalize text-gray-700 dark:text-gray-300 text-xs">
+                                                        {pandal.crowd_level}
+                                                    </span>
                                                 </div>
-                                            )}
-                                            <div className="flex items-center gap-1">
-                                                <div className={`w-2 h-2 rounded-full ${pandal.crowd_level === 'high' ? 'bg-red-500' :
-                                                    pandal.crowd_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
-                                                    }`}></div>
-                                                <span className="capitalize text-gray-700 dark:text-gray-300 text-xs">
-                                                    {pandal.crowd_level}
-                                                </span>
+                                            </div>
+
+                                            {/* Right: Directions button */}
+                                            <div className="shrink-0">
+                                                {renderDirectionsButton(pandal)}
                                             </div>
                                         </div>
                                     </div>

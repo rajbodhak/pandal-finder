@@ -7,7 +7,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59493,
+        longitude: 88.35707
     },
     {
         $id: "pandal_ahiritola_jubok_binda",
@@ -16,7 +18,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59464,
+        longitude: 88.36032
     },
     {
         $id: "pandal_beniatola_sarbojonin",
@@ -25,7 +29,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.595714342239,
+        longitude: 88.361191812556
     },
     {
         $id: "pandal_kumartuli_park",
@@ -34,7 +40,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.59906,
+        longitude: 88.36148
     },
     {
         $id: "pandal_kumartuli_sarbojonin",
@@ -43,7 +51,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.59906,
+        longitude: 88.36148
     },
     {
         $id: "pandal_baghbazar_sarbojonin",
@@ -52,7 +62,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "traditional"
+        category: "traditional",
+        latitude: 22.60467,
+        longitude: 88.36564
     },
     {
         $id: "pandal_jagat_mukherjee_park",
@@ -61,7 +73,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.6,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59957,
+        longitude: 88.36602
     },
     {
         $id: "pandal_sovabazar_rajbari",
@@ -70,7 +84,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "traditional"
+        category: "traditional",
+        latitude: 22.59636,
+        longitude: 88.36739
     },
     {
         $id: "pandal_sikdar_bagan_sadharan",
@@ -79,7 +95,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.59678,
+        longitude: 88.37213
     },
     {
         $id: "pandal_nalin_sarkar_street",
@@ -88,7 +106,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.5946,
+        longitude: 88.3743
     },
     {
         $id: "pandal_hatibagan_sarbojonin",
@@ -97,7 +117,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.6,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59446,
+        longitude: 88.37198
     },
     {
         $id: "pandal_hatibagan_nobin_pally",
@@ -106,7 +128,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59598,
+        longitude: 88.37344
     },
     {
         $id: "pandal_kashi_bose_lane",
@@ -115,7 +139,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.6,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.59117,
+        longitude: 88.3689
     },
     {
         $id: "pandal_beadon_street",
@@ -124,7 +150,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.3,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.589270665085,
+        longitude: 88.367612961262
     },
     {
         $id: "pandal_chaltabagan_sarbojonin",
@@ -133,7 +161,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.585126530114,
+        longitude: 88.368987287942
     },
     {
         $id: "pandal_chorebagan_sarbojonin",
@@ -142,7 +172,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.583436158317,
+        longitude: 88.36306551689
     },
 
     //added for shyambazar route
@@ -153,7 +185,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.2,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.60005516188,
+        longitude: 88.36938572945
     },
 
     {
@@ -163,7 +197,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.3,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.595835169734,
+        longitude: 88.374555194283
     },
 
     {
@@ -173,7 +209,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.594541804574,
+        longitude: 88.379208700002
     },
 
     {
@@ -183,7 +221,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.3,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.595918687755,
+        longitude: 88.38230782523
     },
 
     {
@@ -193,7 +233,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.595353090067,
+        longitude: 88.38381291814
     },
 
     {
@@ -203,7 +245,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.594949235875,
+        longitude: 88.385287902521
     },
 
     {
@@ -213,7 +257,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.3,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "theme-based"
+        category: "theme-based",
+        latitude: 22.593340989079,
+        longitude: 88.38492415215
     },
     {
         $id: "pandal_bidhan_sangha",
@@ -222,7 +268,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "medium",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.593232660969,
+        longitude: 88.385665825167
     },
 
     {
@@ -232,7 +280,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.7,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.56621,
+        longitude: 88.36566
     },
 
     {
@@ -242,7 +292,9 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.5,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.57461,
+        longitude: 88.36447
     },
 
     {
@@ -252,6 +304,8 @@ export const NORTH_PANDALS: Pandal[] = [
         rating: 4.4,
         crowd_level: "high",
         area: "north_kolkata",
-        category: "modern"
+        category: "modern",
+        latitude: 22.57738,
+        longitude: 88.36076
     },
 ];
