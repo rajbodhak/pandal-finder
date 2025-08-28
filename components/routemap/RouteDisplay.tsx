@@ -664,9 +664,9 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                 </div>
                             </div>
 
-                            <div>
-                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1 text-sm">Best Time to Visit</h4>
-                                <p className="text-xs text-gray-600 dark:text-gray-400">
+                            <div className='flex items-center'>
+                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Best Time to Visit</h4>
+                                <p className="pl-2 text-xs text-gray-600 dark:text-gray-400">
                                     {route.bestTimeToStart || "Morning hours (9-11 AM) or evening (6-8 PM) for less crowd"}
                                 </p>
                             </div>
