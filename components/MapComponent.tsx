@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { PandalWithDistance, UserLocation } from '@/lib/types';
@@ -20,6 +20,33 @@ interface MapComponentProps {
     selectedPandal?: PandalWithDistance | null;
 }
 
+// Create reusable icon instances
+const createPandalIcon = (isSelected: boolean, rating: number) => {
+    return L.divIcon({
+        className: 'pandal-marker',
+        html: `
+            <div style="
+              background-color: ${isSelected ? '#ef4444' : '#f97316'}; 
+              width: 30px; 
+              height: 30px; 
+              border-radius: 50%; 
+              border: 3px solid white; 
+              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: bold;
+              font-size: 12px;
+            ">
+              ${rating.toFixed(1)}
+            </div>
+          `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+    });
+};
+
 export const MapComponent: React.FC<MapComponentProps> = ({
     pandals,
     userLocation,
@@ -37,185 +64,11 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const mapInitializedRef = useRef(false);
     const userHasInteractedRef = useRef(false);
 
-    // Initialize map
-    useEffect(() => {
-        if (!mapContainerRef.current || mapRef.current) return;
+    // Throttled update function for better performance
+    const updateMarkersThrottled = useRef<NodeJS.Timeout | null>(null);
 
-        const map = L.map(mapContainerRef.current, {
-            attributionControl: false
-        }).setView([22.5726, 88.3639], 11); // Kolkata center
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: ''  // Remove attribution
-        }).addTo(map);
-
-        markersRef.current.addTo(map);
-        mapRef.current = map;
-
-        // Track any user interaction
-        map.on('dragstart zoomstart', () => {
-            userHasInteractedRef.current = true;
-        });
-
-        mapInitializedRef.current = true;
-
-        return () => {
-            if (mapRef.current) {
-                mapRef.current.remove();
-                mapRef.current = null;
-                mapInitializedRef.current = false;
-            }
-        };
-    }, []);
-
-    // Handle selected pandal zoom (separate effect)
-    useEffect(() => {
-        if (!mapRef.current || !selectedPandal) return;
-
-        // Only zoom if this is a new selection
-        if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
-            userHasInteractedRef.current = true;
-
-            mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
-                animate: true,
-                duration: 0.5
-            });
-
-            // Open the popup for the selected pandal after zoom
-            setTimeout(() => {
-                const marker = pandalMarkersRef.current.get(selectedPandal.$id);
-                if (marker && !marker.isPopupOpen()) {
-                    marker.openPopup();
-                }
-            }, 600);
-
-            previousSelectedPandalRef.current = selectedPandal;
-        }
-    }, [selectedPandal]);
-
-    // Handle user location updates (separate effect)
-    useEffect(() => {
-        if (!mapRef.current || !userLocation || !mapInitializedRef.current) return;
-
-        // Remove existing user marker
-        if (userMarkerRef.current) {
-            markersRef.current.removeLayer(userMarkerRef.current);
-        }
-
-        // Add new user location marker
-        const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
-            icon: L.divIcon({
-                className: 'user-location-marker',
-                html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
-                iconSize: [18, 18],
-                iconAnchor: [9, 9]
-            })
-        }).bindPopup('Your Location');
-
-        markersRef.current.addLayer(userMarker);
-        userMarkerRef.current = userMarker;
-
-        // Only auto-center if user hasn't interacted and this is first location or significant change
-        const isFirstLocation = !lastUserLocationRef.current;
-        const hasSignificantChange = lastUserLocationRef.current &&
-            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.01 ||
-                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.01);
-
-        if ((isFirstLocation || hasSignificantChange) && !userHasInteractedRef.current && !selectedPandal) {
-            mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13, {
-                animate: true,
-                duration: 1
-            });
-        }
-
-        lastUserLocationRef.current = userLocation;
-    }, [userLocation]);
-
-    // Handle pandal markers (separate effect with memoization)
-    useEffect(() => {
-        if (!mapRef.current || !mapInitializedRef.current) return;
-
-        // Only update markers if pandals actually changed
-        const currentPandalIds = pandals.map(p => p.$id).sort().join(',');
-        const existingPandalIds = Array.from(pandalMarkersRef.current.keys()).sort().join(',');
-
-        if (currentPandalIds === existingPandalIds && pandals.length > 0) {
-            // Just update selected state without recreating markers
-            pandalMarkersRef.current.forEach((marker, pandalId) => {
-                const pandal = pandals.find(p => p.$id === pandalId);
-                if (pandal) {
-                    const isSelected = selectedPandal?.$id === pandal.$id;
-                    const icon = L.divIcon({
-                        className: 'pandal-marker',
-                        html: `
-                <div style="
-                  background-color: ${isSelected ? '#ef4444' : '#f97316'}; 
-                  width: 30px; 
-                  height: 30px; 
-                  border-radius: 50%; 
-                  border: 3px solid white; 
-                  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-weight: bold;
-                  font-size: 12px;
-                ">
-                  ${(pandal.rating ?? 0).toFixed(1)}
-                </div>
-              `,
-                        iconSize: [36, 36],
-                        iconAnchor: [18, 18]
-                    });
-                    marker.setIcon(icon);
-                }
-            });
-            return;
-        }
-
-        // Clear only pandal markers
-        pandalMarkersRef.current.forEach(marker => {
-            markersRef.current.removeLayer(marker);
-        });
-        pandalMarkersRef.current.clear();
-
-        // Add pandal markers
-        pandals.forEach(pandal => {
-            const isSelected = selectedPandal?.$id === pandal.$id;
-
-            const marker = L.marker([pandal.latitude!, pandal.longitude!], {
-                icon: L.divIcon({
-                    className: 'pandal-marker',
-                    html: `
-            <div style="
-              background-color: ${isSelected ? '#ef4444' : '#f97316'}; 
-              width: 30px; 
-              height: 30px; 
-              border-radius: 50%; 
-              border: 3px solid white; 
-              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: white;
-              font-weight: bold;
-              font-size: 12px;
-            ">
-              ${(pandal.rating ?? 0).toFixed(1)}
-            </div>
-          `,
-                    iconSize: [36, 36],
-                    iconAnchor: [18, 18]
-                })
-            });
-
-            const popup = L.popup({
-                closeButton: false,
-                className: 'custom-popup',
-                minWidth: 200,
-                autoPan: false // Prevent auto-pan which can cause zoom issues
-            }).setContent(`
+    // Memoized popup content generator
+    const createPopupContent = useCallback((pandal: PandalWithDistance) => `
         <button 
             onclick="window.pandalMapActions?.closePopup()"
             style="
@@ -303,32 +156,198 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 "
             >Directions</button>
         </div>
-`);
+    `, []);
 
-            marker.bindPopup(popup);
+    // Initialize map with optimized settings
+    useEffect(() => {
+        if (!mapContainerRef.current || mapRef.current) return;
 
-            // Handle click with debouncing
-            marker.on('click', (e) => {
-                e.originalEvent?.stopPropagation();
-                userHasInteractedRef.current = true;
-                onPandalClick(pandal);
-            });
+        const map = L.map(mapContainerRef.current, {
+            attributionControl: false,
+            zoomControl: true,
+            // Optimizations for mobile performance
+            preferCanvas: true, // Use canvas rendering for better performance
+            fadeAnimation: false, // Disable fade animations
+            zoomAnimation: true,
+            markerZoomAnimation: false, // Disable marker zoom animation for smoother experience
+            wheelPxPerZoomLevel: 120, // Faster zoom response
+            zoomSnap: 0.5, // Allow fractional zoom levels for smoother zooming
+            zoomDelta: 0.5 // Smaller zoom steps for more granular control
+        }).setView([22.5726, 88.3639], 11);
 
-            markersRef.current.addLayer(marker);
-            pandalMarkersRef.current.set(pandal.$id, marker);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '',
+            maxZoom: 19,
+            keepBuffer: 2, // Reduce tile buffer for better performance
+            updateWhenIdle: true, // Only update tiles when map is idle
+            updateWhenZooming: false // Don't update tiles while zooming
+        }).addTo(map);
+
+        markersRef.current.addTo(map);
+        mapRef.current = map;
+
+        // Optimized interaction tracking
+        map.on('dragstart zoomstart', () => {
+            userHasInteractedRef.current = true;
         });
 
-        // Only fit bounds if no user interaction and no selected pandal
-        if (!userHasInteractedRef.current && !selectedPandal && pandals.length > 0) {
-            const allLayers = markersRef.current.getLayers();
-            if (allLayers.length > 0) {
-                const group = L.featureGroup(allLayers);
-                mapRef.current.fitBounds(group.getBounds().pad(0.1));
-            }
-        }
-    }, [pandals, selectedPandal]);
+        // Throttle zoom events for better performance
+        let zoomTimeout: NodeJS.Timeout | null = null;
+        map.on('zoomstart', () => {
+            if (zoomTimeout) clearTimeout(zoomTimeout);
+        });
 
-    // Setup global map actions for popup buttons
+        mapInitializedRef.current = true;
+
+        return () => {
+            if (updateMarkersThrottled.current) {
+                clearTimeout(updateMarkersThrottled.current);
+            }
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+                mapInitializedRef.current = false;
+            }
+        };
+    }, []);
+
+    // Handle selected pandal zoom (optimized)
+    useEffect(() => {
+        if (!mapRef.current || !selectedPandal) return;
+
+        if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
+            userHasInteractedRef.current = true;
+
+            mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
+                animate: true,
+                duration: 0.3 // Faster animation
+            });
+
+            setTimeout(() => {
+                const marker = pandalMarkersRef.current.get(selectedPandal.$id);
+                if (marker && !marker.isPopupOpen()) {
+                    marker.openPopup();
+                }
+            }, 350);
+
+            previousSelectedPandalRef.current = selectedPandal;
+        }
+    }, [selectedPandal]);
+
+    // Handle user location updates
+    useEffect(() => {
+        if (!mapRef.current || !userLocation || !mapInitializedRef.current) return;
+
+        if (userMarkerRef.current) {
+            markersRef.current.removeLayer(userMarkerRef.current);
+        }
+
+        const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
+            icon: L.divIcon({
+                className: 'user-location-marker',
+                html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                iconSize: [18, 18],
+                iconAnchor: [9, 9]
+            })
+        }).bindPopup('Your Location');
+
+        markersRef.current.addLayer(userMarker);
+        userMarkerRef.current = userMarker;
+
+        const isFirstLocation = !lastUserLocationRef.current;
+        const hasSignificantChange = lastUserLocationRef.current &&
+            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.01 ||
+                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.01);
+
+        if ((isFirstLocation || hasSignificantChange) && !userHasInteractedRef.current && !selectedPandal) {
+            mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13, {
+                animate: true,
+                duration: 0.5
+            });
+        }
+
+        lastUserLocationRef.current = userLocation;
+    }, [userLocation]);
+
+    // Optimized pandal markers with throttling
+    useEffect(() => {
+        if (!mapRef.current || !mapInitializedRef.current) return;
+
+        // Throttle marker updates to prevent performance issues
+        if (updateMarkersThrottled.current) {
+            clearTimeout(updateMarkersThrottled.current);
+        }
+
+        updateMarkersThrottled.current = setTimeout(() => {
+            const currentPandalIds = pandals.map(p => p.$id).sort().join(',');
+            const existingPandalIds = Array.from(pandalMarkersRef.current.keys()).sort().join(',');
+
+            if (currentPandalIds === existingPandalIds && pandals.length > 0) {
+                // Just update selected state without recreating markers
+                pandalMarkersRef.current.forEach((marker, pandalId) => {
+                    const pandal = pandals.find(p => p.$id === pandalId);
+                    if (pandal) {
+                        const isSelected = selectedPandal?.$id === pandal.$id;
+                        const icon = createPandalIcon(isSelected, pandal.rating ?? 0);
+                        marker.setIcon(icon);
+                    }
+                });
+                return;
+            }
+
+            // Batch remove markers for better performance
+            const markersToRemove = Array.from(pandalMarkersRef.current.values());
+            markersToRemove.forEach(marker => {
+                markersRef.current.removeLayer(marker);
+            });
+            pandalMarkersRef.current.clear();
+
+            // Batch add new markers
+            const newMarkers: L.Marker[] = [];
+            pandals.forEach(pandal => {
+                const isSelected = selectedPandal?.$id === pandal.$id;
+
+                const marker = L.marker([pandal.latitude!, pandal.longitude!], {
+                    icon: createPandalIcon(isSelected, pandal.rating ?? 0)
+                });
+
+                const popup = L.popup({
+                    closeButton: false,
+                    className: 'custom-popup',
+                    minWidth: 200,
+                    autoPan: false,
+                    keepInView: true
+                }).setContent(createPopupContent(pandal));
+
+                marker.bindPopup(popup);
+
+                // Optimized click handler
+                marker.on('click', (e) => {
+                    e.originalEvent?.stopPropagation();
+                    userHasInteractedRef.current = true;
+                    onPandalClick(pandal);
+                });
+
+                newMarkers.push(marker);
+                pandalMarkersRef.current.set(pandal.$id, marker);
+            });
+
+            // Add all markers at once
+            newMarkers.forEach(marker => markersRef.current.addLayer(marker));
+
+            // Only fit bounds if needed
+            if (!userHasInteractedRef.current && !selectedPandal && pandals.length > 0) {
+                const allLayers = markersRef.current.getLayers();
+                if (allLayers.length > 0) {
+                    const group = L.featureGroup(allLayers);
+                    mapRef.current!.fitBounds(group.getBounds().pad(0.1), { animate: false });
+                }
+            }
+        }, 50); // 50ms throttle
+
+    }, [pandals, selectedPandal, createPopupContent]);
+
+    // Setup global map actions
     useEffect(() => {
         (window as any).pandalMapActions = {
             viewDetails: (pandalId: string) => {
@@ -360,7 +379,12 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         <div
             ref={mapContainerRef}
             className="w-full h-full rounded-lg overflow-hidden border border-gray-200"
-            style={{ minHeight: '400px' }}
+            style={{
+                minHeight: '400px',
+                touchAction: 'pan-x pan-y', // Optimize touch handling
+                WebkitTransform: 'translateZ(0)', // Force GPU acceleration
+                transform: 'translateZ(0)'
+            }}
         />
     );
 };
