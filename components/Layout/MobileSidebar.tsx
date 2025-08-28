@@ -49,7 +49,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             {/* Overlay */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30"
+                    className="fixed inset-0 bg-black/40 z-30"
                     onClick={onClose}
                 />
             )}
@@ -57,15 +57,15 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
             {/* Sidebar */}
             <div className={`
                     fixed top-0 left-0 h-full bg-gradient-to-b from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950
-                    z-40 shadow-2xl transform transition-transform duration-300 ease-in-out
-                    w-[75%] max-w-sm flex flex-col backdrop-blur-lg border-r border-white/20 dark:border-gray-700/20
+                    z-40 shadow-xl transform transition-transform duration-200 ease-out will-change-transform
+                    w-[75%] max-w-sm flex flex-col border-r border-white/20 dark:border-gray-700/20
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3.5 border-b bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-white/20 dark:border-gray-700/20">
+                <div className="flex items-center justify-between px-4 py-3.5 border-b bg-gradient-to-r from-orange-50/95 via-rose-50/95 to-pink-50/95 dark:from-gray-900/95 dark:via-orange-950/95 dark:to-rose-950/95 shadow-lg border-white/20 dark:border-gray-700/20">
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-all transform hover:scale-105 shadow-lg backdrop-blur-sm"
+                        className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-colors duration-200 shadow-lg"
                     >
                         <Menu className="w-5 h-5" />
                     </button>
@@ -92,24 +92,24 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                                     href={item.href}
                                     onClick={onClose}
                                     className={`
-                                        group flex items-center gap-3 p-3 backdrop-blur-sm border rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl
+                                        group flex items-center gap-3 p-3 border rounded-xl transition-colors duration-150 shadow-md
                                         ${item.isActive
                                             ? 'bg-gradient-to-r from-orange-100 to-pink-100 dark:from-orange-900/80 dark:to-pink-900/80 border-orange-300 dark:border-orange-500 shadow-orange-200/50 dark:shadow-orange-900/50'
-                                            : 'bg-white/80 dark:bg-gray-800/80 border-white/20 dark:border-gray-700/20 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50'
+                                            : 'bg-white/90 dark:bg-gray-800/90 border-white/20 dark:border-gray-700/20 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50'
                                         }
                                     `}
                                 >
                                     <div className={`
-                                        p-2 rounded-lg shadow-md transition-all
+                                        p-2 rounded-lg shadow-md transition-colors duration-150
                                         ${item.isActive
-                                            ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white scale-105 shadow-lg'
+                                            ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
                                             : 'bg-gradient-to-r from-orange-500 to-pink-500 text-white'
                                         }
                                     `}>
                                         <Icon className="w-4 h-4" />
                                     </div>
                                     <span className={`
-                                        font-medium transition-colors
+                                        font-medium transition-colors duration-150
                                         ${item.isActive
                                             ? 'text-orange-700 dark:text-orange-300 font-semibold'
                                             : 'text-gray-900 dark:text-white'
@@ -133,7 +133,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     <div className="mt-auto pt-4">
                         <button
                             onClick={toggleTheme}
-                            className="w-full cursor-pointer group flex items-center gap-3 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                            className="w-full cursor-pointer group flex items-center gap-3 p-3 bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/20 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-colors duration-150 shadow-md"
                         >
                             <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md">
                                 {theme === 'dark' ? (
