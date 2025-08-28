@@ -67,11 +67,13 @@ export const metadata: Metadata = {
 
   // Icons - ADDED FOR LOGO SUPPORT
   icons: {
-    icon: '/logo-512.png',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo-512.png', sizes: '512x512', type: 'image/png' }
+    ],
     apple: '/logo-512.png',
-    shortcut: '/logo-512.png'
+    shortcut: '/favicon.ico'
   },
-
   // Open Graph (Facebook, WhatsApp, etc.)
   openGraph: {
     title: 'DuggaKhoj - Your Ultimate Durga Puja Pandal Guide',
@@ -126,7 +128,7 @@ export const metadata: Metadata = {
 // UPDATED Structured Data for better SEO with Logo
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Organization', // CHANGED from 'WebSite' to 'Organization'
+  '@type': 'Organization',
   name: 'DuggaKhoj',
   alternateName: 'Dugga Khoj',
   description: 'Durga Puja Pandal Guide and Route Planner for Kolkata',
