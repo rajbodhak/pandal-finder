@@ -63,6 +63,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     const lastUserLocationRef = useRef<UserLocation | null>(null);
     const mapInitializedRef = useRef(false);
     const userHasInteractedRef = useRef(false);
+    const hasInitialViewSetRef = useRef(false); // NEW: Track if initial view has been set
 
     // Throttled update function for better performance
     const updateMarkersThrottled = useRef<NodeJS.Timeout | null>(null);
@@ -166,21 +167,21 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             attributionControl: false,
             zoomControl: true,
             // Optimizations for mobile performance
-            preferCanvas: true, // Use canvas rendering for better performance
-            fadeAnimation: false, // Disable fade animations
+            preferCanvas: true,
+            fadeAnimation: false,
             zoomAnimation: true,
-            markerZoomAnimation: false, // Disable marker zoom animation for smoother experience
-            wheelPxPerZoomLevel: 120, // Faster zoom response
-            zoomSnap: 0.5, // Allow fractional zoom levels for smoother zooming
-            zoomDelta: 0.5 // Smaller zoom steps for more granular control
-        }).setView([22.5726, 88.3639], 11);
+            markerZoomAnimation: false,
+            wheelPxPerZoomLevel: 120,
+            zoomSnap: 0.5,
+            zoomDelta: 0.5
+        }).setView([22.5726, 88.3639], 11); // Default Kolkata view
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '',
             maxZoom: 19,
-            keepBuffer: 2, // Reduce tile buffer for better performance
-            updateWhenIdle: true, // Only update tiles when map is idle
-            updateWhenZooming: false // Don't update tiles while zooming
+            keepBuffer: 2,
+            updateWhenIdle: true,
+            updateWhenZooming: false
         }).addTo(map);
 
         markersRef.current.addTo(map);
@@ -189,13 +190,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         // Optimized interaction tracking
         map.on('dragstart zoomstart', () => {
             userHasInteractedRef.current = true;
-        });
-
-        // Throttle zoom events for better performance
-        // eslint-disable-next-line prefer-const
-        let zoomTimeout: NodeJS.Timeout | null = null;
-        map.on('zoomstart', () => {
-            if (zoomTimeout) clearTimeout(zoomTimeout);
         });
 
         mapInitializedRef.current = true;
@@ -212,16 +206,51 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         };
     }, []);
 
+    // NEW: Handle initial view setting with proper priority
+    useEffect(() => {
+        if (!mapRef.current || !mapInitializedRef.current || hasInitialViewSetRef.current) return;
+
+        // Wait for both pandals and map to be ready
+        if (pandals.length > 0) {
+            // Priority 1: Selected pandal
+            if (selectedPandal) {
+                mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
+                    animate: false
+                });
+                hasInitialViewSetRef.current = true;
+                return;
+            }
+
+            // Priority 2: Fit bounds to show all pandals (consistent behavior)
+            const allMarkers = pandals.map(pandal =>
+                L.marker([pandal.latitude!, pandal.longitude!])
+            );
+
+            if (userLocation) {
+                allMarkers.push(L.marker([userLocation.latitude, userLocation.longitude]));
+            }
+
+            if (allMarkers.length > 0) {
+                const group = L.featureGroup(allMarkers);
+                mapRef.current.fitBounds(group.getBounds().pad(0.1), {
+                    animate: false,
+                    maxZoom: 14 // Prevent zooming too close
+                });
+                hasInitialViewSetRef.current = true;
+            }
+        }
+    }, [pandals, userLocation, selectedPandal, mapInitializedRef.current]);
+
     // Handle selected pandal zoom (optimized)
     useEffect(() => {
-        if (!mapRef.current || !selectedPandal) return;
+        if (!mapRef.current || !selectedPandal || !hasInitialViewSetRef.current) return;
 
         if (previousSelectedPandalRef.current?.$id !== selectedPandal.$id) {
             userHasInteractedRef.current = true;
 
             mapRef.current.setView([selectedPandal.latitude!, selectedPandal.longitude!], 16, {
                 animate: true,
-                duration: 0.3 // Faster animation
+                duration: 0.3
             });
 
             setTimeout(() => {
@@ -235,14 +264,16 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         }
     }, [selectedPandal]);
 
-    // Handle user location updates
+    // MODIFIED: Handle user location updates (no auto-zoom to user location)
     useEffect(() => {
         if (!mapRef.current || !userLocation || !mapInitializedRef.current) return;
 
+        // Remove existing user marker
         if (userMarkerRef.current) {
             markersRef.current.removeLayer(userMarkerRef.current);
         }
 
+        // Add new user marker
         const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
             icon: L.divIcon({
                 className: 'user-location-marker',
@@ -254,27 +285,16 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
         markersRef.current.addLayer(userMarker);
         userMarkerRef.current = userMarker;
-
-        const isFirstLocation = !lastUserLocationRef.current;
-        const hasSignificantChange = lastUserLocationRef.current &&
-            (Math.abs(lastUserLocationRef.current.latitude - userLocation.latitude) > 0.01 ||
-                Math.abs(lastUserLocationRef.current.longitude - userLocation.longitude) > 0.01);
-
-        if ((isFirstLocation || hasSignificantChange) && !userHasInteractedRef.current && !selectedPandal) {
-            mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13, {
-                animate: true,
-                duration: 0.5
-            });
-        }
-
         lastUserLocationRef.current = userLocation;
+
+        // REMOVED: Automatic zoom to user location
+        // This ensures consistent behavior across environments
     }, [userLocation]);
 
     // Optimized pandal markers with throttling
     useEffect(() => {
         if (!mapRef.current || !mapInitializedRef.current) return;
 
-        // Throttle marker updates to prevent performance issues
         if (updateMarkersThrottled.current) {
             clearTimeout(updateMarkersThrottled.current);
         }
@@ -322,7 +342,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
                 marker.bindPopup(popup);
 
-                // Optimized click handler
                 marker.on('click', (e) => {
                     e.originalEvent?.stopPropagation();
                     userHasInteractedRef.current = true;
@@ -336,15 +355,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             // Add all markers at once
             newMarkers.forEach(marker => markersRef.current.addLayer(marker));
 
-            // Only fit bounds if needed
-            if (!userHasInteractedRef.current && !selectedPandal && pandals.length > 0) {
-                const allLayers = markersRef.current.getLayers();
-                if (allLayers.length > 0) {
-                    const group = L.featureGroup(allLayers);
-                    mapRef.current!.fitBounds(group.getBounds().pad(0.1), { animate: false });
-                }
-            }
-        }, 50); // 50ms throttle
+        }, 50);
 
     }, [pandals, selectedPandal, createPopupContent]);
 
@@ -382,8 +393,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             className="w-full h-full rounded-lg overflow-hidden border border-gray-200"
             style={{
                 minHeight: '400px',
-                touchAction: 'pan-x pan-y', // Optimize touch handling
-                WebkitTransform: 'translateZ(0)', // Force GPU acceleration
+                touchAction: 'pan-x pan-y',
+                WebkitTransform: 'translateZ(0)',
                 transform: 'translateZ(0)'
             }}
         />
