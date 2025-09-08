@@ -173,7 +173,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             wheelPxPerZoomLevel: 120, // Faster zoom response
             zoomSnap: 0.5, // Allow fractional zoom levels for smoother zooming
             zoomDelta: 0.5 // Smaller zoom steps for more granular control
-        }).setView([22.5726, 88.3639], 11);
+        }).setView([22.5726, 88.3639], 10);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '',
