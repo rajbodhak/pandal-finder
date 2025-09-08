@@ -1,0 +1,152 @@
+{
+    "routes": [
+        {
+            "id": "kalyani_central_classic",
+            "name": "Kalyani Central Classic",
+            "description": "Popular traditional and theme-based pandals across major areas of Kalyani",
+            "areaId": "kalyani",
+            "startingPoint": {
+                "id": "kalyani_station",
+                "name": "Kalyani Railway Station",
+                "type": "railway",
+                "description": "Suburban station linking Kalyani with Sealdah and nearby areas"
+            },
+            "difficulty": "moderate",
+            "estimatedTotalTime": "3-4 hours",
+            "bestTimeToStart": "9:00 AM",
+            "pandalSequence": [
+                "pandal_a9_square_park",
+                "pandal_kalyani_a2",
+                "pandal_iti_more",
+                "pandal_boat_park",
+                "pandal_kalyani_central_park",
+                "pandal_manimala_park",
+                "pandal_nebula_park",
+                "pandal_kalyani_rathtala"
+            ],
+            "startingConnection": {
+                "startingPointId": "kalyani_station",
+                "firstPandalId": "pandal_a9_square_park",
+                "connection": {
+                    "fromPandalId": "kalyani_station",
+                    "toPandalId": "pandal_a9_square_park",
+                    "distance": 700,
+                    "estimatedTime": 10,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Kalyani Station Rd"
+                    },
+                    "cost": 0,
+                    "notes": "via Kalyani Station Rd"
+                }
+            },
+            "routeSegments": [
+                {
+                    "fromPandalId": "pandal_a9_square_park",
+                    "toPandalId": "pandal_kalyani_a2",
+                    "distance": 800,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Rina Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kalyani_a2",
+                    "toPandalId": "pandal_iti_more",
+                    "distance": 2800,
+                    "estimatedTime": 8,
+                    "transportMode": "toto",
+                    "cost": 20,
+                    "notes": "Take an auto or toto from JNM Hospital Road or near Kalyani Station",
+                    "alternativeRoutes": [
+                        {
+                            "fromPandalId": "pandal_kalyani_a2",
+                            "toPandalId": "pandal_iti_more",
+                            "distance": 2800,
+                            "estimatedTime": 27,
+                            "transportMode": "walk",
+                            "transportDetails": {
+                                "walkingRoute": "via Hospital Rd/JNM Hospital Rd and A-B Connector/Bangaon - Kulpi Rd"
+                            },
+                            "cost": 0,
+                            "notes": "If you think you wanna explore Kalyani with friends"
+                        }
+                    ]
+                },
+                {
+                    "fromPandalId": "pandal_iti_more",
+                    "toPandalId": "pandal_boat_park",
+                    "distance": 400,
+                    "estimatedTime": 6,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Kalyani - Madanpur Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_boat_park",
+                    "toPandalId": "pandal_kalyani_central_park",
+                    "distance": 550,
+                    "estimatedTime": 8,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "Kalyani - Madanpur Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_kalyani_central_park",
+                    "toPandalId": "pandal_manimala_park",
+                    "distance": 650,
+                    "estimatedTime": 9,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Namita Rd"
+                    },
+                    "cost": 0
+                },
+                {
+                    "fromPandalId": "pandal_manimala_park",
+                    "toPandalId": "pandal_nebula_park",
+                    "distance": 800,
+                    "estimatedTime": 11,
+                    "transportMode": "walk",
+                    "transportDetails": {
+                        "walkingRoute": "via Congress Road"
+                    },
+                    "cost": 0,
+                    "notes": "This Pandal is optional and you can directly go to Rathtala"
+                },
+                {
+                    "fromPandalId": "pandal_nebula_park",
+                    "toPandalId": "pandal_kalyani_rathtala",
+                    "distance": 2300,
+                    "estimatedTime": 10,
+                    "transportMode": "toto",
+                    "transportDetails": {
+                        "walkingRoute": "via Bangaon - Kulpi Rd"
+                    },
+                    "cost": 0,
+                    "notes": "Go back to Kalyani Central Park and take an auto"
+                }
+            ],
+            "totalWalkingDistance": 1400,
+            "totalCost": 28,
+            "tips": [
+                "Start early (9 AM or 2 PM) to avoid afternoon crowds",
+                "Keep small change (₹10, ₹20 notes) for bus fares",
+                "Carry water bottle - walking can be tiring",
+                "Must visit A-9 Square, ITI More, Boat Park, Rathtala"
+            ],
+            "warnings": [
+                "Avoid travelling during peak hours (6-8 PM)",
+                "Be careful with belongings in crowded areas"
+            ],
+            "created_at": "2024-10-01T00:00:00Z",
+            "updated_at": "2024-10-01T00:00:00Z"
+        }
+    ]
+}

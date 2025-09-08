@@ -29,6 +29,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         { value: 'north_kolkata', label: 'North Kolkata' },
         { value: 'south_kolkata', label: 'South Kolkata' },
         { value: 'central_kolkata', label: 'Central Kolkata' },
+        { value: 'kalyani', label: 'Kalyani' }
     ];
 
     const clearFilters = () => {
@@ -145,24 +146,26 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         {/* Area */}
                         <div>
                             <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Area</label>
-                            <div className="space-y-1 max-h-28 overflow-y-auto bg-gray-50 dark:bg-gray-700 rounded-lg p-2 border border-gray-200 dark:border-gray-600">
-                                {areaOptions.map((option) => (
-                                    <label key={option.value} className="flex items-center cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-950/30 rounded p-1 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            checked={filters.area?.includes(option.value) || false}
-                                            onChange={(e) => {
-                                                const current = filters.area || [];
-                                                const newVal = e.target.checked
-                                                    ? [...current, option.value]
-                                                    : current.filter((a) => a !== option.value);
-                                                onFiltersChange({ ...filters, area: newVal });
-                                            }}
-                                            className="rounded text-orange-600 focus:ring-orange-500 border-gray-300 dark:border-gray-600 w-3 h-3"
-                                        />
-                                        <span className="ml-1.5 text-xs text-gray-700 dark:text-gray-300">{option.label}</span>
-                                    </label>
-                                ))}
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 border border-gray-200 dark:border-gray-600">
+                                <div className="grid grid-cols-2 gap-1">
+                                    {areaOptions.map((option) => (
+                                        <label key={option.value} className="flex items-center cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-950/30 rounded p-1 transition-all">
+                                            <input
+                                                type="checkbox"
+                                                checked={filters.area?.includes(option.value) || false}
+                                                onChange={(e) => {
+                                                    const current = filters.area || [];
+                                                    const newVal = e.target.checked
+                                                        ? [...current, option.value]
+                                                        : current.filter((a) => a !== option.value);
+                                                    onFiltersChange({ ...filters, area: newVal });
+                                                }}
+                                                className="rounded text-orange-600 focus:ring-orange-500 border-gray-300 dark:border-gray-600 w-3 h-3"
+                                            />
+                                            <span className="ml-1.5 text-xs text-gray-700 dark:text-gray-300">{option.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

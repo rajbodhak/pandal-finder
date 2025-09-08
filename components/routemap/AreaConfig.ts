@@ -53,5 +53,20 @@ export const KOLKATA_AREAS: AreaConfig[] = [
                 description: 'Central to North Kolkata Pandals exploring'
             }
         ]
-    }
+    },
+    {
+        id: 'kalyani',
+        name: 'kalyani',
+        displayName: 'Kalyani',
+        description: 'Popular pandals in township areas like ITI, A9, Boat Park, and Rathtala',
+        estimatedAreas: ['iti', 'a9', 'boatpark', 'rathtala'],
+        startingPoints: [
+            {
+                id: 'kalyani_station',
+                name: 'Kalyani Railway Station',
+                type: 'railway',
+                description: 'Gateway station to reach pandals in Kalyani township'
+            }
+        ]
+    },
 ];

@@ -8,7 +8,7 @@ export interface Pandal {
     rating?: number;
     imageUrl?: string;
     imageId?: string;
-    area: 'north_kolkata' | 'south_kolkata' | 'central_kolkata' | 'salt_lake' | 'new_town' | 'howrah' | 'other';
+    area: 'north_kolkata' | 'south_kolkata' | 'central_kolkata' | 'salt_lake' | 'new_town' | 'kalyani' | 'other';
     category?: 'traditional' | 'modern' | 'theme-based';
     special_features?: string[];
     crowd_level?: 'low' | 'medium' | 'high';
@@ -70,7 +70,7 @@ export interface RouteSegment {
     toPandalId: string;
     distance: number; // in meters
     estimatedTime: number; // in minutes
-    transportMode: 'walk' | 'bus' | 'metro' | 'auto' | 'taxi' | 'ferry';
+    transportMode: 'walk' | 'bus' | 'metro' | 'auto' | 'taxi' | 'ferry' | 'toto';
     transportDetails?: {
         busNumber?: string; // "45, 46A"
         metroLine?: string; // "Blue Line"

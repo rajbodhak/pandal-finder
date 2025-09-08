@@ -12,6 +12,7 @@ import { MapPin, AlertCircle } from 'lucide-react';
 
 import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
 import { SOUTH_PANDALS } from '@/data/pandals/south-pandals';
+import { KALYANI_PANDALS } from "@/data/pandals/kalyani-pandals"
 import RoadmapHeader from './RouteMapHeader';
 import { LoadingSpinner } from '../LoadingSpinner';
 
@@ -23,7 +24,8 @@ const ALL_LOCAL_PANDALS: Pandal[] = [
     ...(NORTH_PANDALS as Pandal[]).map(pandal => ({
         ...pandal,
         area: 'central_kolkata' as const
-    }))
+    })),
+    ...(KALYANI_PANDALS as Pandal[])
 ];
 
 interface RouteMapPageProps {
