@@ -360,12 +360,12 @@ const AboutClient = () => {
 
                                 {/* Social Icons */}
                                 <div className="flex gap-2">
-                                    <div
+                                    {/* <div
                                         className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
                                         onClick={() => window.open('https://x.com/Rajidesu', '_blank')}
                                     >
                                         <Twitter className="h-3 w-3 text-white" />
-                                    </div>
+                                    </div> */}
                                     <div
                                         className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
                                         onClick={() => window.open('https://github.com/rajbodhak', '_blank')}
