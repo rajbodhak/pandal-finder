@@ -174,7 +174,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             wheelPxPerZoomLevel: 120,
             zoomSnap: 0.5,
             zoomDelta: 0.5
-        }).setView([22.5726, 88.3639], 11); // Default Kolkata view
+        }).setView([22.5726, 88.3639], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '',
