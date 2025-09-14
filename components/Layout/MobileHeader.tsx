@@ -90,7 +90,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     return (
         <>
             <header
-                className={`fixed top-0 left-0 right-0 bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all duration-300 ${isSidebarOpen ? 'blur-sm brightness-75 cursor-pointer' : ''
+                className={`fixed top-0 left-0 right-0 bg-rose-200/70 dark:bg-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all duration-300 ${isSidebarOpen ? 'blur-sm brightness-75 cursor-pointer' : ''
                     }`}
                 onClick={handleHeaderClick}
             >
@@ -127,12 +127,12 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                             </button>
 
                             {/* View Mode Toggle */}
-                            <div className={`flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl p-1 shadow-lg ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}>
+                            <div className={`flex items-center bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-950/30 dark:to-pink-950/30 backdrop-blur-sm rounded-xl p-1 border border-orange-200/50 dark:border-orange-700/30 ${isSidebarOpen ? 'pointer-events-none opacity-50' : ''}`}>
                                 <button
                                     onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('map'))}
                                     className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'map'
                                         ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                        : 'text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-100 hover:to-pink-100 dark:hover:from-orange-900/50 dark:hover:to-pink-900/50 hover:text-orange-700 dark:hover:text-orange-300'
                                         }`}
                                 >
                                     <MapPin className="w-4 h-4" />
@@ -141,7 +141,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                                     onClick={(e) => handleInteractiveClick(e, () => onViewModeChange('list'))}
                                     className={`flex items-center justify-center p-2 rounded-lg transition-all transform hover:scale-105 ${viewMode === 'list'
                                         ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:text-orange-600 dark:hover:text-orange-400'
+                                        : 'text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-100 hover:to-pink-100 dark:hover:from-orange-900/50 dark:hover:to-pink-900/50 hover:text-orange-700 dark:hover:text-orange-300'
                                         }`}
                                 >
                                     <List className="w-4 h-4" />

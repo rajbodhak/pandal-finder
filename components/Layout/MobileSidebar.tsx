@@ -56,13 +56,13 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
 
             {/* Sidebar */}
             <div className={`
-                    fixed top-0 left-0 h-full bg-gradient-to-b from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950
+                    fixed top-0 left-0 h-full bg-rose-200 dark:bg-rose-950
                     z-40 shadow-xl transform transition-transform duration-200 ease-out will-change-transform
                     w-[75%] max-w-sm flex flex-col border-r border-white/20 dark:border-gray-700/20
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3.5 border-b bg-gradient-to-r from-orange-50/95 via-rose-50/95 to-pink-50/95 dark:from-gray-900/95 dark:via-orange-950/95 dark:to-rose-950/95 shadow-lg border-white/20 dark:border-gray-700/20">
+                <div className="flex items-center justify-between px-4 py-3.5 border-b bg-rose-200/70 dark:bg-rose-950/90 shadow-lg border-white/20 dark:border-gray-700/20">
                     <button
                         onClick={onClose}
                         className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 dark:from-orange-600 dark:to-pink-600 dark:hover:from-orange-700 dark:hover:to-pink-700 transition-colors duration-200 shadow-lg"
