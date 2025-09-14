@@ -6,7 +6,7 @@ export const usePandalSelection = (userLocation: UserLocation | null) => {
     const [selectedPandal, setSelectedPandal] = useState<PandalWithDistance | null>(null);
     const [showDetails, setShowDetails] = useState(false);
 
-    const handlePandalClick = useCallback((pandal: PandalWithDistance) => {
+    const handlePandalClick = useCallback((pandal: PandalWithDistance | null) => {
         setSelectedPandal(pandal);
     }, []);
 

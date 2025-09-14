@@ -362,8 +362,8 @@ export default function PandalFinderPage() {
                 ) : (
                     // Desktop view logic (unchanged)
                     viewMode === 'map' ? (
-                        <div className="relative">
-                            <div className="bg-transparent overflow-hidden md:mx-4 mb-4">
+                        <div className="container mx-auto px-4 pb- relative z-5">
+                            <div className=" rounded-xl overflow-hidden h-[60vh] min-h-[500px]">
                                 <MapView
                                     filteredPandals={filteredPandals}
                                     userLocation={userLocation}
@@ -376,7 +376,7 @@ export default function PandalFinderPage() {
                             </div>
                         </div>
                     ) : (
-                        <div className="container mx-auto px-4 relative z-5">
+                        <div className="container mx-auto px-4 pb-3 relative z-5">
                             <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 sm:p-6">
                                 <GridListView
                                     viewMode={viewMode}
@@ -396,7 +396,7 @@ export default function PandalFinderPage() {
 
                 {/* Desktop Stats */}
                 {!isMobile && (
-                    <div className="container mx-auto px-4 py-6 relative z-10">
+                    <div className="container mx-auto px-4 py-3 relative z-10">
                         <div className="bg-transparent rounded-xl p-4 sm:p-6">
                             <StatsSection
                                 filteredPandals={filteredPandals}
