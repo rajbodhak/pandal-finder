@@ -313,21 +313,21 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     return (
         <div className="bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 min-h-screen mb-8">
             {/* Sticky Header */}
-            <div className="fixed top-14 left-0 right-0 bg-orange-50/60 dark:bg-red-900/10 backdrop-blur-lg shadow-lg border-b border-white/20 dark:border-gray-700/20 z-20 px-4 py-3 md:py-4">
-                <div className="max-w-4xl mx-auto">
+            <div className="fixed top-14 left-0 right-0 bg-orange-50/60 dark:bg-red-900/10 backdrop-blur-lg shadow-lg border-b border-white/20 dark:border-gray-700/20 z-20 px-4 py-3 md:px-6 md:py-5">
+                <div className="max-w-4xl mx-auto md:max-w-6xl">
                     {/* Back Button and Title Row */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 md:gap-4">
                         <button
                             onClick={onBack}
-                            className="flex items-center gap-2 px-3 py-2 rounded-full text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-all duration-200 text-sm font-medium"
+                            className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 rounded-full text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all duration-200 text-sm md:text-base font-medium"
                         >
-                            <ArrowLeft className="h-4 w-4" />
+                            <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
                             <span>Back</span>
                         </button>
                         <div className="flex-1 min-w-0">
-                            <h1 className="md:text-lg text-base font-bold text-gray-800 dark:text-white">{route.name}</h1>
+                            <h1 className="md:text-xl text-base font-bold text-gray-800 dark:text-white">{route.name}</h1>
                             {isRouteComplete && (
-                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
+                                <span className="inline-flex items-center gap-1 px-2 py-1 md:px-3 md:py-1.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs md:text-sm font-medium">
                                     ✓ Completed
                                 </span>
                             )}
@@ -335,37 +335,37 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-600 dark:text-gray-300 text-xs md:sm line-clamp-2">{route.description}</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm line-clamp-2">{route.description}</p>
                 </div>
             </div>
 
             {/* Scrollable Content */}
-            <div className="pt-36 px-4 pb-6">
-                <div className="max-w-4xl mx-auto">
-                    <div className="grid grid-cols-3 gap-2 my-2">
-                        <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
-                            <Clock className="h-3 w-3 text-orange-500 shrink-0" />
+            <div className="pt-36 md:pt-44 px-4 md:px-6 pb-6">
+                <div className="max-w-4xl mx-auto md:max-w-6xl">
+                    <div className="grid grid-cols-3 gap-2 md:gap-4 my-2 md:my-4">
+                        <div className="flex items-center gap-1.5 md:gap-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg md:rounded-xl px-2 py-1.5 md:px-4 md:py-3 border border-white/20 dark:border-gray-700/20">
+                            <Clock className="h-3 w-3 md:h-4 md:w-4 text-orange-500 shrink-0" />
                             <div className="min-w-0">
-                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Duration</p>
-                                <p className="font-semibold text-xs text-gray-800 dark:text-white truncate">{route.estimatedTotalTime}</p>
+                                <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 leading-tight">Duration</p>
+                                <p className="font-semibold text-xs md:text-sm text-gray-800 dark:text-white truncate">{route.estimatedTotalTime}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
-                            <MapPin className="h-3 w-3 text-orange-500 shrink-0" />
+                        <div className="flex items-center gap-1.5 md:gap-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg md:rounded-xl px-2 py-1.5 md:px-4 md:py-3 border border-white/20 dark:border-gray-700/20">
+                            <MapPin className="h-3 w-3 md:h-4 md:w-4 text-orange-500 shrink-0" />
                             <div className="min-w-0">
-                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Visited</p>
-                                <p className="font-semibold text-xs text-gray-800 dark:text-white">{visitedPandalsCount}/{route.pandalSequence.length}</p>
+                                <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 leading-tight">Visited</p>
+                                <p className="font-semibold text-xs md:text-sm text-gray-800 dark:text-white">{visitedPandalsCount}/{route.pandalSequence.length}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/20 dark:border-gray-700/20">
-                            <Route className="h-3 w-3 text-orange-500 shrink-0" />
+                        <div className="flex items-center gap-1.5 md:gap-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg md:rounded-xl px-2 py-1.5 md:px-4 md:py-3 border border-white/20 dark:border-gray-700/20">
+                            <Route className="h-3 w-3 md:h-4 md:w-4 text-orange-500 shrink-0" />
                             <div className="min-w-0 flex-1">
-                                <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-tight">Progress</p>
-                                <div className="flex items-center gap-1">
-                                    <p className="font-semibold text-xs text-gray-800 dark:text-white">{actualCompletedCount}/{totalSteps}</p>
-                                    <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 leading-tight">Progress</p>
+                                <div className="flex items-center gap-1 md:gap-2">
+                                    <p className="font-semibold text-xs md:text-sm text-gray-800 dark:text-white">{actualCompletedCount}/{totalSteps}</p>
+                                    <div className="flex-1 h-1 md:h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-orange-500 rounded-full transition-all duration-300"
                                             style={{ width: `${completionPercentage}%` }}
@@ -378,11 +378,11 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
 
                     {/* Tips and Warnings */}
                     {(route.tips.length > 0 || route.warnings?.length) && (
-                        <div className="grid gap-2 mb-3">
+                        <div className="grid gap-2 md:gap-3 mb-3 md:mb-4">
                             {route.tips.length > 0 && (
-                                <div className="bg-blue-50/80 dark:bg-blue-950/50 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-lg p-2">
-                                    <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-1 text-xs">💡 Tips</h3>
-                                    <ul className="text-xs text-blue-700 dark:text-blue-300 space-y-0.5">
+                                <div className="bg-blue-50/80 dark:bg-blue-950/50 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-lg md:rounded-xl p-2 md:p-4">
+                                    <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-1 md:mb-2 text-xs md:text-sm">💡 Tips</h3>
+                                    <ul className="text-xs md:text-sm text-blue-700 dark:text-blue-300 space-y-0.5 md:space-y-1">
                                         {route.tips.map((tip, idx) => (
                                             <li key={idx}>• {tip}</li>
                                         ))}
@@ -391,11 +391,11 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                             )}
 
                             {route.warnings && route.warnings.length > 0 && (
-                                <div className="bg-yellow-50/80 dark:bg-yellow-950/50 backdrop-blur-sm border border-yellow-200 dark:border-yellow-800 rounded-lg p-2">
-                                    <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1 flex items-center gap-1 text-xs">
-                                        <AlertTriangle className="h-3 w-3" /> Warnings
+                                <div className="bg-yellow-50/80 dark:bg-yellow-950/50 backdrop-blur-sm border border-yellow-200 dark:border-yellow-800 rounded-lg md:rounded-xl p-2 md:p-4">
+                                    <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1 md:mb-2 flex items-center gap-1 text-xs md:text-sm">
+                                        <AlertTriangle className="h-3 w-3 md:h-4 md:w-4" /> Warnings
                                     </h3>
-                                    <ul className="text-xs text-yellow-700 dark:text-yellow-300 space-y-0.5">
+                                    <ul className="text-xs md:text-sm text-yellow-700 dark:text-yellow-300 space-y-0.5 md:space-y-1">
                                         {route.warnings.map((warning, idx) => (
                                             <li key={idx}>• {warning}</li>
                                         ))}
@@ -406,27 +406,27 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                     )}
 
                     {/* Route Steps */}
-                    <div className="space-y-1">
+                    <div className="space-y-1 md:space-y-2">
                         {/* Starting Point */}
                         <div className="relative">
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${autoStart
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg md:rounded-xl border-2 p-2 md:p-4 transition-all ${autoStart
                                 ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                 : 'border-gray-200 dark:border-gray-700'
                                 }`}>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                <div className="flex items-center gap-2 md:gap-3">
+                                    <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm">
                                         {autoStart ? '✓' : 'S'}
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
+                                        <h3 className="font-semibold text-sm md:text-base text-gray-800 dark:text-white">
                                             {route.startingPoint.name}
                                         </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-xs">
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm">
                                             {autoStart ? 'Route started!' : 'Visit any pandal to start'}
                                         </p>
                                     </div>
                                     {autoStart && (
-                                        <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                        <span className="text-xs md:text-sm text-green-600 dark:text-green-400 font-medium">
                                             Started
                                         </span>
                                     )}
@@ -436,29 +436,29 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                             {/* Starting Connection */}
                             {route.startingConnection && (
                                 <>
-                                    <div className="flex items-center justify-center py-1">
-                                        <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
+                                    <div className="flex items-center justify-center py-1 md:py-2">
+                                        <div className="w-px h-3 md:h-4 bg-gray-300 dark:bg-gray-600"></div>
                                     </div>
 
-                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border rounded-lg p-2 mx-3 ${getTransportColor(route.startingConnection.connection.transportMode)}`}>
+                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border rounded-lg md:rounded-xl p-2 md:p-3 mx-3 md:mx-6 ${getTransportColor(route.startingConnection.connection.transportMode)}`}>
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <div className="flex items-center gap-1">
                                                 {getTransportIcon(route.startingConnection.connection.transportMode)}
-                                                <span className="font-medium capitalize text-xs">
+                                                <span className="font-medium capitalize text-xs md:text-sm">
                                                     {route.startingConnection.connection.transportMode}
                                                 </span>
                                             </div>
-                                            <div className="text-xs">
+                                            <div className="text-xs md:text-sm">
                                                 {route.startingConnection.connection.distance}m •
                                                 {route.startingConnection.connection.estimatedTime} min •
                                                 ₹{route.startingConnection.connection.cost}
                                             </div>
                                         </div>
                                         {route.startingConnection.connection.transportDetails?.busNumber && (
-                                            <p className="text-xs mt-1">Bus: {route.startingConnection.connection.transportDetails.busNumber}</p>
+                                            <p className="text-xs md:text-sm mt-1">Bus: {route.startingConnection.connection.transportDetails.busNumber}</p>
                                         )}
                                         {route.startingConnection.connection.notes && (
-                                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">
                                                 {route.startingConnection.connection.notes}
                                             </p>
                                         )}
@@ -476,8 +476,8 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
 
                             if (!pandal) {
                                 return (
-                                    <div key={uniqueKey} className="bg-red-50/80 dark:bg-red-950/50 backdrop-blur-sm border border-red-200 dark:border-red-800 rounded-lg p-2">
-                                        <p className="text-red-700 dark:text-red-300 text-xs">⚠️ Pandal not found: {pandalId}</p>
+                                    <div key={uniqueKey} className="bg-red-50/80 dark:bg-red-950/50 backdrop-blur-sm border border-red-200 dark:border-red-800 rounded-lg md:rounded-xl p-2 md:p-3">
+                                        <p className="text-red-700 dark:text-red-300 text-xs md:text-sm">⚠️ Pandal not found: {pandalId}</p>
                                     </div>
                                 );
                             }
@@ -485,29 +485,29 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                             return (
                                 <div key={uniqueKey} className="relative">
                                     {/* Connecting Line */}
-                                    <div className="flex items-center justify-center py-1">
-                                        <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
+                                    <div className="flex items-center justify-center py-1 md:py-2">
+                                        <div className="w-px h-3 md:h-4 bg-gray-300 dark:bg-gray-600"></div>
                                     </div>
 
                                     {/* Pandal Card */}
-                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${completedSteps.has(pandalId) || isPandalVisitedBefore
+                                    <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg md:rounded-xl border-2 p-2 md:p-4 transition-all ${completedSteps.has(pandalId) || isPandalVisitedBefore
                                         ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                         : 'border-gray-200 dark:border-gray-700'
                                         }`}>
 
                                         {/* Pandal header */}
-                                        <div className="flex items-center justify-between gap-2 mb-1">
-                                            <div className="flex items-center gap-2 flex-1 min-w-0">
-                                                <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
+                                        <div className="flex items-center justify-between gap-2 md:gap-3 mb-1 md:mb-2">
+                                            <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                                                <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shrink-0">
                                                     {index + 1}
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex items-center gap-2">
-                                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white truncate">
+                                                        <h3 className="font-semibold text-sm md:text-base text-gray-800 dark:text-white truncate">
                                                             {pandal.name}
                                                         </h3>
                                                     </div>
-                                                    <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-1">
+                                                    <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm line-clamp-1">
                                                         {pandal.address}
                                                     </p>
                                                 </div>
@@ -521,18 +521,18 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                         {/* Bottom row with stats and directions */}
                                         <div className="flex items-center justify-between">
                                             {/* Left: Stats */}
-                                            <div className="flex items-center gap-3 text-xs">
+                                            <div className="flex items-center gap-3 text-xs md:text-sm">
                                                 {pandal.rating && (
                                                     <div className="flex items-center gap-1">
-                                                        <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                                                        <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-500 fill-current" />
                                                         <span className="text-gray-700 dark:text-gray-300">{pandal.rating}</span>
                                                     </div>
                                                 )}
                                                 <div className="flex items-center gap-1">
-                                                    <div className={`w-2 h-2 rounded-full ${pandal.crowd_level === 'high' ? 'bg-red-500' :
+                                                    <div className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full ${pandal.crowd_level === 'high' ? 'bg-red-500' :
                                                         pandal.crowd_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
                                                         }`}></div>
-                                                    <span className="capitalize text-gray-700 dark:text-gray-300 text-xs">
+                                                    <span className="capitalize text-gray-700 dark:text-gray-300 text-xs md:text-sm">
                                                         {pandal.crowd_level}
                                                     </span>
                                                 </div>
@@ -548,19 +548,19 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                     {/* Next Route Segment - Only if it exists */}
                                     {nextSegment && (
                                         <>
-                                            <div className="flex items-center justify-center py-1">
-                                                <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
+                                            <div className="flex items-center justify-center py-1 md:py-2">
+                                                <div className="w-px h-3 md:h-4 bg-gray-300 dark:bg-gray-600"></div>
                                             </div>
 
-                                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border rounded-lg p-2 mx-3 ${getTransportColor(nextSegment.transportMode)}`}>
+                                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border rounded-lg md:rounded-xl p-2 md:p-3 mx-3 md:mx-6 ${getTransportColor(nextSegment.transportMode)}`}>
                                                 {/* Transport segment content */}
                                                 <div className="flex items-center justify-between gap-2 flex-wrap">
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <div className="flex items-center gap-1">
                                                             {getTransportIcon(nextSegment.transportMode)}
-                                                            <span className="font-medium capitalize text-xs">{nextSegment.transportMode}</span>
+                                                            <span className="font-medium capitalize text-xs md:text-sm">{nextSegment.transportMode}</span>
                                                         </div>
-                                                        <div className="text-xs">
+                                                        <div className="text-xs md:text-sm">
                                                             {nextSegment.distance}m • {nextSegment.estimatedTime} min • ₹{nextSegment.cost}
                                                         </div>
                                                     </div>
@@ -568,7 +568,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                                     {nextSegment.alternativeRoutes && nextSegment.alternativeRoutes.length > 0 && (
                                                         <button
                                                             onClick={() => toggleAlternatives(`${nextSegment.fromPandalId}-${nextSegment.toPandalId}`)}
-                                                            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 whitespace-nowrap"
+                                                            className="text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 whitespace-nowrap"
                                                         >
                                                             {showAlternatives.has(`${nextSegment.fromPandalId}-${nextSegment.toPandalId}`) ? 'Hide' : 'Show'} Alt
                                                         </button>
@@ -577,21 +577,21 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
 
                                                 {/* Transport details */}
                                                 {nextSegment.transportDetails?.busNumber && (
-                                                    <p className="text-xs mt-1">Bus: {nextSegment.transportDetails.busNumber}</p>
+                                                    <p className="text-xs md:text-sm mt-1">Bus: {nextSegment.transportDetails.busNumber}</p>
                                                 )}
                                                 {nextSegment.transportDetails?.walkingRoute && (
-                                                    <p className="text-xs mt-1">Route: {nextSegment.transportDetails.walkingRoute}</p>
+                                                    <p className="text-xs md:text-sm mt-1">Route: {nextSegment.transportDetails.walkingRoute}</p>
                                                 )}
                                                 {nextSegment.notes && (
-                                                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{nextSegment.notes}</p>
+                                                    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">{nextSegment.notes}</p>
                                                 )}
 
                                                 {/* Alternative Routes */}
                                                 {showAlternatives.has(`${nextSegment.fromPandalId}-${nextSegment.toPandalId}`) && nextSegment.alternativeRoutes && (
                                                     <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
-                                                        <p className="text-xs font-medium mb-1">Alternatives:</p>
+                                                        <p className="text-xs md:text-sm font-medium mb-1">Alternatives:</p>
                                                         {nextSegment.alternativeRoutes.map((alt, altIndex) => (
-                                                            <div key={`${route.id}-alt-${altIndex}-${nextSegment.fromPandalId}-${nextSegment.toPandalId}`} className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                                                            <div key={`${route.id}-alt-${altIndex}-${nextSegment.fromPandalId}-${nextSegment.toPandalId}`} className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1">
                                                                 • {getTransportIcon(alt.transportMode)} {alt.transportMode} - {alt.distance}m, {alt.estimatedTime} min, ₹{alt.cost || 0}
                                                                 {alt.notes && <span className="ml-1 text-gray-500 dark:text-gray-500">({alt.notes})</span>}
                                                             </div>
@@ -607,28 +607,28 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
 
                         {/* End Point */}
                         <div className="relative">
-                            <div className="flex items-center justify-center py-1">
-                                <div className="w-px h-3 bg-gray-300 dark:bg-gray-600"></div>
+                            <div className="flex items-center justify-center py-1 md:py-2">
+                                <div className="w-px h-3 md:h-4 bg-gray-300 dark:bg-gray-600"></div>
                             </div>
 
-                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg border-2 p-2 transition-all ${autoEnd
+                            <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg md:rounded-xl border-2 p-2 md:p-4 transition-all ${autoEnd
                                 ? 'border-green-300 dark:border-green-600 bg-green-50/80 dark:bg-green-950/50'
                                 : 'border-gray-200 dark:border-gray-700'
                                 }`}>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                <div className="flex items-center gap-2 md:gap-3">
+                                    <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm">
                                         {autoEnd ? '✓' : 'E'}
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-sm text-gray-800 dark:text-white">
+                                        <h3 className="font-semibold text-sm md:text-base text-gray-800 dark:text-white">
                                             Route Complete
                                         </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-xs">
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm">
                                             {autoEnd ? 'Route Ended!' : 'Visit all Pandals to end'}
                                         </p>
                                     </div>
                                     {autoEnd && (
-                                        <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                        <span className="text-xs md:text-sm text-green-600 dark:text-green-400 font-medium">
                                             You've visited All Pandals
                                         </span>
                                     )}
@@ -638,25 +638,25 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                     </div>
 
                     {/* Progress Summary */}
-                    <div className="mt-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg p-3">
-                        <h3 className="text-base font-bold text-gray-800 dark:text-white mb-2">Route Summary</h3>
-                        <div className="grid gap-3">
+                    <div className="mt-4 md:mt-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg md:rounded-xl shadow-lg p-3 md:p-5">
+                        <h3 className="text-base md:text-lg font-bold text-gray-800 dark:text-white mb-2 md:mb-3">Route Summary</h3>
+                        <div className="grid gap-3 md:gap-4">
                             <div>
-                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1 text-sm">Route Progress</h4>
-                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1">
+                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1 md:mb-2 text-sm md:text-base">Route Progress</h4>
+                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 md:h-3 mb-1 md:mb-2">
                                     <div
-                                        className="bg-gradient-to-r from-orange-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+                                        className="bg-gradient-to-r from-orange-500 to-pink-500 h-2 md:h-3 rounded-full transition-all duration-300"
                                         style={{
                                             width: `${completionPercentage}%`
                                         }}
                                     ></div>
                                 </div>
-                                <p className="text-xs text-gray-600 dark:text-gray-400">
+                                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                                     {actualCompletedCount} of {totalSteps} steps completed
                                 </p>
 
                                 {/* Additional breakdown */}
-                                <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                <div className="flex items-center gap-4 md:gap-6 mt-2 text-xs md:text-sm text-gray-500 dark:text-gray-400">
                                     <span>
                                         🏛️ Pandals: {route.pandalSequence.filter(id => completedSteps.has(id) || isPandalVisited(id)).length}/{route.pandalSequence.length}
                                     </span>
@@ -666,9 +666,9 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                                 </div>
                             </div>
 
-                            <div className='flex items-center'>
-                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Best Time to Visit</h4>
-                                <p className="pl-2 text-xs text-gray-600 dark:text-gray-400">
+                            <div className='flex items-center md:items-start md:flex-col md:gap-2'>
+                                <h4 className="font-semibold text-gray-700 dark:text-gray-300 text-sm md:text-base">Best Time to Visit</h4>
+                                <p className="pl-2 md:pl-0 text-xs md:text-sm text-gray-600 dark:text-gray-400">
                                     {route.bestTimeToStart || "Morning hours (9-11 AM) or evening (6-8 PM) for less crowd"}
                                 </p>
                             </div>
@@ -676,17 +676,17 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
                     </div>
 
                     {/* Share Route */}
-                    <div className="mt-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg p-3">
-                        <h3 className="text-base font-bold text-gray-800 dark:text-white mb-2">Share This Route</h3>
-                        <div className="grid grid-cols-2 gap-2">
+                    <div className="mt-3 md:mt-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg md:rounded-xl shadow-lg p-3 md:p-5">
+                        <h3 className="text-base md:text-lg font-bold text-gray-800 dark:text-white mb-2 md:mb-3">Share This Route</h3>
+                        <div className="grid grid-cols-2 gap-2 md:gap-4">
                             <button
-                                className="px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-xs"
+                                className="px-3 py-2 md:px-4 md:py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg md:rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-xs md:text-sm"
                                 onClick={() => shareRoute('whatsapp')}
                             >
                                 Share via WhatsApp
                             </button>
                             <button
-                                className={`px-3 py-2 rounded-lg transition-all text-xs ${copyButtonText === 'Copied!'
+                                className={`px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl transition-all text-xs md:text-sm ${copyButtonText === 'Copied!'
                                     ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
                                     : copyButtonText === 'Failed to copy'
                                         ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
