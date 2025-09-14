@@ -53,7 +53,7 @@ const RouteMapHeader = () => {
     }
 
     return (
-        <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-orange-50/90 via-rose-50/90 to-pink-50/90 dark:from-gray-900/90 dark:via-orange-950/90 dark:to-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all duration-300">
+        <header className="fixed top-0 left-0 right-0  bg-rose-200/70 dark:bg-rose-950/90 backdrop-blur-lg shadow-2xl border-b border-white/20 dark:border-gray-700/20 z-40 transition-all duration-300">
             <div className="container mx-auto px-6 py-2">
                 <div className="flex items-center justify-between">
                     {/* Left side - Logo and info */}
@@ -79,35 +79,36 @@ const RouteMapHeader = () => {
                         </Link>
                     </div>
 
-                    {/* Center - Navigation Links */}
-                    <div className="hidden md:flex items-center gap-2">
+                    {/* Right side - Navigation Links and Theme switcher */}
+                    <div className="flex items-center gap-6">
+                        {/* Navigation Links (Desktop and Tablet) */}
+                        <div className="hidden md:flex items-center gap-6">
+                            {/* Home Link (show when not on home page) */}
+                            {!isMainPage && (
+                                <Link
+                                    href="/"
+                                    className="group relative px-2 py-1 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-all duration-300 flex items-center gap-2"
+                                >
+                                    <MapPin className="w-4 h-4" />
+                                    <span className="hidden lg:inline font-medium">Home</span>
+                                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-orange-500 to-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                                </Link>
+                            )}
 
-                        {/* Home Link (show when not on home page) */}
-                        {!isMainPage && (
-                            <Link
-                                href="/"
-                                className="px-4 py-2 lg:px-6 lg:py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
-                            >
-                                <MapPin className="w-4 h-4" />
-                                <span className="hidden lg:inline font-medium">Home</span>
-                            </Link>
-                        )}
+                            {/* About Link (show when not on about page) */}
+                            {!isAboutPage && (
+                                <Link
+                                    href="/about"
+                                    className="group relative px-2 py-1 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-all duration-300 flex items-center gap-2"
+                                >
+                                    <Info className="w-4 h-4" />
+                                    <span className="hidden lg:inline font-medium">About</span>
+                                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-orange-500 to-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                                </Link>
+                            )}
+                        </div>
 
-                        {/* About Link (show when not on about page) */}
-                        {!isAboutPage && (
-                            <Link
-                                href="/about"
-                                className="px-4 py-2 lg:px-6 lg:py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 text-orange-600 dark:text-orange-400 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
-                            >
-                                <Info className="w-4 h-4" />
-                                <span className="hidden lg:inline font-medium">About</span>
-                            </Link>
-                        )}
-
-                    </div>
-
-                    {/* Right side - Theme switcher */}
-                    <div className="flex items-center gap-4">
+                        {/* Theme Switcher */}
                         <ThemeSwitcher />
                     </div>
                 </div>
