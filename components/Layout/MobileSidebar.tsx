@@ -95,7 +95,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                                         group flex items-center gap-3 p-3 border rounded-xl transition-colors duration-150 shadow-md
                                         ${item.isActive
                                             ? 'bg-gradient-to-r from-orange-100 to-pink-100 dark:from-orange-900/80 dark:to-pink-900/80 border-orange-300 dark:border-orange-500 shadow-orange-200/50 dark:shadow-orange-900/50'
-                                            : 'bg-white/90 dark:bg-gray-800/90 border-white/20 dark:border-gray-700/20 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50'
+                                            : 'bg-white/90 dark:bg-rose-900/60 border-white/20 dark:border-rose-700/50 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50'
                                         }
                                     `}
                                 >
@@ -112,7 +112,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                                         font-medium transition-colors duration-150
                                         ${item.isActive
                                             ? 'text-orange-700 dark:text-orange-300 font-semibold'
-                                            : 'text-gray-900 dark:text-white'
+                                            : 'text-gray-900 dark:text-rose-200'
                                         }
                                     `}>
                                         {item.label}
@@ -133,7 +133,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     <div className="mt-auto pt-4">
                         <button
                             onClick={toggleTheme}
-                            className="w-full cursor-pointer group flex items-center gap-3 p-3 bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/20 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-colors duration-150 shadow-md"
+                            className="w-full cursor-pointer group flex items-center gap-3 p-3 bg-white/90 dark:bg-rose-900/60 border border-white/20 dark:border-rose-700/50 rounded-xl hover:border-orange-300 dark:hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 dark:hover:from-orange-950/50 dark:hover:to-pink-950/50 transition-colors duration-150 shadow-md"
                         >
                             <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md">
                                 {theme === 'dark' ? (
@@ -142,9 +142,9 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
                                     <Sun className="w-4 h-4" />
                                 )}
                             </div>
-                            <span className="text-gray-900 dark:text-white font-medium">Theme</span>
+                            <span className="text-gray-900 dark:text-rose-200 font-medium">Theme</span>
                             <div className="ml-auto">
-                                <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">{theme}</span>
+                                <span className="text-xs text-gray-500 dark:text-rose-300 capitalize">{theme}</span>
                             </div>
                         </button>
                     </div>
