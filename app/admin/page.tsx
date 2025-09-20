@@ -18,7 +18,8 @@ const detectArea = (address: string): Pandal['area'] => {
         salt_lake: ['salt lake', 'bidhannagar', 'sector', 'city centre', 'salt lake city'],
         new_town: ['new town', 'action area', 'eco park', 'rajarhat', 'newtown'],
         howrah: ['howrah', 'shibpur', 'santragachi', 'liluah', 'belur'],
-        kalyani: ['kalyani',]
+        kalyani: ['kalyani'],
+        dumdum: ['dum dum', 'dumdum']
     };
 
     for (const [area, keywords] of Object.entries(areaKeywords)) {
@@ -50,6 +51,7 @@ const AREA_OPTIONS = [
     { value: 'new_town', label: 'New Town', icon: '🌃' },
     { value: 'howrah', label: 'Howrah', icon: '🌉' },
     { value: 'kalyani', label: 'Kalyani', icon: '🔱' },
+    { value: 'dumdum', label: 'Dum Dum', icon: '✨' },
     { value: 'other', label: 'Other', icon: '📍' }
 ];
 
