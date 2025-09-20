@@ -8,7 +8,7 @@ export interface Pandal {
     rating?: number;
     imageUrl?: string;
     imageId?: string;
-    area: 'north_kolkata' | 'south_kolkata' | 'central_kolkata' | 'salt_lake' | 'new_town' | 'kalyani' | 'other';
+    area: 'north_kolkata' | 'south_kolkata' | 'central_kolkata' | 'salt_lake' | 'new_town' | 'kalyani' | 'other' | 'dumdum';
     category?: 'traditional' | 'modern' | 'theme-based';
     special_features?: string[];
     crowd_level?: 'low' | 'medium' | 'high';

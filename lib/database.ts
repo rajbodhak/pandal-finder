@@ -57,7 +57,7 @@ export class DatabaseService {
                 DATABASE_ID,
                 COLLECTION_ID,
                 [Query.orderDesc('created_at'),
-                Query.limit(100)
+                Query.limit(1000)
                 ]
             );
             return response.documents.map(doc => this.formatPandal(doc));
