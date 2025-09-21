@@ -26,7 +26,7 @@ export const useGeolocation = () => {
 
         // Prevent multiple simultaneous requests
         if (hasRequestedRef.current) {
-            console.log('🚫 Location request already in progress');
+            // console.log('🚫 Location request already in progress');
             return;
         }
 
@@ -44,10 +44,10 @@ export const useGeolocation = () => {
             // Only update state if location changed significantly or it's the first location
             setLocation(prevLocation => {
                 if (!prevLocation || hasLocationChangedSignificantly(newLocation, prevLocation)) {
-                    console.log('📍 Location updated:', newLocation);
+                    // console.log('📍 Location updated:', newLocation);
                     return newLocation;
                 }
-                console.log('📍 Location unchanged (< 100m), skipping update');
+                // console.log('📍 Location unchanged (< 100m), skipping update');
                 return prevLocation;
             });
 

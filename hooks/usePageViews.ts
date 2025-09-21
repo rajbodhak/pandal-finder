@@ -105,7 +105,7 @@ export function usePageViews(
 
         // Check if we should track this view
         if (!shouldTrackView(pageId, cooldownMinutes)) {
-            console.log('View tracking skipped: already tracked recently');
+            // console.log('View tracking skipped: already tracked recently');
             return;
         }
 
@@ -128,7 +128,7 @@ export function usePageViews(
                 // Mark this view as tracked
                 markViewAsTracked(pageId);
 
-                console.log('Page view tracked successfully for:', pageId);
+                // console.log('Page view tracked successfully for:', pageId);
             } else {
                 setError(response.error || 'Failed to track page view');
                 // Still try to get stats even if tracking failed
