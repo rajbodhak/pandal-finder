@@ -273,13 +273,34 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             markersRef.current.removeLayer(userMarkerRef.current);
         }
 
-        // Add new user marker
+        // Add new user marker with LARGER SIZE
         const userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
             icon: L.divIcon({
                 className: 'user-location-marker',
-                html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
-                iconSize: [18, 18],
-                iconAnchor: [9, 9]
+                html: `
+                    <div style="
+                        background-color: #3b82f6; 
+                        width: 20px; 
+                        height: 20px; 
+                        border-radius: 50%; 
+                        border: 4px solid white; 
+                        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+                        position: relative;
+                    ">
+                        <div style="
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: white;
+                            width: 6px;
+                            height: 6px;
+                            border-radius: 50%;
+                        "></div>
+                    </div>
+                `,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
             })
         }).bindPopup('Your Location');
 
