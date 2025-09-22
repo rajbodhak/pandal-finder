@@ -5,8 +5,9 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useState } from 'react';
 import { databaseService } from '@/lib/database';
 import { Pandal } from '@/lib/types';
-import { ID, storage } from '@/lib/appwrite';
+// import { ID, storage } from '@/lib/appwrite'; // COMMENTED OUT - Appwrite storage
 import Image from 'next/image';
+
 // Area detection utility
 const detectArea = (address: string): Pandal['area'] => {
     const lowerAddress = address.toLowerCase();
@@ -68,16 +69,25 @@ const CROWD_LEVEL_OPTIONS = [
     { value: 'high', label: 'Very Popular', icon: '🟢' }
 ];
 
+// Simple UUID generator for temporary use
+const generateUUID = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
 
 export default function AdminPage() {
     const { user, logout } = useAuth();
     const [form, setForm] = useState<Partial<Pandal>>(defaultPandal);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageUrl, setImageUrl] = useState<string>(''); // For manual URL input
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [autoDetectArea, setAutoDetectArea] = useState(true);
+    const [imageInputMode, setImageInputMode] = useState<'url' | 'file'>('url'); // Toggle between URL and file upload
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -155,33 +165,51 @@ export default function AdminPage() {
         setSuccess(false);
 
         try {
-            let imageId: string | undefined;
-            let imageUrl: string | undefined;
+            let finalImageId: string | undefined;
+            let finalImageUrl: string | undefined;
 
-            if (imageFile) {
+            // Handle image based on input mode
+            if (imageInputMode === 'url' && imageUrl.trim()) {
+                // Use direct URL
+                finalImageUrl = imageUrl.trim();
+                finalImageId = generateUUID(); // Generate a temporary ID for reference
+            }
+
+            /* COMMENTED OUT - Appwrite storage upload
+            else if (imageInputMode === 'file' && imageFile) {
+                // Upload file to storage service
                 const fileId = ID.unique();
                 const uploadRes = await storage.createFile(
                     process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!,
                     fileId,
                     imageFile
                 );
-                imageId = uploadRes.$id;
-                imageUrl = storage.getFileView(
+                finalImageId = uploadRes.$id;
+                finalImageUrl = storage.getFileView(
                     process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!,
                     fileId
                 ).toString();
             }
+            */
+
+            // For now, if file upload is selected, show an informational message
+            else if (imageInputMode === 'file' && imageFile) {
+                setError('File upload temporarily disabled. Please use image URL instead or upload to an image hosting service and paste the URL.');
+                setLoading(false);
+                return;
+            }
 
             await databaseService.createPandal({
                 ...form,
-                imageId,
-                imageUrl,
+                imageId: finalImageId,
+                imageUrl: finalImageUrl,
             } as Omit<Pandal, '$id' | 'created_at' | 'updated_at'>);
 
             setSuccess(true);
             setForm(defaultPandal);
             setImageFile(null);
             setImagePreview(null);
+            setImageUrl('');
 
             // Clear success message after 3 seconds
             setTimeout(() => setSuccess(false), 3000);
@@ -411,61 +439,119 @@ export default function AdminPage() {
                                 </div>
                             </div>
 
-                            {/* Image Upload */}
+                            {/* Image Section */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Pandal Image
                                 </label>
-                                <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors bg-gray-700/50">
-                                    {imagePreview ? (
-                                        <div className="space-y-4">
-                                            <Image
-                                                src={imagePreview}
-                                                alt="Preview"
-                                                className="max-h-48 mx-auto rounded-lg shadow-lg border border-gray-600"
-                                            />
-                                            <div className="flex justify-center space-x-4">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setImageFile(null);
-                                                        setImagePreview(null);
-                                                    }}
-                                                    className="text-red-400 hover:text-red-300 bg-red-900/20 hover:bg-red-900/40 text-sm px-4 py-2 rounded-md border border-red-600 hover:border-red-500 transition-colors"
-                                                >
-                                                    Remove Image
-                                                </button>
-                                                <label className="text-blue-400 hover:text-blue-300 bg-blue-900/20 hover:bg-blue-900/40 text-sm px-4 py-2 rounded-md border border-blue-600 hover:border-blue-500 cursor-pointer transition-colors">
-                                                    Change Image
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        onChange={handleImageChange}
-                                                        className="hidden"
-                                                    />
-                                                </label>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <label className="cursor-pointer block">
-                                            <div>
-                                                <svg className="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                                <p className="mt-2 text-sm text-gray-400">
-                                                    Click to upload or drag and drop
-                                                </p>
-                                                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                            </div>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleImageChange}
-                                                className="hidden"
-                                            />
-                                        </label>
-                                    )}
+
+                                {/* Image Input Mode Toggle */}
+                                <div className="flex space-x-4 mb-4">
+                                    <label className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name="imageMode"
+                                            value="url"
+                                            checked={imageInputMode === 'url'}
+                                            onChange={(e) => setImageInputMode('url')}
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-300">Image URL</span>
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name="imageMode"
+                                            value="file"
+                                            checked={imageInputMode === 'file'}
+                                            onChange={(e) => setImageInputMode('file')}
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-300">File Upload (Temporarily Disabled)</span>
+                                    </label>
                                 </div>
+
+                                {imageInputMode === 'url' ? (
+                                    /* URL Input */
+                                    <div>
+                                        <input
+                                            type="url"
+                                            value={imageUrl}
+                                            onChange={(e) => setImageUrl(e.target.value)}
+                                            placeholder="https://example.com/image.jpg"
+                                            className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400 transition-colors mb-4"
+                                        />
+                                        {imageUrl && (
+                                            <div className="mt-4">
+                                                <p className="text-sm text-gray-400 mb-2">Preview:</p>
+                                                <img
+                                                    src={imageUrl}
+                                                    alt="Preview"
+                                                    className="max-h-48 mx-auto rounded-lg shadow-lg border border-gray-600"
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = 'none';
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    /* File Upload */
+                                    <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors bg-gray-700/50">
+                                        {imagePreview ? (
+                                            <div className="space-y-4">
+                                                <Image
+                                                    src={imagePreview}
+                                                    alt="Preview"
+                                                    className="max-h-48 mx-auto rounded-lg shadow-lg border border-gray-600"
+                                                />
+                                                <div className="flex justify-center space-x-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setImageFile(null);
+                                                            setImagePreview(null);
+                                                        }}
+                                                        className="text-red-400 hover:text-red-300 bg-red-900/20 hover:bg-red-900/40 text-sm px-4 py-2 rounded-md border border-red-600 hover:border-red-500 transition-colors"
+                                                    >
+                                                        Remove Image
+                                                    </button>
+                                                    <label className="text-blue-400 hover:text-blue-300 bg-blue-900/20 hover:bg-blue-900/40 text-sm px-4 py-2 rounded-md border border-blue-600 hover:border-blue-500 cursor-pointer transition-colors">
+                                                        Change Image
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleImageChange}
+                                                            className="hidden"
+                                                        />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <label className="cursor-pointer block">
+                                                <div>
+                                                    <svg className="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    <p className="mt-2 text-sm text-gray-400">
+                                                        File upload temporarily disabled
+                                                    </p>
+                                                    <p className="text-xs text-gray-500">Please use image URL option instead</p>
+                                                </div>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleImageChange}
+                                                    className="hidden"
+                                                    disabled
+                                                />
+                                            </label>
+                                        )}
+                                        <p className="text-xs text-yellow-400 mt-2">
+                                            Note: Upload your image to imgur.com, cloudinary.com, or similar service and paste the URL above
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Submit Button */}
