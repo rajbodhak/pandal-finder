@@ -1,4 +1,3 @@
-// lib/storage.ts
 interface StorageItem<T> {
     data: T;
     timestamp: number;

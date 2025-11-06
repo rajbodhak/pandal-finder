@@ -1,4 +1,3 @@
-// hooks/useStorage.ts
 import { useState, useEffect, useCallback } from 'react';
 import { storageService } from '@/lib/storage';
 

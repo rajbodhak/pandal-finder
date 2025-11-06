@@ -1,4 +1,3 @@
-// lib/analytics.ts
 import { track } from '@vercel/analytics';
 
 declare global {

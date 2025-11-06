@@ -1,4 +1,3 @@
-// hooks/usePandalsByArea.ts
 import { useState, useEffect } from 'react';
 import { databaseService } from '@/lib/database';
 import { Pandal } from '@/lib/types';
