@@ -5,7 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useState } from 'react';
 import { databaseService } from '@/lib/database';
 import { Pandal } from '@/lib/types';
-// import { ID, storage } from '@/lib/appwrite'; // COMMENTED OUT - Appwrite storage
+import { ID, storage } from '@/lib/appwrite';
 import Image from 'next/image';
 
 // Area detection utility
@@ -175,9 +175,8 @@ export default function AdminPage() {
                 finalImageId = generateUUID(); // Generate a temporary ID for reference
             }
 
-            /* COMMENTED OUT - Appwrite storage upload
             else if (imageInputMode === 'file' && imageFile) {
-                // Upload file to storage service
+                // Upload file to Appwrite storage
                 const fileId = ID.unique();
                 const uploadRes = await storage.createFile(
                     process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!,
@@ -189,14 +188,6 @@ export default function AdminPage() {
                     process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!,
                     fileId
                 ).toString();
-            }
-            */
-
-            // For now, if file upload is selected, show an informational message
-            else if (imageInputMode === 'file' && imageFile) {
-                setError('File upload temporarily disabled. Please use image URL instead or upload to an image hosting service and paste the URL.');
-                setLoading(false);
-                return;
             }
 
             await databaseService.createPandal({
@@ -467,7 +458,7 @@ export default function AdminPage() {
                                             onChange={(e) => setImageInputMode('file')}
                                             className="mr-2"
                                         />
-                                        <span className="text-gray-300">File Upload (Temporarily Disabled)</span>
+                                        <span className="text-gray-300">File Upload</span>
                                     </label>
                                 </div>
 
@@ -534,9 +525,9 @@ export default function AdminPage() {
                                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                     <p className="mt-2 text-sm text-gray-400">
-                                                        File upload temporarily disabled
+                                                        Click to upload or drag and drop
                                                     </p>
-                                                    <p className="text-xs text-gray-500">Please use image URL option instead</p>
+                                                    <p className="text-xs text-gray-500">PNG, JPG, WebP up to 10MB</p>
                                                 </div>
                                                 <input
                                                     type="file"
@@ -547,8 +538,8 @@ export default function AdminPage() {
                                                 />
                                             </label>
                                         )}
-                                        <p className="text-xs text-yellow-400 mt-2">
-                                            Note: Upload your image to imgur.com, cloudinary.com, or similar service and paste the URL above
+                                        <p className="text-xs text-gray-500 mt-2">
+                                            Supports JPG, PNG, WebP (Max 10MB)
                                         </p>
                                     </div>
                                 )}
