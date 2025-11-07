@@ -1,35 +1,19 @@
 "use client"
-import { Metadata } from 'next'
+
 import { MobileHeader } from '@/components/Layout/MobileHeader'
 import { DesktopHeader } from '@/components/Layout/DesktopHeader'
 import { MobileSidebar } from '@/components/Layout/MobileSidebar'
 import { useState, useEffect } from 'react'
-import React from 'react';
 import { ManualRouteService } from '@/components/routemap/ManualRouteService';
 import { useMobileState } from '@/hooks/useMobileState'
 import { useResponsive } from '@/hooks/useResponsive'
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { usePageViews } from '@/hooks/usePageViews';
-import { Instagram, Twitter, Github, MapPin, Search, Navigation, Camera, Heart, Star, User, Sparkles, Smartphone, Map, Route } from 'lucide-react';
-import Image from 'next/image'
-
-export const metadata: Metadata = {
-    title: 'About DuggaKhoj - Your Pandal Hopping Companion',
-    description: 'Learn about DuggaKhoj, the ultimate guide for Durga Puja pandal hopping in Kolkata. Discover our mission to make your festival experience unforgettable.',
-    keywords: [
-        'about duggakhoj',
-        'durga puja guide',
-        'pandal hopping app',
-        'kolkata festival guide',
-        'duggakhoj team',
-        'pandal finder story'
-    ],
-    openGraph: {
-        title: 'About DuggaKhoj - Making Pandal Hopping Easy',
-        description: 'Discover how DuggaKhoj helps thousands of devotees and tourists explore the best of Kolkata Durga Puja.',
-        url: 'https://duggakhoj.site/about',
-    },
-}
+import AboutHeader from '@/components/about/AboutHeader';
+import AboutContent from '@/components/about/AboutContent';
+import FeaturesSection from '@/components/about/FeaturesSection';
+import HowToUseSection from '@/components/about/HowToUseSection';
+import CreatorSection from '@/components/about/CreatorSection';
 
 const AboutClient = () => {
     // State management
@@ -43,7 +27,7 @@ const AboutClient = () => {
         closeSidebar,
     } = useMobileState();
 
-    // Simplified page view tracking
+    // Page view tracking
     const {
         stats: pageViewStats,
         loading: viewsLoading,
@@ -79,17 +63,9 @@ const AboutClient = () => {
     }, [isMobile, closeSidebar]);
 
     // Event handlers
-    const handleSidebarToggle = () => {
-        toggleSidebar();
-    };
-
-    const handleSidebarClose = () => {
-        closeSidebar();
-    };
-
-    const handleRefreshClick = () => {
-        window.location.reload();
-    };
+    const handleSidebarToggle = () => toggleSidebar();
+    const handleSidebarClose = () => closeSidebar();
+    const handleRefreshClick = () => window.location.reload();
 
     const dummyProps = {
         searchQuery: '',
@@ -100,24 +76,7 @@ const AboutClient = () => {
         onViewModeChange: () => { }
     };
 
-    const features = [
-        { icon: MapPin, text: "Interactive map with pandal locations", color: "from-blue-500 to-cyan-500" },
-        { icon: Search, text: "Smart search and filter functionality", color: "from-purple-500 to-violet-500" },
-        { icon: Map, text: "Custom route map by starting point", color: "from-orange-500 to-amber-500" },
-        { icon: Navigation, text: "Distance calculation & GPS navigation", color: "from-green-500 to-emerald-500" },
-        { icon: Camera, text: "High-quality pandal details (photo upload coming soon)", color: "from-pink-500 to-rose-500" },
-        { icon: Star, text: "Visit tracking & user analytics", color: "from-indigo-500 to-purple-500" },
-        { icon: Route, text: "More custom routes & pandals coming soon", color: "from-teal-500 to-cyan-500" }
-    ];
-
-    const howToSteps = [
-        "Allow location access for personalized results",
-        "Browse pandals on interactive map or list view",
-        "Use search & filters to find specific areas",
-        "Get directions and explore cultural heritage",
-        "Check Route Map for journey"
-    ];
-
+    // Loading state
     if (initialLoading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col">
@@ -153,6 +112,7 @@ const AboutClient = () => {
         );
     }
 
+    // Error state
     if (error) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col">
@@ -194,6 +154,7 @@ const AboutClient = () => {
         );
     }
 
+    // Main content
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-gray-900 dark:via-orange-950 dark:to-rose-950 flex flex-col relative">
             {isMobile ? (
@@ -221,166 +182,21 @@ const AboutClient = () => {
                 <div className={`${isMobile ? 'mt-12 px-4 py-4 pb-20' : 'px-6 py-6'}`}>
                     <div className={`${isMobile ? 'max-w-4xl' : 'max-w-6xl'} mx-auto space-y-3`}>
 
-                        {/* Header Card - Site Name, Views & Instagram */}
-                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 md:p-4 p-2">
-                            {/* Site Name */}
-                            <div className="flex items-center justify-between mb-2 md:mb-4">
-                                {/* Left: Logo + Site Name */}
-                                <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-sm flex items-center justify-center shadow-lg">
-                                        <Image
-                                            src="/logo.svg"
-                                            alt="DuggaKhoj Logo"
-                                            width={24}
-                                            height={24}
-                                            className="rounded-sm"
-                                        />
-                                    </div>
-                                    <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-baloo2">
-                                        DuggaKhoj
-                                    </h1>
-                                </div>
+                        <AboutHeader
+                            viewsLoading={viewsLoading}
+                            viewsError={viewsError}
+                            totalViews={pageViewStats?.totalViews}
+                        />
 
-                                {/* Right: Instagram */}
-                                <div
-                                    className="group px-3 py-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-lg border border-purple-200/50 dark:border-purple-700/30 hover:shadow-lg cursor-pointer transition-all duration-300"
-                                    onClick={() => window.open('https://instagram.com/duggakhoj', '_blank')}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-5 h-5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                                            <Instagram className="h-3 w-3" />
-                                        </div>
-                                        <div className="text-xs text-purple-700 dark:text-purple-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors font-medium">
-                                            Follow
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            {/* Views & Instagram */}
-                            <div className="flex justify-center">
-                                {/* Total Views */}
-                                {/* <div className="p-3 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-lg border border-orange-200/50 dark:border-orange-700/30">
-                                    <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                                        {viewsLoading ? (
-                                            <div className="animate-pulse">...</div>
-                                        ) : viewsError ? (
-                                            <div className="text-xs text-red-500">Error</div>
-                                        ) : pageViewStats ? (
-                                            pageViewStats.totalViews > 1000
-                                                ? `${Math.floor(pageViewStats.totalViews / 1000)}k`
-                                                : pageViewStats.totalViews.toLocaleString()
-                                        ) : '0'}
-                                    </div>
-                                    <div className="text-xs text-orange-700 dark:text-orange-300 font-medium">
-                                        Views
-                                    </div>
-                                </div> */}
-                            </div>
-                        </div>
-
-                        {/* About Section */}
-                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
-                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-3">
-                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                    <Heart className="h-3 w-3 text-white" />
-                                </div>
-                                About DuggaKhoj
-                            </h2>
-                            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                Your comprehensive guide to discovering and exploring pandals during Durga Puja festivities. Navigate through the rich cultural landscape of celebrations with detailed information about pandals, locations, and unique features.
-                            </p>
-                        </div>
+                        <AboutContent />
 
                         {/* Features & How to Use Grid */}
                         <div className={`grid ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'} gap-4`}>
-                            {/* Features Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                        <Sparkles className="h-3 w-3 text-white" />
-                                    </div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-                                        Features
-                                    </h2>
-                                </div>
-                                <div className="space-y-2">
-                                    {features.map((feature, index) => (
-                                        <div key={index} className="flex items-start gap-3">
-                                            <div className="w-3 h-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex-shrink-0 mt-1"></div>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">
-                                                {feature.text}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* How to Use Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                        <Smartphone className="h-3 w-3 text-white" />
-                                    </div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-                                        How to Use
-                                    </h2>
-                                </div>
-                                <div className="space-y-2">
-                                    {howToSteps.map((step, index) => (
-                                        <div key={index} className="flex items-start gap-3">
-                                            <div className="w-5 h-5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                                                <span className="text-white text-xs font-bold">{index + 1}</span>
-                                            </div>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                                {step}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                            <FeaturesSection />
+                            <HowToUseSection />
                         </div>
 
-                        {/* About the Creator Card */}
-                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20 p-4">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                    <User className="h-3 w-3 text-white" />
-                                </div>
-                                <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-                                    About the Creator
-                                </h2>
-                            </div>
-
-                            <div className="space-y-3">
-                                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    Passionate developer and Durga Puja enthusiast dedicated to preserving and sharing Bengali cultural heritage through technology.
-                                </p>
-
-                                {/* Social Icons */}
-                                <div className="flex gap-2">
-                                    {/* <div
-                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
-                                        onClick={() => window.open('https://x.com/Rajidesu', '_blank')}
-                                    >
-                                        <Twitter className="h-3 w-3 text-white" />
-                                    </div> */}
-                                    <div
-                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
-                                        onClick={() => window.open('https://github.com/rajbodhak', '_blank')}
-                                    >
-                                        <Github className="h-3 w-3 text-white" />
-                                    </div>
-                                    <div
-                                        className="w-7 h-7 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg"
-                                        onClick={() => window.open('https://instagram.com/rajidesu.in', '_blank')}
-                                    >
-                                        <Instagram className="h-3 w-3 text-white" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <CreatorSection />
 
                     </div>
                 </div>
