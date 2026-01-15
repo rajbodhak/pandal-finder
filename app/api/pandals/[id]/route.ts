@@ -3,7 +3,7 @@ import { serverDatabases, DATABASE_ID, COLLECTION_ID } from '@/lib/appwrite-serv
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Record<string, string> }
+    { params }: { params: { id: string } }
 ) {
     try {
         const pandal = await serverDatabases.getDocument(
