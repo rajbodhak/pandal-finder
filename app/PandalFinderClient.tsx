@@ -1,4 +1,3 @@
-// app/PandalFinderClient.tsx - NEW FILE (move your existing logic here)
 'use client';
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { PandalWithDistance } from '@/lib/types';

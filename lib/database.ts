@@ -1,12 +1,8 @@
-import { databases, Query, storage } from "./appwrite";
 import { Pandal } from "./types";
 
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_PANDALS_COLLECTION_ID!;
-const BUCKET_ID = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!;
+const API_BASE = '/api/pandals';
 
 export class DatabaseService {
-
     // Helper method to format document
     private formatPandal(doc: any): Pandal {
         return {
@@ -28,197 +24,155 @@ export class DatabaseService {
         };
     }
 
-
-    //creating pandal
-    async createPandal(pandal: Omit<Pandal, '$id' | 'created_at' | 'updated_at'>) {
-        try {
-            const now = new Date().toISOString();
-            const response = await databases.createDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                'unique()',
-                {
-                    ...pandal,
-                    special_features: pandal.special_features || [],
-                    created_at: now,
-                    updated_at: now
-                }
-            );
-            return this.formatPandal(response);
-        } catch (error) {
-            throw error
-        }
-    }
-
-    //Get all pandals
+    // Get all pandals
     async getAllPandals() {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [Query.orderDesc('created_at'),
-                Query.limit(1000)
-                ]
-            );
-            return response.documents.map(doc => this.formatPandal(doc));
-        } catch (error) {
-            throw error;
-        }
-    }
+            const response = await fetch(API_BASE, {
+                cache: 'no-store'
+            });
 
-    //Get Pandal by Id
-    async getPandalById(id: string): Promise<Pandal> {
-        try {
-            const response = await databases.getDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                id
-            )
-            return this.formatPandal(response);
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    //Update Pandal
-    async updatePandal(id: string, updates: Partial<Pandal>) {
-        try {
-            const updateData: Record<string, any> = {
-                ...updates,
-                updated_at: new Date().toISOString(),
-            };
-
-            // Remove $id from updates if present
-            delete updateData.$id;
-
-            if (updates.special_features) {
-                updateData.special_features = updates.special_features;
+            if (!response.ok) {
+                throw new Error('Failed to fetch pandals');
             }
 
-            const response = await databases.updateDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                id,
-                updateData
-            );
-
-            return this.formatPandal(response);
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
+            console.error('Error fetching pandals:', error);
             throw error;
         }
     }
 
-    //Delete Pandal
-    async deletePandal(id: string) {
+    // Get Pandal by Id
+    async getPandalById(id: string): Promise<Pandal> {
         try {
-            await databases.deleteDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                id
-            )
+            const response = await fetch(`${API_BASE}/${id}`, {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('Pandal not found');
+            }
+
+            const data = await response.json();
+            return this.formatPandal(data);
         } catch (error) {
+            console.error('Error fetching pandal:', error);
             throw error;
         }
     }
 
-    //Search Pandal
+    // Search Pandal
     async searchPandal(query: string): Promise<Pandal[]> {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.or([
-                        Query.search('name', query),
-                        Query.search('description', query),
-                        Query.search('address', query)
-                    ])
-                ]
+            const response = await fetch(
+                `${API_BASE}/search?q=${encodeURIComponent(query)}`,
+                { cache: 'no-store' }
             );
-            return response.documents.map(doc => this.formatPandal(doc));
+
+            if (!response.ok) {
+                throw new Error('Search failed');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
-            throw error
+            console.error('Error searching pandals:', error);
+            throw error;
         }
     }
 
     // Get pandals by area for roadmap
     async getPandalsByArea(area: string) {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.equal('area', area),
-                    Query.orderDesc('rating'),
-                    Query.limit(25)
-                ]
+            const response = await fetch(
+                `${API_BASE}/area/${area}?limit=25`,
+                { cache: 'no-store' }
             );
-            return response.documents.map(doc => this.formatPandal(doc));
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch pandals by area');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
+            console.error('Error fetching pandals by area:', error);
             throw error;
         }
     }
 
-    // Get pandals by multiple areas (if user wants to explore multiple areas)
+    // Get pandals by multiple areas
     async getPandalsByAreas(areas: string[]) {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.equal('area', areas),
-                    Query.orderDesc('rating'),
-                    Query.limit(50)
-                ]
+            const response = await fetch(
+                `${API_BASE}/areas?areas=${areas.join(',')}&limit=50`,
+                { cache: 'no-store' }
             );
-            return response.documents.map(doc => this.formatPandal(doc));
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch pandals by areas');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
+            console.error('Error fetching pandals by areas:', error);
             throw error;
         }
     }
 
-    // Get top-rated pandals by area (for priority routes)
+    // Get top-rated pandals by area
     async getTopPandalsByArea(area: string, limit: number = 10) {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.equal('area', area),
-                    Query.greaterThan('rating', 4.0), // Only high-rated pandals
-                    Query.orderDesc('rating'),
-                    Query.limit(limit)
-                ]
+            const response = await fetch(
+                `${API_BASE}/area/${area}?limit=${limit}&minRating=4.0`,
+                { cache: 'no-store' }
             );
-            return response.documents.map(doc => this.formatPandal(doc));
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch top pandals');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
+            console.error('Error fetching top pandals:', error);
             throw error;
         }
     }
 
-    // Get pandals by crowd level (for less crowded routes)
-    async getPandalsByAreaAndCrowdLevel(area: string, crowdLevels: string[] = ['low', 'medium']) {
+    // Get pandals by crowd level
+    async getPandalsByAreaAndCrowdLevel(
+        area: string,
+        crowdLevels: string[] = ['low', 'medium']
+    ) {
         try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.equal('area', area),
-                    Query.equal('crowd_level', crowdLevels),
-                    Query.orderDesc('rating'),
-                    Query.limit(20)
-                ]
+            const response = await fetch(
+                `${API_BASE}/area/${area}?limit=20&crowdLevels=${crowdLevels.join(',')}`,
+                { cache: 'no-store' }
             );
-            return response.documents.map(doc => this.formatPandal(doc));
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch pandals by crowd level');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
         } catch (error) {
+            console.error('Error fetching pandals by crowd level:', error);
             throw error;
         }
     }
 
-    // Get image URL
+    // Get image URL (for now, placeholder - need to handle this separately)
     getImageUrl(imageId: string) {
-        return storage.getFileView(BUCKET_ID, imageId);
+        //  need to create an API route for images too if needed
+        return `/api/images/${imageId}`;
     }
+
+    // TODO: Create, Update, Delete methods will need separate API routes
+    // with authentication/authorization
 }
 
 export const databaseService = new DatabaseService();
