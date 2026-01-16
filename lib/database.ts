@@ -171,6 +171,65 @@ export class DatabaseService {
         return `/api/images/${imageId}`;
     }
 
+    async getPandalBySlug(slug: string): Promise<Pandal> {
+        try {
+            const response = await fetch(`/api/pandals/slug/${slug}`, {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('Pandal not found');
+            }
+
+            const data = await response.json();
+            return this.formatPandal(data);
+        } catch (error) {
+            console.error('Error fetching pandal by slug:', error);
+            throw error;
+        }
+    }
+
+    async getPandalsBySlugs(slugs: string[]): Promise<Pandal[]> {
+        try {
+            const response = await fetch('/api/pandals/batch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slugs }),
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch pandals');
+            }
+
+            const data = await response.json();
+            return data.documents.map((doc: any) => this.formatPandal(doc));
+        } catch (error) {
+            console.error('Error batch fetching pandals:', error);
+            throw error;
+        }
+    }
+
+    async getPandalsForRoute(routeId: string): Promise<{ route: any, pandals: Pandal[] }> {
+        try {
+            const response = await fetch(`/api/routes/${routeId}/pandals`, {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('Route not found');
+            }
+
+            const data = await response.json();
+            return {
+                route: data.route,
+                pandals: data.pandals.map((doc: any) => this.formatPandal(doc))
+            };
+        } catch (error) {
+            console.error('Error fetching route pandals:', error);
+            throw error;
+        }
+    }
     // TODO: Create, Update, Delete methods will need separate API routes
     // with authentication/authorization
 }
