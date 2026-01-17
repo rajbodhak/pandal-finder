@@ -3,16 +3,18 @@ import { serverDatabases, DATABASE_ID, COLLECTION_ID, Query } from '@/lib/appwri
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { area: string } }
+    { params }: { params: Promise<{ area: string }> }
 ) {
     try {
+        const { area } = await params;
+
         const searchParams = request.nextUrl.searchParams;
         const limit = parseInt(searchParams.get('limit') || '25');
         const minRating = searchParams.get('minRating');
         const crowdLevels = searchParams.get('crowdLevels')?.split(',');
 
         const queries = [
-            Query.equal('area', params.area),
+            Query.equal('area', area),
             Query.orderDesc('rating'),
             Query.limit(limit)
         ];

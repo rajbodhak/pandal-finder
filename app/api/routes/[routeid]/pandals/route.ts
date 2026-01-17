@@ -1,48 +1,38 @@
-// app/api/routes/[routeId]/pandals/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { serverDatabases, DATABASE_ID, COLLECTION_ID, Query } from '@/lib/appwrite-server';
-import * as fs from 'fs';
-import * as path from 'path';
+
+// Import routes
+import northKolkataRoutesData from '@/data/routes/north-kolkata.json';
+import southKolkataRoutesData from '@/data/routes/south-kolkata.json';
+import centralKolkataRouteData from '@/data/routes/central-kolkata.json';
+import kalyaniRouteData from '@/data/routes/kalyani.json';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { routeId: string } }
+    { params }: { params: Promise<{ routeId: string }> }
 ) {
     try {
-        // Load route JSON from data/routes
-        const routeFiles = [
-            'north-kolkata.json',
-            'south-kolkata.json',
-            'kalyani.json',
-            'central-kolkata.json'
+        const { routeId } = await params;
+
+        // Combine all routes
+        const allRoutesData = [
+            ...(northKolkataRoutesData.routes || []),
+            ...(southKolkataRoutesData.routes || []),
+            ...(centralKolkataRouteData.routes || []),
+            ...(kalyaniRouteData.routes || [])
         ];
 
-        let routeData = null;
-        let selectedRoute = null;
-
-        // Find the route in JSON files
-        for (const filename of routeFiles) {
-            try {
-                const filepath = path.join(process.cwd(), 'data', 'routes', filename);
-                const content = fs.readFileSync(filepath, 'utf-8');
-                const data = JSON.parse(content);
-
-                if (data.routes) {
-                    const route = data.routes.find((r: any) => r.id === params.routeId);
-                    if (route) {
-                        selectedRoute = route;
-                        break;
-                    }
-                }
-            } catch (err) {
-                // File not found or invalid JSON, continue
-                continue;
-            }
-        }
+        // Find the requested route
+        const selectedRoute = allRoutesData.find((r: any) => r.id === routeId);
 
         if (!selectedRoute) {
+            console.error('❌ Route not found:', routeId);
             return NextResponse.json(
-                { error: 'Route not found' },
+                {
+                    error: 'Route not found',
+                    requestedId: routeId,
+                    availableRoutes: allRoutesData.map((r: any) => r.id)
+                },
                 { status: 404 }
             );
         }
@@ -51,6 +41,7 @@ export async function GET(
         const slugs = selectedRoute.pandalSequence;
 
         if (!slugs || slugs.length === 0) {
+            console.warn('⚠️ Route has no pandals');
             return NextResponse.json({
                 route: selectedRoute,
                 pandals: [],
@@ -75,7 +66,13 @@ export async function GET(
 
         // Return pandals in the same order as route sequence
         const orderedPandals = slugs
-            .map((slug: string) => pandalMap.get(slug))
+            .map((slug: string) => {
+                const pandal = pandalMap.get(slug);
+                if (!pandal) {
+                    console.warn('⚠️ Pandal not found for slug:', slug);
+                }
+                return pandal;
+            })
             .filter(Boolean);
 
         return NextResponse.json({
@@ -84,9 +81,12 @@ export async function GET(
             total: orderedPandals.length
         });
     } catch (error) {
-        console.error('Error fetching route pandals:', error);
+        console.error('Error in route API:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch route pandals' },
+            {
+                error: 'Failed to fetch route pandals',
+                details: error instanceof Error ? error.message : String(error)
+            },
             { status: 500 }
         );
     }
