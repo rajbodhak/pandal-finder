@@ -16,6 +16,7 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     pandals,
     onBack
 }) => {
+
     const {
         markPandalVisited,
         isPandalVisited,
@@ -153,8 +154,10 @@ const RouteDisplay: React.FC<RouteDisplayProps> = ({
     };
 
     // Helper function to get pandal by ID
-    const getPandalById = (pandalId: string): Pandal | undefined => {
-        return pandals.find(p => p.$id === pandalId);
+    const getPandalById = (pandalSlug: string): Pandal | undefined => {
+        const bySlug = pandals.find(p => p.slug === pandalSlug);
+        if (bySlug) return bySlug;
+        return pandals.find(p => p.$id === pandalSlug);
     };
 
     // Function to get directions to pandal

@@ -9,24 +9,8 @@ import { KOLKATA_AREAS } from './AreaConfig';
 import { AreaConfig, StartingPoint, Pandal, ManualRoute } from '@/lib/types';
 import { databaseService } from '@/lib/database';
 import { MapPin, AlertCircle } from 'lucide-react';
-
-import { NORTH_PANDALS } from '@/data/pandals/north-pandals';
-import { SOUTH_PANDALS } from '@/data/pandals/south-pandals';
-import { KALYANI_PANDALS } from "@/data/pandals/kalyani-pandals"
 import RoadmapHeader from './RouteMapHeader';
 import { LoadingSpinner } from '../LoadingSpinner';
-
-// Add other area pandals as needed
-const ALL_LOCAL_PANDALS: Pandal[] = [
-    ...(NORTH_PANDALS as Pandal[]),
-    ...(SOUTH_PANDALS as Pandal[]),
-    // Central Kolkata will use North Kolkata pandals
-    ...(NORTH_PANDALS as Pandal[]).map(pandal => ({
-        ...pandal,
-        area: 'central_kolkata' as const
-    })),
-    ...(KALYANI_PANDALS as Pandal[])
-];
 
 interface RouteMapPageProps {
     initialRouteId?: string | null;
@@ -95,9 +79,9 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
                     setSelectedStartingPoint(foundRoute.startingPoint);
                     setSelectedRoute(foundRoute);
 
-                    // Fetch pandals for this area
-                    const areaPandals = await fetchPandalsForArea(foundArea.id);
-                    setPandals(areaPandals);
+                    // Fetch pandals for this specific route using the new API
+                    const routeData = await databaseService.getPandalsForRoute(initialRouteId);
+                    setPandals(routeData.pandals);
 
                     // Set area routes
                     const routes = ManualRouteService.getRoutesByArea(foundArea.id);
@@ -125,22 +109,13 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
         }
     }, [initialRouteId, isInitialized]);
 
-    // Get pandals for area - using local data first, fallback to database
+    // Fetch pandals for area - now uses API only
     const fetchPandalsForArea = async (areaId: string): Promise<Pandal[]> => {
         try {
             setLoading(true);
             setError(null);
 
-            // First try to get from local data
-            const localPandals = ALL_LOCAL_PANDALS.filter(pandal =>
-                pandal.area === areaId || pandal.area === areaId.replace('_', ' ')
-            );
-
-            if (localPandals.length > 0) {
-                return localPandals;
-            }
-
-            // Fallback to database if no local data
+            // Fetch from API (using slugs from Appwrite)
             const dbPandals = await databaseService.getPandalsByArea(areaId);
             return dbPandals;
 
@@ -164,32 +139,64 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
 
         // Get available routes for this area and store them separately
         const routes = ManualRouteService.getRoutesByArea(area.id);
-        setAreaRoutes(routes); // Store original area routes
-        setAvailableRoutes(routes); // Also set as current available routes
+        setAreaRoutes(routes);
+        setAvailableRoutes(routes);
     };
 
-    // FIXED: Handle starting point selection
-    const handleStartingPointSelect = (startingPoint: StartingPoint) => {
+    // Handle starting point selection
+    const handleStartingPointSelect = async (startingPoint: StartingPoint) => {
         setSelectedStartingPoint(startingPoint);
 
-        // IMPORTANT: Filter from areaRoutes (original) instead of availableRoutes (potentially filtered)
+        // Filter from areaRoutes (original) instead of availableRoutes
         const routesForStartingPoint = areaRoutes.filter(
             route => route.startingPoint.id === startingPoint.id
         );
 
         if (routesForStartingPoint.length === 1) {
-            // If only one route, select it automatically and mark that we didn't come from routes page
-            setSelectedRoute(routesForStartingPoint[0]);
-            setCameFromRoutes(false);
-            setCurrentStep('route-display');
+            // If only one route, load its pandals and select it
+            const route = routesForStartingPoint[0];
+
+            try {
+                setLoading(true);
+                // Fetch pandals specifically for this route
+                const routeData = await databaseService.getPandalsForRoute(route.id);
+                setPandals(routeData.pandals);
+                setSelectedRoute(route);
+                setCameFromRoutes(false);
+                setCurrentStep('route-display');
+            } catch (error) {
+                console.error('Error loading route pandals:', error);
+                setError('Failed to load route details. Please try again.');
+            } finally {
+                setLoading(false);
+            }
         } else if (routesForStartingPoint.length > 1) {
             // Multiple routes available, show selection
             setAvailableRoutes(routesForStartingPoint);
-            setCameFromRoutes(true); // Mark that we have a routes step
+            setCameFromRoutes(true);
             setCurrentStep('routes');
         } else {
-            // No predefined routes, could generate one or show message
+            // No predefined routes
             setError('No predefined routes available for this starting point. Please try a different starting point.');
+        }
+    };
+
+    // Handle route selection from routes list
+    const handleRouteSelect = async (route: ManualRoute) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Fetch pandals specifically for this route
+            const routeData = await databaseService.getPandalsForRoute(route.id);
+            setPandals(routeData.pandals);
+            setSelectedRoute(route);
+            setCurrentStep('route-display');
+        } catch (error) {
+            console.error('Error loading route pandals:', error);
+            setError('Failed to load route details. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -201,25 +208,25 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
         setAvailableRoutes([]);
         setAreaRoutes([]);
         setSelectedRoute(null);
+        setPandals([]);
         setCameFromRoutes(false);
         setError(null);
     };
 
-    // FIXED: Reset availableRoutes to original area routes when going back to starting point
     const handleBackToStartingPoint = () => {
         setCurrentStep('starting-point');
         setSelectedStartingPoint(null);
-        setAvailableRoutes(areaRoutes); // IMPORTANT: Reset to original area routes
+        setAvailableRoutes(areaRoutes); // Reset to original area routes
         setSelectedRoute(null);
+        setPandals([]);
         setCameFromRoutes(false);
         setError(null);
     };
 
-    // FIX: Add the missing handleBackToRoutes function
     const handleBackToRoutes = () => {
         setCurrentStep('routes');
         setSelectedRoute(null);
-
+        setPandals([]);
     };
 
     // Show initial loading spinner
@@ -252,10 +259,10 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
                     </div>
                 )}
 
-                {/* Loading State for pandals */}
+                {/* Loading State */}
                 {loading && (
                     <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700/20">
-                        <LoadingSpinner message="Loading pandals..." />
+                        <LoadingSpinner message="Loading route details..." />
                     </div>
                 )}
 
@@ -295,11 +302,34 @@ const RouteMapPage: React.FC<RouteMapPageProps> = ({ initialRouteId }) => {
                                             <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">Choose from available predefined routes</p>
                                         </div>
                                     </div>
+
+                                    {/* Routes List */}
+                                    <div className="space-y-3 mt-4">
+                                        {availableRoutes.map((route) => (
+                                            <button
+                                                key={route.id}
+                                                onClick={() => handleRouteSelect(route)}
+                                                className="w-full text-left bg-white dark:bg-gray-700 rounded-lg p-4 hover:shadow-lg transition-all border-2 border-transparent hover:border-orange-300 dark:hover:border-orange-600"
+                                            >
+                                                <h3 className="font-semibold text-lg text-gray-800 dark:text-white mb-1">
+                                                    {route.name}
+                                                </h3>
+                                                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                                                    {route.description}
+                                                </p>
+                                                <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                                                    <span>⏱️ {route.estimatedTotalTime}</span>
+                                                    <span>📍 {route.pandalSequence.length} pandals</span>
+                                                    <span>🚶 {route.difficulty}</span>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         )}
 
-                        {currentStep === 'route-display' && selectedRoute && (
+                        {currentStep === 'route-display' && selectedRoute && pandals.length > 0 && (
                             <RouteDisplay
                                 route={selectedRoute}
                                 pandals={pandals}
