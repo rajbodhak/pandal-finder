@@ -15,21 +15,21 @@
             "estimatedTotalTime": "3-4 hours",
             "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
-                "pandal_a9_square_park",
-                "pandal_kalyani_a2",
-                "pandal_iti_more",
-                "pandal_boat_park",
-                "pandal_kalyani_central_park",
-                "pandal_manimala_park",
-                "pandal_nebula_park",
-                "pandal_kalyani_rathtala"
+                "a-9-square-park",
+                "kalyani-a-2",
+                "iti-more",
+                "boat-park",
+                "kalyani-central-park",
+                "manimala-park-b7",
+                "nebula-park",
+                "kalyani-rathtala"
             ],
             "startingConnection": {
                 "startingPointId": "kalyani_station",
-                "firstPandalId": "pandal_a9_square_park",
+                "firstPandalId": "a-9-square-park",
                 "connection": {
                     "fromPandalId": "kalyani_station",
-                    "toPandalId": "pandal_a9_square_park",
+                    "toPandalId": "a-9-square-park",
                     "distance": 700,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -42,8 +42,8 @@
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_a9_square_park",
-                    "toPandalId": "pandal_kalyani_a2",
+                    "fromPandalId": "a-9-square-park",
+                    "toPandalId": "kalyani-a-2",
                     "distance": 800,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -53,8 +53,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_kalyani_a2",
-                    "toPandalId": "pandal_iti_more",
+                    "fromPandalId": "kalyani-a-2",
+                    "toPandalId": "iti-more",
                     "distance": 2800,
                     "estimatedTime": 8,
                     "transportMode": "toto",
@@ -62,8 +62,8 @@
                     "notes": "Take an auto or toto from JNM Hospital Road or near Kalyani Station",
                     "alternativeRoutes": [
                         {
-                            "fromPandalId": "pandal_kalyani_a2",
-                            "toPandalId": "pandal_iti_more",
+                            "fromPandalId": "kalyani-a-2",
+                            "toPandalId": "iti-more",
                             "distance": 2800,
                             "estimatedTime": 27,
                             "transportMode": "walk",
@@ -76,8 +76,8 @@
                     ]
                 },
                 {
-                    "fromPandalId": "pandal_iti_more",
-                    "toPandalId": "pandal_boat_park",
+                    "fromPandalId": "iti-more",
+                    "toPandalId": "boat-park",
                     "distance": 400,
                     "estimatedTime": 6,
                     "transportMode": "walk",
@@ -87,8 +87,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_boat_park",
-                    "toPandalId": "pandal_kalyani_central_park",
+                    "fromPandalId": "boat-park",
+                    "toPandalId": "kalyani-central-park",
                     "distance": 550,
                     "estimatedTime": 8,
                     "transportMode": "walk",
@@ -98,8 +98,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_kalyani_central_park",
-                    "toPandalId": "pandal_manimala_park",
+                    "fromPandalId": "kalyani-central-park",
+                    "toPandalId": "manimala-park-b7",
                     "distance": 650,
                     "estimatedTime": 9,
                     "transportMode": "walk",
@@ -109,8 +109,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_manimala_park",
-                    "toPandalId": "pandal_nebula_park",
+                    "fromPandalId": "manimala-park-b7",
+                    "toPandalId": "nebula-park",
                     "distance": 800,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -121,8 +121,8 @@
                     "notes": "This Pandal is optional and you can directly go to Rathtala"
                 },
                 {
-                    "fromPandalId": "pandal_nebula_park",
-                    "toPandalId": "pandal_kalyani_rathtala",
+                    "fromPandalId": "nebula-park",
+                    "toPandalId": "kalyani-rathtala",
                     "distance": 2300,
                     "estimatedTime": 10,
                     "transportMode": "toto",

@@ -15,30 +15,30 @@
             "estimatedTotalTime": "3-4 hours",
             "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
-                "pandal_ekdalia_evergreen_club",
-                "pandal_singhi_park",
-                "pandal_hindustan_park",
-                "pandal_ballygunge_cultural_association",
-                "pandal_samaj_sebi_sangha",
-                "pandal_deshapriya_park",
-                "pandal_badamtola_ashar_sangha",
-                "pandal_66_pally",
-                "pandal_chetla_aagrani_club",
-                "pandal_suruchi_sangha",
-                "pandal_buroshibtala",
-                "pandal_behala_friends_club",
-                "pandal_behala_notundal",
-                "pandal_behala_notunsangha",
-                "pandal_behala_debdaru_fatak",
-                "pandal_barisha_sarbojonin",
-                "pandal_barisha_club_puja"
+                "ekdalia-evergreen-club",
+                "singhi-park-sarbojanin",
+                "hindustan-park-sarbojanin",
+                "ballygunge-cultural-association",
+                "samaj-sebi-sangha",
+                "deshapriya-park-durga-puja",
+                "badamtala-ashar-sangha",
+                "66-pally-durga-puja",
+                "chetla-agrani-club",
+                "suruchi-sangha",
+                "buroshibtala-durga-puja",
+                "behala-friends-club",
+                "behala-notun-dal",
+                "behala-natun-sangha",
+                "behala-debdaru-fatak-club",
+                "barisha-sarbojonin",
+                "barisha-club-puja"
             ],
             "startingConnection": {
                 "startingPointId": "ballygunge_station",
-                "firstPandalId": "pandal_ekdalia_evergreen_club",
+                "firstPandalId": "ekdalia-evergreen-club",
                 "connection": {
                     "fromPandalId": "ballygunge_station",
-                    "toPandalId": "pandal_ekdalia_evergreen_club",
+                    "toPandalId": "ekdalia-evergreen-club",
                     "distance": 750,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -51,8 +51,8 @@
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_ekdalia_evergreen_club",
-                    "toPandalId": "pandal_singhi_park",
+                    "fromPandalId": "ekdalia-evergreen-club",
+                    "toPandalId": "singhi-park-sarbojanin",
                     "distance": 350,
                     "estimatedTime": 6,
                     "transportMode": "walk",
@@ -62,8 +62,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_singhi_park",
-                    "toPandalId": "pandal_hindustan_park",
+                    "fromPandalId": "singhi-park-sarbojanin",
+                    "toPandalId": "hindustan-park-sarbojanin",
                     "distance": 500,
                     "estimatedTime": 8,
                     "transportMode": "walk",
@@ -73,8 +73,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_hindustan_park",
-                    "toPandalId": "pandal_ballygunge_cultural_association",
+                    "fromPandalId": "hindustan-park-sarbojanin",
+                    "toPandalId": "ballygunge-cultural-association",
                     "distance": 800,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -84,8 +84,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_ballygunge_cultural_association",
-                    "toPandalId": "pandal_samaj_sebi_sangha",
+                    "fromPandalId": "ballygunge-cultural-association",
+                    "toPandalId": "samaj-sebi-sangha",
                     "distance": 130,
                     "estimatedTime": 2,
                     "transportMode": "walk",
@@ -95,8 +95,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_samaj_sebi_sangha",
-                    "toPandalId": "pandal_deshapriya_park",
+                    "fromPandalId": "samaj-sebi-sangha",
+                    "toPandalId": "deshapriya-park-durga-puja",
                     "distance": 630,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -106,8 +106,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_deshapriya_park",
-                    "toPandalId": "pandal_badamtola_ashar_sangha",
+                    "fromPandalId": "deshapriya-park-durga-puja",
+                    "toPandalId": "badamtala-ashar-sangha",
                     "distance": 1000,
                     "estimatedTime": 16,
                     "transportMode": "walk",
@@ -117,8 +117,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_badamtola_ashar_sangha",
-                    "toPandalId": "pandal_66_pally",
+                    "fromPandalId": "badamtala-ashar-sangha",
+                    "toPandalId": "66-pally-durga-puja",
                     "distance": 99,
                     "estimatedTime": 1,
                     "transportMode": "walk",
@@ -128,8 +128,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_66_pally",
-                    "toPandalId": "pandal_chetla_aagrani_club",
+                    "fromPandalId": "66-pally-durga-puja",
+                    "toPandalId": "chetla-agrani-club",
                     "distance": 800,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -139,8 +139,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_chetla_aagrani_club",
-                    "toPandalId": "pandal_suruchi_sangha",
+                    "fromPandalId": "chetla-agrani-club",
+                    "toPandalId": "suruchi-sangha",
                     "distance": 1280,
                     "estimatedTime": 17,
                     "transportMode": "walk",
@@ -151,8 +151,8 @@
                     "notes": "You can end your journey here and go to the nearest metro station, Rabindra Sarobar, or take a bus to Sealdah or Howrah."
                 },
                 {
-                    "fromPandalId": "pandal_suruchi_sangha",
-                    "toPandalId": "pandal_buroshibtala",
+                    "fromPandalId": "suruchi-sangha",
+                    "toPandalId": "buroshibtala-durga-puja",
                     "distance": 1000,
                     "estimatedTime": 14,
                     "transportMode": "walk",
@@ -162,8 +162,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_buroshibtala",
-                    "toPandalId": "pandal_behala_friends_club",
+                    "fromPandalId": "buroshibtala-durga-puja",
+                    "toPandalId": "behala-friends-club",
                     "distance": 1700,
                     "estimatedTime": 22,
                     "transportMode": "walk",
@@ -174,8 +174,8 @@
                     "notes": "Optional"
                 },
                 {
-                    "fromPandalId": "pandal_behala_friends_club",
-                    "toPandalId": "pandal_behala_notundal",
+                    "fromPandalId": "behala-friends-club",
+                    "toPandalId": "behala-notun-dal",
                     "distance": 140,
                     "estimatedTime": 2,
                     "transportMode": "walk",
@@ -185,8 +185,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_behala_notundal",
-                    "toPandalId": "pandal_behala_notunsangha",
+                    "fromPandalId": "behala-notun-dal",
+                    "toPandalId": "behala-natun-sangha",
                     "distance": 250,
                     "estimatedTime": 4,
                     "transportMode": "walk",
@@ -196,8 +196,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_behala_notunsangha",
-                    "toPandalId": "pandal_behala_debdaru_fatak",
+                    "fromPandalId": "behala-natun-sangha",
+                    "toPandalId": "behala-debdaru-fatak-club",
                     "distance": 230,
                     "estimatedTime": 4,
                     "transportMode": "walk",
@@ -207,8 +207,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_behala_debdaru_fatak",
-                    "toPandalId": "pandal_barisha_sarbojonin",
+                    "fromPandalId": "behala-debdaru-fatak-club",
+                    "toPandalId": "barisha-sarbojonin",
                     "distance": 2900,
                     "estimatedTime": 17,
                     "transportMode": "bus",
@@ -219,8 +219,8 @@
                     "cost": 10
                 },
                 {
-                    "fromPandalId": "pandal_barisha_sarbojonin",
-                    "toPandalId": "pandal_barisha_club_puja",
+                    "fromPandalId": "barisha-sarbojonin",
+                    "toPandalId": "barisha-club-puja",
                     "distance": 650,
                     "estimatedTime": 10,
                     "transportMode": "walk",

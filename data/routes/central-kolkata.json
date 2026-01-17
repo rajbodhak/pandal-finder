@@ -17,31 +17,31 @@
             "estimatedTotalTime": "4-5 hours",
             "bestTimeToStart": "9:00 AM",
             "pandalSequence": [
-                "pandal_santosh_mitra_square",
-                "pandal_college_square",
-                "pandal_md_ali_park",
-                "pandal_chorebagan_sarbojonin",
-                "pandal_chaltabagan_sarbojonin",
-                "pandal_beadon_street",
-                "pandal_kashi_bose_lane",
-                "pandal_hatibagan_sarbojonin",
-                "pandal_nalin_sarkar_street",
-                "pandal_hatibagan_nobin_pally",
-                "pandal_sikdar_bagan_sadharan",
-                "pandal_sovabazar_rajbari",
-                "pandal_jagat_mukherjee_park",
-                "pandal_baghbazar_sarbojonin",
-                "pandal_kumartuli_park",
-                "pandal_beniatola_sarbojonin",
-                "pandal_ahiritola_jubok_binda",
-                "pandal_ahiritola_sarbojanin"
+                "santosh-mitra-square",
+                "college-square-sarbojanin",
+                "mohammad-ali-park",
+                "chorebagan-sarbojanin",
+                "chaltabagan-sarbojanin",
+                "beadon-street-sarbojanin",
+                "kashi-bose-lane-puja",
+                "hatibagan-sarbojanin",
+                "nalin-sarkar-street-puja",
+                "hatibagan-nobin-pally",
+                "sikdar-bagan-sadharan",
+                "sovabazar-rajbari-puja",
+                "jagat-mukherjee-park-puja",
+                "baghbazar-sarbojanin-durgotsav",
+                "kumartuli-park-sarbojanin",
+                "beniatola-sarbojanin",
+                "ahiritola-jubok-brinda",
+                "ahiritola-sarbojanin"
             ],
             "startingConnection": {
                 "startingPointId": "sealdah_junction",
-                "firstPandalId": "pandal_santosh_mitra_square",
+                "firstPandalId": "santosh-mitra-square",
                 "connection": {
                     "fromPandalId": "sealdah_junction",
-                    "toPandalId": "pandal_santosh_mitra_square",
+                    "toPandalId": "santosh-mitra-square",
                     "distance": 750,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -53,8 +53,8 @@
             },
             "routeSegments": [
                 {
-                    "fromPandalId": "pandal_santosh_mitra_square",
-                    "toPandalId": "pandal_college_square",
+                    "fromPandalId": "santosh-mitra-square",
+                    "toPandalId": "college-square-sarbojanin",
                     "distance": 1200,
                     "estimatedTime": 15,
                     "transportMode": "walk",
@@ -64,8 +64,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_college_square",
-                    "toPandalId": "pandal_md_ali_park",
+                    "fromPandalId": "college-square-sarbojanin",
+                    "toPandalId": "mohammad-ali-park",
                     "distance": 700,
                     "estimatedTime": 8,
                     "transportMode": "walk",
@@ -75,8 +75,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_md_ali_park",
-                    "toPandalId": "pandal_chorebagan_sarbojonin",
+                    "fromPandalId": "mohammad-ali-park",
+                    "toPandalId": "chorebagan-sarbojanin",
                     "distance": 950,
                     "estimatedTime": 12,
                     "transportMode": "walk",
@@ -86,7 +86,7 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_chorebagan_sarbojonin",
+                    "fromPandalId": "chorebagan-sarbojanin",
                     "toPandalId": "pandal_chaltabagan_sarbojanin",
                     "distance": 850,
                     "estimatedTime": 13,
@@ -98,7 +98,7 @@
                 },
                 {
                     "fromPandalId": "pandal_chaltabagan_sarbojanin",
-                    "toPandalId": "pandal_beadon_street",
+                    "toPandalId": "beadon-street-sarbojanin",
                     "distance": 700,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -108,8 +108,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_beadon_street",
-                    "toPandalId": "pandal_kashi_bose_lane",
+                    "fromPandalId": "beadon-street-sarbojanin",
+                    "toPandalId": "kashi-bose-lane-puja",
                     "distance": 300,
                     "estimatedTime": 5,
                     "transportMode": "walk",
@@ -119,8 +119,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_kashi_bose_lane",
-                    "toPandalId": "pandal_hatibagan_sarbojonin",
+                    "fromPandalId": "kashi-bose-lane-puja",
+                    "toPandalId": "hatibagan-sarbojanin",
                     "distance": 600,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -130,8 +130,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_hatibagan_sarbojonin",
-                    "toPandalId": "pandal_nalin_sarkar_street",
+                    "fromPandalId": "hatibagan-sarbojanin",
+                    "toPandalId": "nalin-sarkar-street-puja",
                     "distance": 300,
                     "estimatedTime": 5,
                     "transportMode": "walk",
@@ -141,8 +141,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_nalin_sarkar_street",
-                    "toPandalId": "pandal_hatibagan_nobin_pally",
+                    "fromPandalId": "nalin-sarkar-street-puja",
+                    "toPandalId": "hatibagan-nobin-pally",
                     "distance": 250,
                     "estimatedTime": 4,
                     "transportMode": "walk",
@@ -152,8 +152,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_hatibagan_nobin_pally",
-                    "toPandalId": "pandal_sikdar_bagan_sadharan",
+                    "fromPandalId": "hatibagan-nobin-pally",
+                    "toPandalId": "sikdar-bagan-sadharan",
                     "distance": 200,
                     "estimatedTime": 3,
                     "transportMode": "walk",
@@ -163,8 +163,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_sikdar_bagan_sadharan",
-                    "toPandalId": "pandal_sovabazar_rajbari",
+                    "fromPandalId": "sikdar-bagan-sadharan",
+                    "toPandalId": "sovabazar-rajbari-puja",
                     "distance": 650,
                     "estimatedTime": 10,
                     "transportMode": "walk",
@@ -174,8 +174,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_sovabazar_rajbari",
-                    "toPandalId": "pandal_jagat_mukherjee_park",
+                    "fromPandalId": "sovabazar-rajbari-puja",
+                    "toPandalId": "jagat-mukherjee-park-puja",
                     "distance": 500,
                     "estimatedTime": 8,
                     "transportMode": "walk",
@@ -185,8 +185,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_jagat_mukherjee_park",
-                    "toPandalId": "pandal_baghbazar_sarbojonin",
+                    "fromPandalId": "jagat-mukherjee-park-puja",
+                    "toPandalId": "baghbazar-sarbojanin-durgotsav",
                     "distance": 750,
                     "estimatedTime": 11,
                     "transportMode": "walk",
@@ -197,8 +197,8 @@
                     "notes": "This is optional, you can also directly go Kumartuli Park"
                 },
                 {
-                    "fromPandalId": "pandal_baghbazar_sarbojonin",
-                    "toPandalId": "pandal_kumartuli_park",
+                    "fromPandalId": "baghbazar-sarbojanin-durgotsav",
+                    "toPandalId": "kumartuli-park-sarbojanin",
                     "distance": 900,
                     "estimatedTime": 13,
                     "transportMode": "walk",
@@ -208,8 +208,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_kumartuli_park",
-                    "toPandalId": "pandal_beniatola_sarbojonin",
+                    "fromPandalId": "kumartuli-park-sarbojanin",
+                    "toPandalId": "beniatola-sarbojanin",
                     "distance": 550,
                     "estimatedTime": 9,
                     "transportMode": "walk",
@@ -219,8 +219,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_beniatola_sarbojonin",
-                    "toPandalId": "pandal_ahiritola_jubok_binda",
+                    "fromPandalId": "beniatola-sarbojanin",
+                    "toPandalId": "ahiritola-jubok-brinda",
                     "distance": 300,
                     "estimatedTime": 5,
                     "transportMode": "walk",
@@ -230,8 +230,8 @@
                     "cost": 0
                 },
                 {
-                    "fromPandalId": "pandal_ahiritola_jubok_binda",
-                    "toPandalId": "pandal_ahiritola_sarbojanin",
+                    "fromPandalId": "ahiritola-jubok-brinda",
+                    "toPandalId": "ahiritola-sarbojanin",
                     "distance": 350,
                     "estimatedTime": 6,
                     "transportMode": "walk",
