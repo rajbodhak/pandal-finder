@@ -9,6 +9,7 @@ export class DatabaseService {
             $id: doc.$id,
             name: doc.name,
             description: doc.description,
+            slug: doc.slug,
             area: doc.area,
             address: doc.address,
             latitude: doc.latitude,

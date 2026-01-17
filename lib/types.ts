@@ -2,6 +2,7 @@ export interface Pandal {
     $id: string;
     name: string;
     description?: string;
+    slug?: string;
     address: string;
     latitude?: number;
     longitude?: number;
