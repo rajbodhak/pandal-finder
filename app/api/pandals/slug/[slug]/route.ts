@@ -3,14 +3,16 @@ import { serverDatabases, DATABASE_ID, COLLECTION_ID, Query } from '@/lib/appwri
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) {
     try {
+        const { slug } = await params;
+
         const response = await serverDatabases.listDocuments(
             DATABASE_ID,
             COLLECTION_ID,
             [
-                Query.equal('slug', params.slug),
+                Query.equal('slug', slug),
                 Query.limit(1)
             ]
         );

@@ -3,13 +3,15 @@ import { serverDatabases, DATABASE_ID, COLLECTION_ID } from '@/lib/appwrite-serv
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
+
         const pandal = await serverDatabases.getDocument(
             DATABASE_ID,
             COLLECTION_ID,
-            params.id
+            id
         );
 
         return NextResponse.json(pandal);
