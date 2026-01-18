@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PandalWithDistance, UserLocation } from '@/lib/types';
+import { Pandal, PandalWithDistance, UserLocation } from '@/lib/types';
 import { databaseService } from '@/lib/database';
 import { calculateDistance } from '@/lib/utils';
 
@@ -13,7 +13,7 @@ export const usePandals = (userLocation: UserLocation | null) => {
             setLoading(true);
             const data = await databaseService.getAllPandals();
 
-            const pandalsWithDistance: PandalWithDistance[] = data.map(pandal => ({
+            const pandalsWithDistance: PandalWithDistance[] = data.map((pandal: Pandal) => ({
                 ...pandal,
                 distance: userLocation && pandal.latitude !== undefined && pandal.longitude !== undefined
                     ? calculateDistance(userLocation, { latitude: pandal.latitude, longitude: pandal.longitude })
@@ -32,12 +32,13 @@ export const usePandals = (userLocation: UserLocation | null) => {
     // Only fetch when userLocation changes, not filters
     useEffect(() => {
         fetchPandals();
-    }, [userLocation]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Recalculate distances when userLocation changes
     useEffect(() => {
         if (userLocation && allPandals.length > 0) {
-            const updatedPandals = allPandals.map(pandal => ({
+            const updatedPandals = allPandals.map((pandal: PandalWithDistance) => ({
                 ...pandal,
                 distance: pandal.latitude !== undefined && pandal.longitude !== undefined
                     ? calculateDistance(userLocation, { latitude: pandal.latitude, longitude: pandal.longitude })
@@ -45,6 +46,7 @@ export const usePandals = (userLocation: UserLocation | null) => {
             }));
             setAllPandals(updatedPandals);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userLocation]);
 
     return {
