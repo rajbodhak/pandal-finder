@@ -1,4 +1,4 @@
-import { Client, Databases, Storage, Query } from 'node-appwrite';
+import { Client, Databases, Storage, Query, ID } from 'node-appwrite';
 
 // Server-only credentials 
 const client = new Client()
@@ -14,5 +14,5 @@ export const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 export const COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_PANDALS_COLLECTION_ID!;
 export const BUCKET_ID = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID!;
 
-// Re-export Query for convenience
-export { Query };
+// Re-export Query and ID for convenience
+export { Query, ID };

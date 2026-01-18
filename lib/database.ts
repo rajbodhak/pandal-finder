@@ -168,7 +168,6 @@ export class DatabaseService {
 
     // Get image URL (for now, placeholder - need to handle this separately)
     getImageUrl(imageId: string) {
-        //  need to create an API route for images too if needed
         return `/api/images/${imageId}`;
     }
 
@@ -231,8 +230,71 @@ export class DatabaseService {
             throw error;
         }
     }
-    // TODO: Create, Update, Delete methods will need separate API routes
-    // with authentication/authorization
+
+    // CREATE - Add new pandal
+    async createPandal(pandalData: Omit<Pandal, '$id' | 'created_at' | 'updated_at'>): Promise<Pandal> {
+        try {
+            const response = await fetch(API_BASE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(pandalData),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to create pandal');
+            }
+
+            const data = await response.json();
+            return this.formatPandal(data);
+        } catch (error) {
+            console.error('Error creating pandal:', error);
+            throw error;
+        }
+    }
+
+    // UPDATE - Update existing pandal
+    async updatePandal(id: string, pandalData: Partial<Pandal>): Promise<Pandal> {
+        try {
+            const response = await fetch(`${API_BASE}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(pandalData),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to update pandal');
+            }
+
+            const data = await response.json();
+            return this.formatPandal(data);
+        } catch (error) {
+            console.error('Error updating pandal:', error);
+            throw error;
+        }
+    }
+
+    // DELETE - Delete pandal
+    async deletePandal(id: string): Promise<void> {
+        try {
+            const response = await fetch(`${API_BASE}/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to delete pandal');
+            }
+        } catch (error) {
+            console.error('Error deleting pandal:', error);
+            throw error;
+        }
+    }
 }
 
 export const databaseService = new DatabaseService();
