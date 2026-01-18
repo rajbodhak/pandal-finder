@@ -9,10 +9,11 @@ import kalyaniRouteData from '@/data/routes/kalyani.json';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ routeId: string }> }
+    context: { params: Promise<{ routeId: string }> }
 ) {
     try {
-        const { routeId } = await params;
+        const params = await context.params;
+        const routeId = params.routeId;
 
         // Combine all routes
         const allRoutesData = [
